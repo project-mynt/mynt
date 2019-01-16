@@ -102,6 +102,8 @@ CAmount maxTxFee = DEFAULT_TRANSACTION_MAXFEE;
 CBlockPolicyEstimator feeEstimator;
 CTxMemPool mempool(&feeEstimator);
 
+int nBlockCount = 0;
+
 static void CheckBlockIndex(const Consensus::Params& consensusParams);
 
 /** Constant stuff for coinbase transactions we create: */
@@ -198,6 +200,8 @@ CBlockTreeDB *pblocktree = nullptr;
 
 CAssetsDB *passetsdb = nullptr;
 CAssetsCache *passets = nullptr;
+
+CAssetsCache *tmpAssetCache = nullptr;
 CLRUCache<std::string, CDatabasedAssetData> *passetsCache = nullptr;
 
 enum FlushStateMode {
@@ -472,8 +476,8 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
     AssertLockHeld(cs_main);
     if (pfMissingInputs)
         *pfMissingInputs = false;
-
-    if (!CheckTransaction(tx, state, passets, true, true))
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    if (!CheckTransaction(tx, state, currentActiveAssetCache, true, true))
         return false; // state filled in by CheckTransaction
 
     // Coinbase is only valid in a block, not as a loose transaction
@@ -1238,6 +1242,44 @@ bool IsInitialBlockDownload()
     }
 //    LogPrintf("Leaving InitialBlockDownload (latching to false)\n");
     latchToFalse.store(true, std::memory_order_relaxed);
+    return false;
+}
+
+bool IsInitialSyncSpeedUp()
+{
+    // Once this function has returned false, it must remain false.
+    static std::atomic<bool> syncLatchToFalse{false};
+    // Optimization: pre-test latch before taking the lock.
+    if (syncLatchToFalse.load(std::memory_order_relaxed))
+        return false;
+
+    LOCK(cs_main);
+    if (syncLatchToFalse.load(std::memory_order_relaxed))
+        return false;
+    if (fImporting || fReindex)
+    {
+//        LogPrintf("IsInitialBlockDownload (importing or reindex)\n");
+        return true;
+    }
+    if (chainActive.Tip() == nullptr)
+    {
+//        LogPrintf("IsInitialBlockDownload (tip is null)");
+        return true;
+    }
+    if (chainActive.Tip()->nChainWork < nMinimumChainWork)
+    {
+//    		LogPrintf("IsInitialBlockDownload (min chain work)");
+//    		LogPrintf("Work found: %s", chainActive.Tip()->nChainWork.GetHex());
+//    		LogPrintf("Work needed: %s", nMinimumChainWork.GetHex());
+        return true;
+    }
+    if (chainActive.Tip()->GetBlockTime() < (GetTime() - 60 * 60))
+    {
+//        LogPrintf("%s: (tip age): %d\n", __func__, nMaxTipAge);
+        return true;
+    }
+//    LogPrintf("Leaving InitialBlockDownload (latching to false)\n");
+    syncLatchToFalse.store(true, std::memory_order_relaxed);
     return false;
 }
 
@@ -2596,6 +2638,7 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
     bool fFlushForPrune = false;
     bool fDoFullFlush = false;
     int64_t nNow = 0;
+
     try {
     {
         LOCK(cs_LastBlockFile);
@@ -2625,8 +2668,21 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         if (nLastSetChain == 0) {
             nLastSetChain = nNow;
         }
+
+        // Get the size of the memory used by the asset cache.
+        int64_t assetDynamicSize = 0;
+        int64_t assetDirtyCacheSize = 0;
+        if (AreAssetsDeployed()) {
+            auto currentActiveAssetCache = GetCurrentAssetCache();
+            if (currentActiveAssetCache) {
+                assetDynamicSize = currentActiveAssetCache->DynamicMemoryUsage();
+                assetDirtyCacheSize = currentActiveAssetCache->GetCacheSize();
+            }
+        }
+
+
         int64_t nMempoolSizeMax = gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
-        int64_t cacheSize = pcoinsTip->DynamicMemoryUsage();
+        int64_t cacheSize = pcoinsTip->DynamicMemoryUsage() + assetDynamicSize + assetDirtyCacheSize;
         int64_t nTotalSpace = nCoinCacheUsage + std::max<int64_t>(nMempoolSizeMax - nMempoolUsage, 0);
         // The cache is large and we're within 10% and 10 MiB of the limit, but we have time now (not in the middle of a block processing).
         bool fCacheLarge = mode == FLUSH_STATE_PERIODIC && cacheSize > std::max((9 * nTotalSpace) / 10, nTotalSpace - MAX_BLOCK_COINSDB_USAGE * 1024 * 1024);
@@ -2636,8 +2692,15 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         bool fPeriodicWrite = mode == FLUSH_STATE_PERIODIC && nNow > nLastWrite + (int64_t)DATABASE_WRITE_INTERVAL * 1000000;
         // It's been very long since we flushed the cache. Do this infrequently, to optimize cache usage.
         bool fPeriodicFlush = mode == FLUSH_STATE_PERIODIC && nNow > nLastFlush + (int64_t)DATABASE_FLUSH_INTERVAL * 1000000;
+
         // Combine all conditions that result in a full cache flush.
         fDoFullFlush = (mode == FLUSH_STATE_ALWAYS) || fCacheLarge || fCacheCritical || fPeriodicFlush || fFlushForPrune;
+
+        if (!fDoFullFlush && IsInitialSyncSpeedUp() && nNow > nLastFlush + (int64_t) DATABASE_FLUSH_INTERVAL_SPEEDY * 1000000) {
+            LogPrintf("Flushing to database sooner for speedy sync\n");
+            fDoFullFlush = true;
+        }
+
         // Write blocks and block index to disk.
         if (fDoFullFlush || fPeriodicWrite) {
             // Depend on nMinDiskSpace to ensure we can write block index
@@ -2671,21 +2734,22 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         // Flush best chain related state. This can only be done if the blocks / block index write was also done.
         if (fDoFullFlush) {
 
-            /** MYNT START */
+            /** MYNT START 
 
             size_t assetsSize = 0;
             if (AreAssetsDeployed()) {
                 if (passets)
                     assetsSize = passets->GetCacheSize() * 2;
             }
-            /** MYNT END */
+             MYNT END */
 
             // Typical Coin structures on disk are around 48 bytes in size.
             // Pushing a new one to the database can cause it to be written
             // twice (once in the log, and once in the tables). This is already
             // an overestimation, as most will delete an existing entry or
             // overwrite one. Still, use a conservative safety factor of 2.
-            if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetsSize)) /** MYNT START */ /** MYNT END */
+            //if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetsSize)) /** MYNT START */ /** MYNT END */
+            if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetDirtyCacheSize * 2)) /** MYNT START */ /** MYNT END */
                 return state.Error("out of disk space");
 
             // Flush the chainstate (which may refer to block index entries).
@@ -2696,11 +2760,13 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
             // Flush the assetstate
             if (AreAssetsDeployed()) {
                 // Flush the assetstate
-                if (passets) {
-                    if (!passets->Flush(false, true))
+                auto currentActiveAssetCache = GetCurrentAssetCache();
+                if (currentActiveAssetCache) {
+                    if (!currentActiveAssetCache->Flush(false, true))
                         return AbortNode(state, "Failed to write to asset database");
                 }
             }
+
             // Write the reissue mempool data to database
             if (passetsdb)
                 passetsdb->WriteReissuedMempoolState();
@@ -2821,7 +2887,8 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     {
         CCoinsViewCache view(pcoinsTip);
 
-        CAssetsCache assetCache(*passets);
+        auto currentActiveAssetCache = GetCurrentAssetCache();
+        CAssetsCache assetCache(*currentActiveAssetCache);
 
         assert(view.GetBestBlock() == pindexDelete->GetBlockHash());
         if (DisconnectBlock(block, pindexDelete, view, &assetCache) != DISCONNECT_OK)
@@ -2953,6 +3020,7 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
     int64_t nTime3;
+    int64_t nTimeAssetsFlush;
     LogPrint(BCLog::BENCH, "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * MILLI, nTimeReadFromDisk * MICRO);
 
     /** MYNT START */
@@ -2963,23 +3031,41 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
 
     {
         CCoinsViewCache view(pcoinsTip);
-
+        int64_t nTimeStartCacheCopy = GetTimeMicros();
+        
         /** MYNT START */
-        CAssetsCache assetCache(*passets);
-        prevNewAssets = assetCache.setNewAssetsToAdd; // List of newly cached assets before block is connected
+        CAssetsCache* assetCache = nullptr;
+        bool fIsInitial = IsInitialSyncSpeedUp();
+        if (!fIsInitial) {
+            assetCache = new CAssetsCache(*passets);
+        } else {
+            nBlockCount++;
+        }
+
+        auto pt = fIsInitial ? GetCurrentAssetCache() : assetCache;
+
+        prevNewAssets = pt->setNewAssetsToAdd; // List of newly cached assets before block is connected
         /** MYNT END */
 
-        bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams, &assetCache);
+        int64_t nTimeConnectStart = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Copy Cache Time: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeConnectStart - nTimeStartCacheCopy) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
+
+        bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams, pt);
         GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
             if (state.IsInvalid())
                 InvalidBlockFound(pindexNew, state);
+            if (assetCache)
+                delete assetCache;
             return error("ConnectTip(): ConnectBlock %s failed", pindexNew->GetBlockHash().ToString());
         }
+        int64_t nTimeConnectDone = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Connect Block only time: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeConnectDone - nTimeConnectStart) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
+
 
         /** MYNT START */
         // Get the newly created assets, from the connectblock assetCache
-        afterNewAsset = assetCache.setNewAssetsToAdd;
+        afterNewAsset = pt->setNewAssetsToAdd;
         for (auto it : prevNewAssets) {
             if (afterNewAsset.count(it))
                 afterNewAsset.erase(it);
@@ -2999,13 +3085,20 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
         bool flushed = view.Flush();
         assert(flushed);
 
+        nTimeAssetsFlush = GetTimeMicros();
         /** MYNT START */
-        bool assetFlushed = assetCache.Flush(true);
-        assert(assetFlushed);
+        if ((!fIsInitial || nBlockCount % 100 == 0) && pt) {
+            nBlockCount = 0;
+            passets->Copy(*pt);
+        }
+
+        if (assetCache)
+            delete assetCache;
         /** MYNT END */
     }
     int64_t nTime4 = GetTimeMicros(); nTimeFlush += nTime4 - nTime3;
-    LogPrint(BCLog::BENCH, "  - Flush: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
+    LogPrint(BCLog::BENCH, "  - Flush RVN: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeAssetsFlush - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
+    LogPrint(BCLog::BENCH, "  - Flush Assets: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTimeAssetsFlush) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
     // Write the chain state to disk, if necessary.
     if (!FlushStateToDisk(chainparams, state, FLUSH_STATE_IF_NEEDED))
         return false;
@@ -3614,18 +3707,18 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     CAmount founderReward = founderPayment.getFounderPaymentAmount(nHeight, blockReward);
     int founderStartHeight = founderPayment.getStartBlock();
     bool founderTransaction = founderReward == 0;// if founder reward is 0 no need to check
-     for (const auto& tx : block.vtx) {
-         if (!CheckTransaction(*tx, state, passets, true)) {
-             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
+    auto currentActiveAssetCache = GetCurrentAssetCache();    
+    for (const auto& tx : block.vtx)
+         if (!CheckTransaction(*tx, state, currentActiveAssetCache, true, false, fCheckAssetDuplicate, fForceDuplicateCheck))
+           return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s %s", tx->GetHash().ToString(), state.GetDebugMessage(), state.GetRejectReason()));
-         }
          if(nHeight > founderStartHeight) {
             if(!founderTransaction && founderPayment.IsBlockPayeeValid(*tx,nHeight,blockReward)) {
                 founderTransaction = true;
             }
-        } else {
+         } else {
             founderTransaction = true;
-        }
+         }
      }
     if(!founderTransaction) {
        LogPrintf("CheckBlock() -- Founder payment of %s is not found\n", block.txoutFounder.ToString().c_str());
@@ -3987,10 +4080,10 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
     }
 
     if (fNewBlock) *fNewBlock = true;
-
-    // Dont force the CheckBLock asset duplciates when checking from this state
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    // Dont force the CheckBlock asset duplciates when checking from this state
     if (!CheckBlock(block, state, chainparams.GetConsensus(), pindex->nHeight, true, true, true, false) ||
-        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, passets)) {
+        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, currentActiveAssetCache)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -4071,7 +4164,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     indexDummy.nHeight = pindexPrev->nHeight + 1;
 
     /** MYNT START */
-    CAssetsCache assetCache(*passets);
+    CAssetsCache assetCache = *GetCurrentAssetCache();
     /** MYNT END */
 
     // NOTE: CheckBlockHeader is called by CheckBlock
@@ -4472,7 +4565,8 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
     CValidationState state;
     int reportDone = 0;
 
-    CAssetsCache assetCache(*passets);
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    CAssetsCache assetCache(*currentActiveAssetCache);
     LogPrintf("[0%%]...");
     for (CBlockIndex* pindex = chainActive.Tip(); pindex && pindex->pprev; pindex = pindex->pprev)
     {
@@ -4576,7 +4670,8 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
     LOCK(cs_main);
 
     CCoinsViewCache cache(view);
-    CAssetsCache assetsCache(*passets);
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    CAssetsCache assetsCache(*currentActiveAssetCache);
 
     std::vector<uint256> hashHeads = view->GetHeadBlocks();
     if (hashHeads.empty()) return true; // We're already in a consistent state.
@@ -5312,6 +5407,28 @@ bool AreAssetsDeployed() {
 
 bool IsDGWActive(unsigned int nBlockNumber) {
     return nBlockNumber >= Params().DGWActivationBlock();
+}
+
+bool fSwitchFromInitialBlockDownload = false;
+bool fFirstStart = true;
+
+CAssetsCache* GetCurrentAssetCache()
+{
+    if (fFirstStart) {
+        tmpAssetCache->Copy(*passets);
+        fFirstStart = false;
+    }
+
+    if (!fSwitchFromInitialBlockDownload) {
+        if (IsInitialSyncSpeedUp()) {
+            return tmpAssetCache;
+        } else {
+            passets->Copy(*tmpAssetCache);
+            fSwitchFromInitialBlockDownload = true;
+        }
+    }
+
+    return passets;
 }
 /** MYNT END */
 
