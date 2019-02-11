@@ -492,8 +492,6 @@ extern CBlockTreeDB *pblocktree;
 extern CAssetsDB *passetsdb;
 /** Global variable that point to the active assets (protexted by cs_main) */
 extern CAssetsCache *passets;
-extern CAssetsCache *tmpAssetCache;
-extern int nBlockCount;
 /** Global variable that point to the assets LRU Cache (protexted by cs_main) */
 extern CLRUCache<std::string, CDatabasedAssetData> *passetsCache;
 /** MYNT END */
@@ -534,8 +532,6 @@ bool AreAssetsDeployed();
 
 bool IsDGWActive(unsigned int nBlockNumber);
 
-extern bool fSwitchFromInitialBlockDownload;
-extern bool fFirstStart;
 CAssetsCache* GetCurrentAssetCache();
 /** MYNT END */
 
