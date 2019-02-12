@@ -37,6 +37,11 @@ To resolve or avoid the following build error specify the following configure pa
 make clean
 make
 ```
+ 
+Without Tests and GUI
+```bash
+./configure --enable-cxx --disable-shared --without-gui --disable-tests --with-pic --prefix=$BDB_PREFIX CXXFLAGS="-fPIC" CPPFLAGS="-fPIC"
+```
 
 Dependencies
 ---------------------
