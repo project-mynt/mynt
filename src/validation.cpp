@@ -1178,15 +1178,35 @@ bool ReadBlockFromDisk(CBlock& block, const CBlockIndex* pindex, const Consensus
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
+    CAmount nSubsidy = 250 * COIN;
+    int SwapCoins = 1;
+    int SwapPrep = 2;
+    int PostSwap = 50;
+    int FirstHalving = 1647840;
+    int SecondHalving = 3750240;
+    int ThirdHalving = 5852640;
+    int FourthHalving = 7955040;
+    int FinalHalving = 10057440;
 
-    CAmount nSubsidy = 5000 * COIN;
-    // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
-    nSubsidy >>= halvings;
-    return nSubsidy;
+    if (nHeight == SwapCoins) { nSubsidy = 114000000 * COIN; }
+    if (nHeight >= SwapPrep && nHeight <= PostSwap) { nSubsidy = 0 * COIN; }
+    if (nHeight >= PostSwap && nHeight <= FirstHalving) { nSubsidy = 250 * COIN; }
+    if (nHeight >= FirstHalving && nHeight <= SecondHalving) { nSubsidy = 125 * COIN; }
+    if (nHeight >= SecondHalving && nHeight <= ThirdHalving) { nSubsidy = 62.5 * COIN; }
+    if (nHeight >= ThirdHalving && nHeight <= FourthHalving) { nSubsidy = 31.25 * COIN; }
+    if (nHeight >= FourthHalving && nHeight <= FinalHalving) { nSubsidy = 15.625 * COIN; }
+    if (nHeight >= FinalHalving) { nSubsidy = 7.8125 * COIN; }
+
+    return nSubsidy;    
+    // int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
+    // // Force block reward to zero when right shift is undefined.
+    // if (halvings >= 64)
+    //     return 0;
+
+    // CAmount nSubsidy = 5000 * COIN;
+    // // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
+    // nSubsidy >>= halvings;
+    // return nSubsidy;
 }
 
 bool IsInitialBlockDownload()
