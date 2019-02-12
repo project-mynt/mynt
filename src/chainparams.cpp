@@ -350,7 +350,7 @@ public:
         nDefaultPort = 6665;
         nPruneAfterHeight = 1000;
 
-        printGenesisBlock(genesis, consensus, 1549935097, 0x1e00ffff, 2);
+        //printGenesisBlock(genesis, consensus, 1549935097, 0x1e00ffff, 2);
 
 
         // hashGenesisBlock to 0x0000008c397acdf32e7e3b6de50522b08f5a9c4ff0d33ace8ce152c6208b8f73
