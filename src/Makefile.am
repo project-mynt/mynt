@@ -340,6 +340,7 @@ libraptoreum_consensus_a_SOURCES = \
   consensus/merkle.h \
   consensus/params.h \
   consensus/validation.h \
+  FounderPayment.h \
   hash.cpp \
   hash.h \
   prevector.h \
@@ -372,6 +373,7 @@ libraptoreum_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libraptoreum_common_a_SOURCES = \
   base58.cpp \
   chainparams.cpp \
+  FounderPayment.cpp \
   coins.cpp \
   compressor.cpp \
   core_read.cpp \
