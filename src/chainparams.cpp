@@ -57,7 +57,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "Trump: Democrats want criminals in the US";
+    const char* pszTimestamp = "Trump signals support for border security deal after meeting with Shelby";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -198,7 +198,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        assetStartBlock = 1440;
+        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
+        consensus.nFounderPayment = FounderPayment(rewardStructure);
+        assetStartBlock = 50;
+
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -228,24 +231,20 @@ public:
         nDefaultPort = 6664;
         nPruneAfterHeight = 100000;
         
-        // printGenesisBlock(genesis, consensus, 1549935089,  0x1e00ffff, 4);
+        // printGenesisBlock(genesis, consensus, 1550024254,  0x1e00ffff, 4);
         
-        genesis = CreateGenesisBlock(1549935089, 73910, 0x1e00ffff, 4, 250 * COIN);
+        // hashGenesisBlock to 0x000000dbc34e44cec42cabfa407a804cccccae152f59daca97321e3f7f535457
+        // Genesis Nonce to 21674395
+        // Genesis Merkle bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0
+        
+        genesis = CreateGenesisBlock(1550024254, 21674395, 0x1e00ffff, 4, 250 * COIN);
 
 
         consensus.hashGenesisBlock = genesis.GetHash();
         
-        // hashGenesisBlock to 0x00000023ef1854dca36219139176cf65f21bc8f12686975cb1bffc70f5dad876
-        // Genesis Nonce to 73910
-        // Genesis Merkle 392b4d38bda2a82a8deb862fd3191167aabe6b423305297a4c059e192d1b0343
-        
-        assert(consensus.hashGenesisBlock == uint256S("0x00000023ef1854dca36219139176cf65f21bc8f12686975cb1bffc70f5dad876"));
-        // assert(genesis.hashMerkleRoot == uint256S("c9d232fd98cc350fd323ca85fa49e3756692668430cc67856b25a64a7cc2b2a9"));
-        assert(genesis.hashMerkleRoot == uint256S("392b4d38bda2a82a8deb862fd3191167aabe6b423305297a4c059e192d1b0343"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000dbc34e44cec42cabfa407a804cccccae152f59daca97321e3f7f535457"));
+        assert(genesis.hashMerkleRoot == uint256S("bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0"));
 
-//        vSeeds.emplace_back("seed-raven.bitactivate.com", false);
-//        vSeeds.emplace_back("seed-raven.ravencoin.com", false);
-//        vSeeds.emplace_back("seed-raven.ravencoin.org", false);
         vFixedSeeds.clear();
 		vSeeds.clear();
         vSeeds.emplace_back("node1.getmynt.io", false);
@@ -279,7 +278,7 @@ public:
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Raptoreum chain
             // Stats as of 000000000000a72545994ce72b25042ea63707fca169ca4deb7f9dab4f1b1798 window size 43200
-        	1548171007, // * UNIX timestamp of last known number of transactions
+        	1550024254, // * UNIX timestamp of last known number of transactions
             0,    // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.1         // * estimated number of transactions per second after that timestamp
@@ -335,6 +334,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
+        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
+        consensus.nFounderPayment = FounderPayment(rewardStructure);
         assetStartBlock = 50;
 
         // The best chain should have at least this much work.
@@ -350,24 +351,18 @@ public:
         nDefaultPort = 6665;
         nPruneAfterHeight = 1000;
 
-        //printGenesisBlock(genesis, consensus, 1549935097, 0x1e00ffff, 2);
+        //printGenesisBlock(genesis, consensus, 1550024313, 0x1e00ffff, 2);
 
+        // hashGenesisBlock to 0x000000c0a2b632a231799a55a46d0fd0a552fa5645ea55e7301c3f9757244f51
+        // Genesis Nonce to 2170662
+        // Genesis Merkle bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0
 
-        // hashGenesisBlock to 0x0000008c397acdf32e7e3b6de50522b08f5a9c4ff0d33ace8ce152c6208b8f73
-        // Genesis Nonce to 5882643
-        // Genesis Merkle c9d232fd98cc350fd323ca85fa49e3756692668430cc67856b25a64a7cc2b2a9
-
-
-        genesis = CreateGenesisBlock(1549935097, 5946651, 0x1e00ffff, 2, 250 * COIN);
+        genesis = CreateGenesisBlock(1550024313, 2170662, 0x1e00ffff, 2, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        // hashGenesisBlock to 0x0000009be72ab045d7573afdf029a0d91598c25b0472716393ffb357be431bbb
-        // Genesis Nonce to 5946651
-        // Genesis Merkle 392b4d38bda2a82a8deb862fd3191167aabe6b423305297a4c059e192d1b0343
-
         //Test MerkleRoot and GenesisBlock
-        assert(consensus.hashGenesisBlock == uint256S("0x0000009be72ab045d7573afdf029a0d91598c25b0472716393ffb357be431bbb"));
-        assert(genesis.hashMerkleRoot == uint256S("392b4d38bda2a82a8deb862fd3191167aabe6b423305297a4c059e192d1b0343"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000c0a2b632a231799a55a46d0fd0a552fa5645ea55e7301c3f9757244f51"));
+        assert(genesis.hashMerkleRoot == uint256S("bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -397,7 +392,7 @@ public:
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Raptoreum chain
             // Stats as of 00000023b66f46d74890287a7b1157dd780c7c5fdda2b561eb96684d2b39d62e window size 43200
-            1548172007, // * UNIX timestamp of last known number of transactions
+            1550024313, // * UNIX timestamp of last known number of transactions
             146666,     // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.02        // * estimated number of transactions per second after that timestamp
@@ -453,6 +448,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
+        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
+        consensus.nFounderPayment = FounderPayment(rewardStructure);
         assetStartBlock = 100;
 
 
