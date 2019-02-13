@@ -1,12 +1,12 @@
 <h1 align="center">
-  Raptoreumcoin: A Peer to Peer Electronic System for the Creation and Transfer of Assets<br>
+  Mynt: A Peer to Peer Electronic System for the Creation and Transfer of Assets<br>
 </h1>
 
 
 <p align="center">
-Bruce Fenton<br>
-Tron Black<br>
-http://www.raptoreumcoin.org<br>
+Adam Davies<br>
+<br>
+http://www.getmynt.io<br>
 3rd April 2018
 </p>
 <p align="center"><i>
