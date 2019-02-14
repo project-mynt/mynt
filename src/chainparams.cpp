@@ -198,7 +198,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        vector<FounderRewardStrcuture> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
+        vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
         consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MVT2AJDK7CYTtWo5fX9u48eQT5ynWPyFFd");
@@ -336,8 +336,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
-        consensus.nFounderPayment = FounderPayment(rewardStructure);
+        vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                             // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                                           };
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MVT2AJDK7CYTtWo5fX9u48eQT5ynWPyFFd");
         assetStartBlock = 50;
 
         // The best chain should have at least this much work.
@@ -450,8 +452,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
-        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
-        consensus.nFounderPayment = FounderPayment(rewardStructure);
+        vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                             // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                                           };
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MVT2AJDK7CYTtWo5fX9u48eQT5ynWPyFFd");
         assetStartBlock = 100;
 
 
