@@ -7,7 +7,7 @@
 Adam Davies<br>
 <br>
 http://www.getmynt.io<br>
-3rd April 2018
+12th Feb 2019
 </p>
 <p align="center"><i>
 In the fictional world of Westeros, Mynt are used as messengers who carry statements of truth. Mynt is a use-case focused blockchain designed to carry statements of truth about who owns what assets.
