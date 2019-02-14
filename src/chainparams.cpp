@@ -198,9 +198,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        FounderRewardStrcuture rewardStructure = {49, 5};//5% starting at block 49 + 1
-        consensus.nFounderPayment = FounderPayment(rewardStructure);
-        assetStartBlock = 50;
+        vector<FounderRewardStrcuture> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                             // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
+                                                                           };
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MVT2AJDK7CYTtWo5fX9u48eQT5ynWPyFFd");
+        assetStartBlock = 0;
 
 
         // The best chain should have at least this much work.
@@ -301,7 +303,7 @@ public:
         strGlobalBurnAddress = "MXBurnXXXXXXXXXXXXXXXXXXXXXXWUo9FV";
 
         // DGW Activation
-        nDGWActivationBlock = 50;
+        nDGWActivationBlock = 0;
 
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
