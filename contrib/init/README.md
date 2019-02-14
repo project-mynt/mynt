@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: raptoreumd.service
-Upstart: raptoreumd.conf
-OpenRC:  raptoreumd.openrc
-         raptoreumd.openrcconf
-CentOS:  raptoreumd.init
-OS X:    org.raptoreum.raptoreumd.plist
+SystemD: myntd.service
+Upstart: myntd.conf
+OpenRC:  myntd.openrc
+         myntd.openrcconf
+CentOS:  myntd.init
+OS X:    org.mynt.myntd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

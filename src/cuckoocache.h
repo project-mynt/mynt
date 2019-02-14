@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_CUCKOOCACHE_H
-#define RAPTOREUM_CUCKOOCACHE_H
+#ifndef MYNT_CUCKOOCACHE_H
+#define MYNT_CUCKOOCACHE_H
 
 #include <array>
 #include <algorithm>
@@ -478,4 +478,4 @@ public:
 };
 } // namespace CuckooCache
 
-#endif // RAPTOREUM_CUCKOOCACHE_H
+#endif // MYNT_CUCKOOCACHE_H

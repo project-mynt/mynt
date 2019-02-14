@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#ifndef RAPTOREUM_POLICYESTIMATOR_H
-#define RAPTOREUM_POLICYESTIMATOR_H
+#ifndef MYNT_POLICYESTIMATOR_H
+#define MYNT_POLICYESTIMATOR_H
 
 #include "amount.h"
 #include "feerate.h"
@@ -301,4 +301,4 @@ static const std::array<int, 9> confTargets = { {2, 4, 6, 12, 24, 48, 144, 504, 
 int getConfTargetForIndex(int index);
 int getIndexForConfTarget(int target);
 
-#endif /*RAPTOREUM_POLICYESTIMATOR_H */
+#endif /*MYNT_POLICYESTIMATOR_H */

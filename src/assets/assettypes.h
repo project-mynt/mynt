@@ -1,10 +1,10 @@
-// Copyright (c) 2018 The Raptoreum Core developers
+// Copyright (c) 2018 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 // Created by Jeremy Anderson on 5/15/18.
 
-#ifndef RAPTOREUMCOIN_NEWASSET_H
-#define RAPTOREUMCOIN_NEWASSET_H
+#ifndef MYNTCOIN_NEWASSET_H
+#define MYNTCOIN_NEWASSET_H
 
 #include <string>
 #include <sstream>
@@ -474,4 +474,4 @@ private:
     size_t maxSize;
 };
 
-#endif //RAPTOREUMCOIN_NEWASSET_H
+#endif //MYNTCOIN_NEWASSET_H

@@ -1,10 +1,10 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "netbase.h"
-#include "test/test_raptoreum.h"
+#include "test/test_mynt.h"
 #include "utilstrencodings.h"
 
 #include <string>
@@ -89,10 +89,10 @@ BOOST_FIXTURE_TEST_SUITE(netbase_tests, BasicTestingSetup)
     {
         BOOST_TEST_MESSAGE("Running NetBase SplitHost Test");
 
-        BOOST_CHECK(TestSplitHost("www.raptoreum.org", "www.raptoreum.org", -1));
-        BOOST_CHECK(TestSplitHost("[www.raptoreum.org]", "www.raptoreum.org", -1));
-        BOOST_CHECK(TestSplitHost("www.raptoreum.org:80", "www.raptoreum.org", 80));
-        BOOST_CHECK(TestSplitHost("[www.raptoreum.org]:80", "www.raptoreum.org", 80));
+        BOOST_CHECK(TestSplitHost("www.mynt.org", "www.mynt.org", -1));
+        BOOST_CHECK(TestSplitHost("[www.mynt.org]", "www.mynt.org", -1));
+        BOOST_CHECK(TestSplitHost("www.mynt.org:80", "www.mynt.org", 80));
+        BOOST_CHECK(TestSplitHost("[www.mynt.org]:80", "www.mynt.org", 80));
         BOOST_CHECK(TestSplitHost("127.0.0.1", "127.0.0.1", -1));
         BOOST_CHECK(TestSplitHost("127.0.0.1:8767", "127.0.0.1", 8767));
         BOOST_CHECK(TestSplitHost("[127.0.0.1]", "127.0.0.1", -1));

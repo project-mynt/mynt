@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_REVERSELOCK_H
-#define RAPTOREUM_REVERSELOCK_H
+#ifndef MYNT_REVERSELOCK_H
+#define MYNT_REVERSELOCK_H
 
 /**
  * An RAII-style reverse lock. Unlocks on construction and locks on destruction.
@@ -32,4 +32,4 @@ private:
     Lock templock;
 };
 
-#endif // RAPTOREUM_REVERSELOCK_H
+#endif // MYNT_REVERSELOCK_H

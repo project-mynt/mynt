@@ -1,10 +1,10 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_DBWRAPPER_H
-#define RAPTOREUM_DBWRAPPER_H
+#ifndef MYNT_DBWRAPPER_H
+#define MYNT_DBWRAPPER_H
 
 #include "clientversion.h"
 #include "fs.h"
@@ -341,4 +341,4 @@ public:
 
 };
 
-#endif // RAPTOREUM_DBWRAPPER_H
+#endif // MYNT_DBWRAPPER_H

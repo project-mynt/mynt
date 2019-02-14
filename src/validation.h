@@ -1,14 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_VALIDATION_H
-#define RAPTOREUM_VALIDATION_H
+#ifndef MYNT_VALIDATION_H
+#define MYNT_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "amount.h"
@@ -482,14 +482,14 @@ extern CCoinsViewCache *pcoinsTip;
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;
 
-/** RTM START */
+/** MYNT START */
 /** Global variable that point to the active assets database (protexted by cs_main) */
 extern CAssetsDB *passetsdb;
 /** Global variable that point to the active assets (protexted by cs_main) */
 extern CAssetsCache *passets;
 /** Global variable that point to the assets LRU Cache (protexted by cs_main) */
 extern CLRUCache<std::string, CDatabasedAssetData> *passetsCache;
-/** RTM END */
+/** MYNT END */
 
 /**
  * Return the spend height, which is one more than the inputs.GetBestBlock().
@@ -522,10 +522,10 @@ bool DumpMempool();
 /** Load the mempool from disk. */
 bool LoadMempool();
 
-/** RTM START */
+/** MYNT START */
 bool AreAssetsDeployed();
 
 bool IsDGWActive(unsigned int nBlockNumber);
-/** RTM END */
+/** MYNT END */
 
-#endif // RAPTOREUM_VALIDATION_H
+#endif // MYNT_VALIDATION_H

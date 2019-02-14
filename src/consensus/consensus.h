@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_CONSENSUS_CONSENSUS_H
-#define RAPTOREUM_CONSENSUS_CONSENSUS_H
+#ifndef MYNT_CONSENSUS_CONSENSUS_H
+#define MYNT_CONSENSUS_CONSENSUS_H
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -43,4 +43,4 @@ enum {
     LOCKTIME_MEDIAN_TIME_PAST = (1 << 1),
 };
 
-#endif // RAPTOREUM_CONSENSUS_CONSENSUS_H
+#endif // MYNT_CONSENSUS_CONSENSUS_H

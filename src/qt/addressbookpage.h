@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_ADDRESSBOOKPAGE_H
-#define RAPTOREUM_QT_ADDRESSBOOKPAGE_H
+#ifndef MYNT_QT_ADDRESSBOOKPAGE_H
+#define MYNT_QT_ADDRESSBOOKPAGE_H
 
 #include <QDialog>
 
@@ -84,4 +84,4 @@ Q_SIGNALS:
     void sendCoins(QString addr);
 };
 
-#endif // RAPTOREUM_QT_ADDRESSBOOKPAGE_H
+#endif // MYNT_QT_ADDRESSBOOKPAGE_H

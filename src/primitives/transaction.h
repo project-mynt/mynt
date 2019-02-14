@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_PRIMITIVES_TRANSACTION_H
-#define RAPTOREUM_PRIMITIVES_TRANSACTION_H
+#ifndef MYNT_PRIMITIVES_TRANSACTION_H
+#define MYNT_PRIMITIVES_TRANSACTION_H
 
 #include <stdint.h>
 #include "amount.h"
@@ -326,14 +326,14 @@ public:
     // GetValueIn() is a method on CCoinsViewCache, because
     // inputs must be known to compute value in.
 
-    /** RTM START */
+    /** MYNT START */
     bool IsNewAsset() const;
     bool VerifyNewAsset(std::string& strError) const;
     bool IsNewUniqueAsset() const;
     bool VerifyNewUniqueAsset(std::string& strError) const;
     bool IsReissueAsset() const;
     bool VerifyReissueAsset(std::string& strError) const;
-    /** RTM END */
+    /** MYNT END */
 
     /**
      * Get the total transaction size in bytes, including witness data.
@@ -422,4 +422,4 @@ typedef std::shared_ptr<const CTransaction> CTransactionRef;
 static inline CTransactionRef MakeTransactionRef() { return std::make_shared<const CTransaction>(); }
 template <typename Tx> static inline CTransactionRef MakeTransactionRef(Tx&& txIn) { return std::make_shared<const CTransaction>(std::forward<Tx>(txIn)); }
 
-#endif // RAPTOREUM_PRIMITIVES_TRANSACTION_H
+#endif // MYNT_PRIMITIVES_TRANSACTION_H

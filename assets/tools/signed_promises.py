@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Script to find signed contract_urls
-# Reads from a Raptoreumcoin node - make sure its running
+# Reads from a Mynt node - make sure its running
 # Runs through the assets looking for ones with meta data
 # Checks the meta data for contract_url
 # Downloads the documents - (named by asset)
@@ -23,7 +23,7 @@ import json
 import hashlib
 
 
-cli = "raptoreum-cli"
+cli = "mynt-cli"
 mode =  "-testnet"
 rpc_user = 'rpcuser'
 rpc_pass = 'rpcpass555'
@@ -90,7 +90,7 @@ def get_signed_assets(assets):
     list_of_unsigned_assets = []
     print(assets)
     for key,value in assets.iteritems():
-        if key == 'RAPTOREUM_WITH_METADATA':
+        if key == 'MYNT_WITH_METADATA':
             print("Key " + key)
             #print("Value " + value)
             print("Reading metadata for " + str(key))

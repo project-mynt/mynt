@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[raptoreum.qt-translation-014x]
-file_filter = src/qt/locale/raptoreum_<lang>.ts
-source_file = src/qt/locale/raptoreum_en.ts
+[mynt.qt-translation-014x]
+file_filter = src/qt/locale/mynt_<lang>.ts
+source_file = src/qt/locale/mynt_en.ts
 source_lang = en

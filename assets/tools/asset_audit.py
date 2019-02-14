@@ -8,15 +8,15 @@ import subprocess
 import json
 
 
-#Set this to your raptoreum-cli program
-cli = "raptoreum-cli"
+#Set this to your mynt-cli program
+cli = "mynt-cli"
 
 mode =  "-testnet"
 rpc_port = 18766
 #mode =  "-regtest"
 #rpc_port = 18443
 
-#Set this information in your raptoreum.conf file (in datadir, not testnet3)
+#Set this information in your mynt.conf file (in datadir, not testnet3)
 rpc_user = 'rpcuser'
 rpc_pass = 'rpcpass555'
 

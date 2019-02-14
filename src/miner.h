@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_MINER_H
-#define RAPTOREUM_MINER_H
+#ifndef MYNT_MINER_H
+#define MYNT_MINER_H
 
 #include "primitives/block.h"
 #include "txmempool.h"
@@ -206,5 +206,5 @@ private:
 void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
 
-int GenerateRaptoreums(bool fGenerate, int nThreads, const CChainParams& chainparams);
-#endif // RAPTOREUM_MINER_H
+int GenerateMynts(bool fGenerate, int nThreads, const CChainParams& chainparams);
+#endif // MYNT_MINER_H

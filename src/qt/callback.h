@@ -1,5 +1,5 @@
-#ifndef RAPTOREUM_QT_CALLBACK_H
-#define RAPTOREUM_QT_CALLBACK_H
+#ifndef MYNT_QT_CALLBACK_H
+#define MYNT_QT_CALLBACK_H
 
 #include <QObject>
 
@@ -27,4 +27,4 @@ FunctionCallback<F>* makeCallback(F f)
     return new FunctionCallback<F>(std::move(f));
 }
 
-#endif // RAPTOREUM_QT_CALLBACK_H
+#endif // MYNT_QT_CALLBACK_H

@@ -1,0 +1,6 @@
+usr/local/bin/mynt-qt usr/bin
+share/pixmaps/mynt32.xpm usr/share/pixmaps
+share/pixmaps/mynt16.xpm usr/share/pixmaps
+share/pixmaps/mynt128.png usr/share/pixmaps
+debian/mynt-qt.desktop usr/share/applications
+debian/mynt-qt.protocol usr/share/kde4/services/

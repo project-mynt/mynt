@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  myntd The mynt core server.
+#
+#
+# chkconfig: 345 80 20
+# description: myntd
+# processname: myntd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/myntd, see below
+if [ -f /etc/sysconfig/myntd ]; then
+        . /etc/sysconfig/myntd
+fi
+
+RETVAL=0
+
+prog=myntd
+# you can override the lockfile via MYNTD_LOCKFILE in /etc/sysconfig/myntd
+lockfile=${MYNTD_LOCKFILE-/var/lock/subsys/myntd}
+
+# myntd defaults to /usr/bin/myntd, override with MYNTD_BIN
+myntd=${MYNTD_BIN-/usr/bin/myntd}
+
+# myntd opts default to -disablewallet, override with MYNTD_OPTS
+myntd_opts=${MYNTD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $myntd $myntd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

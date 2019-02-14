@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test mempool limiting together/eviction with the wallet."""
 
-from test_framework.test_framework import RaptoreumTestFramework
+from test_framework.test_framework import MyntTestFramework
 from test_framework.util import *
 
-class MempoolLimitTest(RaptoreumTestFramework):
+class MempoolLimitTest(MyntTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

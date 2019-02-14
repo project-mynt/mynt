@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_GUICONSTANTS_H
-#define RAPTOREUM_QT_GUICONSTANTS_H
+#ifndef MYNT_QT_GUICONSTANTS_H
+#define MYNT_QT_GUICONSTANTS_H
 
 /* Milliseconds between model updates */
 static const int MODEL_UPDATE_DELAY = 250;
@@ -12,7 +12,7 @@ static const int MODEL_UPDATE_DELAY = 250;
 /* AskPassphraseDialog -- Maximum passphrase length */
 static const int MAX_PASSPHRASE_SIZE = 1024;
 
-/* RaptoreumGUI -- Size of icons in status bar */
+/* MyntGUI -- Size of icons in status bar */
 static const int STATUSBAR_ICONSIZE = 16;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
@@ -46,17 +46,17 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 /** LIGHT MODE */
 /* Background color, very light gray */
 #define COLOR_BACKGROUND_LIGHT QColor("#fbfbfe")
-/* Raptoreumcoin dark orange */
+/* Mynt dark orange */
 #define COLOR_DARK_ORANGE QColor("#f05339")
-/* Raptoreumcoin light orange */
+/* Mynt light orange */
 #define COLOR_LIGHT_ORANGE QColor("#f79433")
-/* Raptoreumcoin dark blue */
+/* Mynt dark blue */
 #define COLOR_DARK_BLUE QColor("#475eaa")
-/* Raptoreumcoin light blue */
+/* Mynt light blue */
 #define COLOR_LIGHT_BLUE QColor("#5874cf")
-/* Raptoreumcoin asset text */
+/* Mynt asset text */
 #define COLOR_ASSET_TEXT QColor(255, 255, 255)
-/* Raptoreumcoin shadow color - light mode */
+/* Mynt shadow color - light mode */
 #define COLOR_SHADOW_LIGHT QColor("#e1e6f3")
 /* Toolbar not selected text color */
 #define COLOR_TOOLBAR_NOT_SELECTED_TEXT QColor("#a5b7f3")
@@ -66,19 +66,19 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 /** DARK MODE */
 /* Widget background color, dark mode */
 #define COLOR_WIDGET_BACKGROUND_DARK QColor("#1c2535")
-/* Raptoreumcoin shadow color - dark mode */
+/* Mynt shadow color - dark mode */
 #define COLOR_SHADOW_DARK QColor("#0c1b3d")
-/* Raptoreumcoin Light blue - dark mode - dark mode */
+/* Mynt Light blue - dark mode - dark mode */
 #define COLOR_LIGHT_BLUE_DARK QColor("#1e2636")
-/* Raptoreumcoin Dark blue - dark mode - dark mode */
+/* Mynt Dark blue - dark mode - dark mode */
 #define COLOR_DARK_BLUE_DARK QColor("#0b1018")
 /* Pricing widget background color */
 #define COLOR_PRICING_WIDGET QColor("#161e2d")
-/* Raptoreumcoin dark mode administrator background color */
+/* Mynt dark mode administrator background color */
 #define COLOR_ADMIN_CARD_DARK COLOR_BLACK
-/* Raptoreumcoin dark mode regular asset background color */
+/* Mynt dark mode regular asset background color */
 #define COLOR_REGULAR_CARD_DARK_BLUE_DARK_MODE QColor("#06132a")
-/* Raptoreumcoin dark mode regular asset background color */
+/* Mynt dark mode regular asset background color */
 #define COLOR_REGULAR_CARD_LIGHT_BLUE_DARK_MODE QColor("#0e1b3b")
 /* Toolbar not selected text color */
 #define COLOR_TOOLBAR_NOT_SELECTED_TEXT_DARK_MODE QColor("#6c80c5")
@@ -86,7 +86,7 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 #define COLOR_TOOLBAR_SELECTED_TEXT_DARK_MODE QColor("#c5ccdf")
 
 
-/* Raptoreumcoin label color as a string */
+/* Mynt label color as a string */
 #define STRING_LABEL_COLOR "color: #4960ad"
 
 
@@ -110,9 +110,9 @@ static const int MAX_URI_LENGTH = 255;
 /* Number of frames in spinner animation */
 #define SPINNER_FRAMES 36
 
-#define QAPP_ORG_NAME "Raptoreum"
-#define QAPP_ORG_DOMAIN "raptoreum.org"
-#define QAPP_APP_NAME_DEFAULT "Raptoreum-Qt"
-#define QAPP_APP_NAME_TESTNET "Raptoreum-Qt-testnet"
+#define QAPP_ORG_NAME "Mynt"
+#define QAPP_ORG_DOMAIN "mynt.org"
+#define QAPP_APP_NAME_DEFAULT "Mynt-Qt"
+#define QAPP_APP_NAME_TESTNET "Mynt-Qt-testnet"
 
-#endif // RAPTOREUM_QT_GUICONSTANTS_H
+#endif // MYNT_QT_GUICONSTANTS_H

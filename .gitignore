@@ -3,14 +3,14 @@ Jenkinsfile
 *.tar.gz
 
 *.exe
-src/raptoreum
-src/raptoreumd
-src/raptoreum-cli
-src/raptoreum-tx
-src/test/test_raptoreum
-src/test/test_raptoreum_fuzzy
-src/test/test_raptoreum_hash
-src/qt/test/test_raptoreum-qt
+src/mynt
+src/myntd
+src/mynt-cli
+src/mynt-tx
+src/test/test_mynt
+src/test/test_mynt_fuzzy
+src/test/test_mynt_hash
+src/qt/test/test_mynt-qt
 .vscode
 output.txt
 
@@ -35,8 +35,8 @@ config.log
 config.status
 configure
 libtool
-src/config/raptoreum-config.h
-src/config/raptoreum-config.h.in
+src/config/mynt-config.h
+src/config/mynt-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -84,12 +84,12 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-raptoreum-qt
-Raptoreum-Qt.app
+mynt-qt
+Mynt-Qt.app
 
 # Unit-tests
 Makefile.test
-raptoreum-qt_test
+mynt-qt_test
 
 # Resources cpp
 qrc_*.cpp
@@ -102,7 +102,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_raptoreum.coverage/
+test_mynt.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -117,7 +117,7 @@ test/cache/*
 
 /doc/doxygen/
 
-libraptoreumconsensus.pc
+libmyntconsensus.pc
 contrib/devtools/split-debug.sh
 .idea
 cmake-build-debug

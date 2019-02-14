@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2014 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_COINCONTROLTREEWIDGET_H
-#define RAPTOREUM_QT_COINCONTROLTREEWIDGET_H
+#ifndef MYNT_QT_COINCONTROLTREEWIDGET_H
+#define MYNT_QT_COINCONTROLTREEWIDGET_H
 
 #include <QKeyEvent>
 #include <QTreeWidget>
@@ -20,4 +20,4 @@ protected:
     virtual void keyPressEvent(QKeyEvent *event);
 };
 
-#endif // RAPTOREUM_QT_COINCONTROLTREEWIDGET_H
+#endif // MYNT_QT_COINCONTROLTREEWIDGET_H

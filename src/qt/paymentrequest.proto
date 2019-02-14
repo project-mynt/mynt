@@ -1,18 +1,18 @@
 //
-// Simple Raptoreum Payment Protocol messages
+// Simple Mynt Payment Protocol messages
 //
 // Use fields 100+ for extensions;
 // to avoid conflicts, register extensions at:
-// https://en.raptoreum.it/wiki/Payment_Request
+// https://en.mynt.it/wiki/Payment_Request
 //
 
 syntax = "proto2";
 
 package payments;
-option java_package = "org.raptoreum.protocols.payments";
+option java_package = "org.mynt.protocols.payments";
 option java_outer_classname = "Protos";
 
-// Generalized form of "send payment to this/these raptoreum addresses"
+// Generalized form of "send payment to this/these mynt addresses"
 message Output {
 	optional uint64 amount = 1 [default = 0]; // amount is integer-number-of-satoshis
 	required bytes script = 2; // usually one of the standard Script forms

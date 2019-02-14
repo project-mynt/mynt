@@ -1,11 +1,11 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "walletframe.h"
 
-#include "raptoreumgui.h"
+#include "myntgui.h"
 #include "walletview.h"
 
 #include <cassert>
@@ -14,7 +14,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, RaptoreumGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *_platformStyle, MyntGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(_platformStyle)
@@ -46,7 +46,7 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
         return false;
 
     WalletView *walletView = new WalletView(platformStyle, this);
-    walletView->setRaptoreumGUI(gui);
+    walletView->setMyntGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
@@ -205,7 +205,7 @@ void WalletFrame::outOfSyncWarningClicked()
     Q_EMIT requestedSyncWarningInfo();
 }
 
-/** RTM START */
+/** MYNT START */
 void WalletFrame::gotoAssetsPage()
 {
     QMap<QString, WalletView*>::const_iterator i;

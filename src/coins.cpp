@@ -1,5 +1,5 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -97,7 +97,7 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint2
     bool fCoinbase = tx.IsCoinBase();
     const uint256& txid = tx.GetHash();
 
-    /** RTM START */
+    /** MYNT START */
     if (AreAssetsDeployed()) {
         if (assetsCache) {
             if (tx.IsNewAsset()) {
@@ -187,7 +187,7 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint2
             }
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     for (size_t i = 0; i < tx.vout.size(); ++i) {
         bool overwrite = check ? cache.HaveCoin(COutPoint(txid, i)) : fCoinbase;
@@ -195,7 +195,7 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint2
         // deal with the pre-BIP30 occurrences of duplicate coinbase transactions.
         cache.AddCoin(COutPoint(txid, i), Coin(tx.vout[i], nHeight, fCoinbase), overwrite);
 
-        /** RTM START */
+        /** MYNT START */
         if (AreAssetsDeployed()) {
             if (assetsCache) {
                 if (tx.vout[i].scriptPubKey.IsTransferAsset() && !tx.vout[i].scriptPubKey.IsUnspendable()) {
@@ -212,7 +212,7 @@ void AddCoins(CCoinsViewCache& cache, const CTransaction &tx, int nHeight, uint2
                 }
             }
         }
-        /** RTM END */
+        /** MYNT END */
     }
 }
 
@@ -223,9 +223,9 @@ bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAsset
         return false;
     cachedCoinsUsage -= it->second.coin.DynamicMemoryUsage();
 
-    /** RTM START */
+    /** MYNT START */
     Coin tempCoin = it->second.coin;
-    /** RTM END */
+    /** MYNT END */
 
     if (moveout) {
         *moveout = std::move(it->second.coin);
@@ -237,7 +237,7 @@ bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAsset
         it->second.coin.Clear();
     }
 
-    /** RTM START */
+    /** MYNT START */
     if (AreAssetsDeployed()) {
         if (assetsCache) {
             if (!assetsCache->TrySpendCoin(outpoint, tempCoin.out)) {
@@ -245,7 +245,7 @@ bool CCoinsViewCache::SpendCoin(const COutPoint &outpoint, Coin* moveout, CAsset
             }
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     return true;
 }

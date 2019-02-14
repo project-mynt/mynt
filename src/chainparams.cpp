@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -278,7 +278,7 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Update as we know more about the contents of the Raptoreum chain
+            // Update as we know more about the contents of the Mynt chain
             // Stats as of 000000000000a72545994ce72b25042ea63707fca169ca4deb7f9dab4f1b1798 window size 43200
         	1550024254, // * UNIX timestamp of last known number of transactions
             0,    // * total number of transactions between genesis and that timestamp
@@ -286,7 +286,7 @@ public:
             0.1         // * estimated number of transactions per second after that timestamp
         };
 
-        /** RTM Start **/
+        /** MYNT Start **/
         // Burn Amounts
         nIssueAssetBurnAmount = 500 * COIN;
         nReissueAssetBurnAmount = 100 * COIN;
@@ -308,7 +308,7 @@ public:
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** RTM End **/
+        /** MYNT End **/
     }
 };
 
@@ -394,7 +394,7 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Update as we know more about the contents of the Raptoreum chain
+            // Update as we know more about the contents of the Mynt chain
             // Stats as of 00000023b66f46d74890287a7b1157dd780c7c5fdda2b561eb96684d2b39d62e window size 43200
             1550024313, // * UNIX timestamp of last known number of transactions
             146666,     // * total number of transactions between genesis and that timestamp
@@ -402,7 +402,7 @@ public:
             0.02        // * estimated number of transactions per second after that timestamp
         };
 
-        /** RTM Start **/
+        /** MYNT Start **/
         // Burn Amounts
         nIssueAssetBurnAmount = 500 * COIN;
         nReissueAssetBurnAmount = 100 * COIN;
@@ -424,7 +424,7 @@ public:
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** RTM End **/
+        /** MYNT End **/
 
     }
 };
@@ -504,7 +504,7 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
 
-        /** RTM Start **/
+        /** MYNT Start **/
         // Burn Amounts
         nIssueAssetBurnAmount = 500 * COIN;
         nReissueAssetBurnAmount = 100 * COIN;
@@ -526,7 +526,7 @@ public:
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
         nMinReorganizationAge = 60 * 60 * 12; // 12 hours
-        /** RTM End **/
+        /** MYNT End **/
     }
 };
 

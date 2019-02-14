@@ -1,5 +1,5 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
-# Copyright (c) 2017 The Raptoreum Core developers
+# Copyright (c) 2017 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,28 +19,28 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-RAPTOREUM_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+MYNT_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-RAPTOREUM_INCLUDES += -I$(srcdir)/secp256k1/include
-RAPTOREUM_INCLUDES += $(UNIVALUE_CFLAGS)
+MYNT_INCLUDES += -I$(srcdir)/secp256k1/include
+MYNT_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBRAPTOREUM_SERVER=libraptoreum_server.a
-LIBRAPTOREUM_COMMON=libraptoreum_common.a
-LIBRAPTOREUM_CONSENSUS=libraptoreum_consensus.a
-LIBRAPTOREUM_CLI=libraptoreum_cli.a
-LIBRAPTOREUM_UTIL=libraptoreum_util.a
-LIBRAPTOREUM_CRYPTO=crypto/libraptoreum_crypto.a
-LIBRAPTOREUMQT=qt/libraptoreumqt.a
+LIBMYNT_SERVER=libmynt_server.a
+LIBMYNT_COMMON=libmynt_common.a
+LIBMYNT_CONSENSUS=libmynt_consensus.a
+LIBMYNT_CLI=libmynt_cli.a
+LIBMYNT_UTIL=libmynt_util.a
+LIBMYNT_CRYPTO=crypto/libmynt_crypto.a
+LIBMYNTQT=qt/libmyntqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBRAPTOREUM_ZMQ=libraptoreum_zmq.a
+LIBMYNT_ZMQ=libmynt_zmq.a
 endif
-if BUILD_RAPTOREUM_LIBS
-LIBRAPTOREUMCONSENSUS=libraptoreumconsensus.la
+if BUILD_MYNT_LIBS
+LIBMYNTCONSENSUS=libmyntconsensus.la
 endif
 if ENABLE_WALLET
-LIBRAPTOREUM_WALLET=libraptoreum_wallet.a
+LIBMYNT_WALLET=libmynt_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -49,37 +49,37 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBRAPTOREUM_CRYPTO) \
-  $(LIBRAPTOREUM_UTIL) \
-  $(LIBRAPTOREUM_COMMON) \
-  $(LIBRAPTOREUM_CONSENSUS) \
-  $(LIBRAPTOREUM_SERVER) \
-  $(LIBRAPTOREUM_CLI) \
-  $(LIBRAPTOREUM_WALLET) \
-  $(LIBRAPTOREUM_ZMQ)
+  $(LIBMYNT_CRYPTO) \
+  $(LIBMYNT_UTIL) \
+  $(LIBMYNT_COMMON) \
+  $(LIBMYNT_CONSENSUS) \
+  $(LIBMYNT_SERVER) \
+  $(LIBMYNT_CLI) \
+  $(LIBMYNT_WALLET) \
+  $(LIBMYNT_ZMQ)
 
-lib_LTLIBRARIES = $(LIBRAPTOREUMCONSENSUS)
+lib_LTLIBRARIES = $(LIBMYNTCONSENSUS)
 
 bin_PROGRAMS =
 noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_RAPTOREUMD
-  bin_PROGRAMS += raptoreumd
+if BUILD_MYNTD
+  bin_PROGRAMS += myntd
 endif
 
-if BUILD_RAPTOREUM_CLI
-  bin_PROGRAMS += raptoreum-cli
+if BUILD_MYNT_CLI
+  bin_PROGRAMS += mynt-cli
 endif
 
-if BUILD_RAPTOREUM_TX
-  bin_PROGRAMS += raptoreum-tx
+if BUILD_MYNT_TX
+  bin_PROGRAMS += mynt-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
-# raptoreum core #
-RAPTOREUM_CORE_H = \
+# mynt core #
+MYNT_CORE_H = \
   addrdb.h \
   addressindex.h \
   spentindex.h \
@@ -189,12 +189,12 @@ obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
 	  "$(abs_top_srcdir)"
-libraptoreum_util_a-clientversion.$(OBJEXT): obj/build.h
+libmynt_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between raptoreumd and raptoreum-qt
-libraptoreum_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libraptoreum_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_server_a_SOURCES = \
+# server: shared between myntd and mynt-qt
+libmynt_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libmynt_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   bloom.cpp \
@@ -238,23 +238,23 @@ libraptoreum_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(RAPTOREUM_CORE_H)
+  $(MYNT_CORE_H)
 
 if ENABLE_ZMQ
-libraptoreum_zmq_a_CPPFLAGS = $(RAPTOREUM_INCLUDES) $(ZMQ_CFLAGS)
-libraptoreum_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_zmq_a_SOURCES = \
+libmynt_zmq_a_CPPFLAGS = $(MYNT_INCLUDES) $(ZMQ_CFLAGS)
+libmynt_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
 endif
 
 
-# wallet: shared between raptoreumd and raptoreum-qt, but only linked
+# wallet: shared between myntd and mynt-qt, but only linked
 # when wallet enabled
-libraptoreum_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-libraptoreum_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_wallet_a_SOURCES = \
+libmynt_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+libmynt_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_wallet_a_SOURCES = \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/feebumper.cpp \
@@ -264,12 +264,12 @@ libraptoreum_wallet_a_SOURCES = \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  $(RAPTOREUM_CORE_H)
+  $(MYNT_CORE_H)
 
 # crypto primitives library
-crypto_libraptoreum_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libraptoreum_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libraptoreum_crypto_a_SOURCES = \
+crypto_libmynt_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libmynt_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libmynt_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha20.h \
@@ -326,13 +326,13 @@ crypto_libraptoreum_crypto_a_SOURCES = \
   crypto/sha512.h
 
 if USE_ASM
-crypto_libraptoreum_crypto_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libmynt_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
 
 # consensus: shared between all executables that validate any consensus rules.
-libraptoreum_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-libraptoreum_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_consensus_a_SOURCES = \
+libmynt_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+libmynt_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_consensus_a_SOURCES = \
   amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
@@ -350,7 +350,7 @@ libraptoreum_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/raptoreumconsensus.cpp \
+  script/myntconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -367,10 +367,10 @@ libraptoreum_consensus_a_SOURCES = \
   utilstrencodings.h \
   version.h
 
-# common: shared between raptoreumd, and raptoreum-qt and non-server tools
-libraptoreum_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-libraptoreum_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_common_a_SOURCES = \
+# common: shared between myntd, and mynt-qt and non-server tools
+libmynt_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+libmynt_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_common_a_SOURCES = \
   base58.cpp \
   chainparams.cpp \
   FounderPayment.cpp \
@@ -388,14 +388,14 @@ libraptoreum_common_a_SOURCES = \
   script/sign.cpp \
   script/standard.cpp \
   warnings.cpp \
-  $(RAPTOREUM_CORE_H)
+  $(MYNT_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libraptoreum_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-libraptoreum_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_util_a_SOURCES = \
+libmynt_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+libmynt_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_util_a_SOURCES = \
   support/lockedpool.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -412,102 +412,102 @@ libraptoreum_util_a_SOURCES = \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(RAPTOREUM_CORE_H)
+  $(MYNT_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libraptoreum_util_a_SOURCES += compat/glibc_compat.cpp
+libmynt_util_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between raptoreum-cli and raptoreum-qt
-libraptoreum_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-libraptoreum_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libraptoreum_cli_a_SOURCES = \
+# cli: shared between mynt-cli and mynt-qt
+libmynt_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+libmynt_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmynt_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(RAPTOREUM_CORE_H)
+  $(MYNT_CORE_H)
 
-nodist_libraptoreum_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libmynt_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# raptoreumd binary #
-raptoreumd_SOURCES = raptoreumd.cpp
-raptoreumd_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-raptoreumd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-raptoreumd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# myntd binary #
+myntd_SOURCES = myntd.cpp
+myntd_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+myntd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+myntd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-raptoreumd_SOURCES += raptoreumd-res.rc
+myntd_SOURCES += myntd-res.rc
 endif
 
-raptoreumd_LDADD = \
-  $(LIBRAPTOREUM_SERVER) \
-  $(LIBRAPTOREUM_COMMON) \
+myntd_LDADD = \
+  $(LIBMYNT_SERVER) \
+  $(LIBMYNT_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBRAPTOREUM_UTIL) \
-  $(LIBRAPTOREUM_WALLET) \
-  $(LIBRAPTOREUM_ZMQ) \
-  $(LIBRAPTOREUM_CONSENSUS) \
-  $(LIBRAPTOREUM_CRYPTO) \
+  $(LIBMYNT_UTIL) \
+  $(LIBMYNT_WALLET) \
+  $(LIBMYNT_ZMQ) \
+  $(LIBMYNT_CONSENSUS) \
+  $(LIBMYNT_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-raptoreumd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+myntd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# raptoreum-cli binary #
-raptoreum_cli_SOURCES = raptoreum-cli.cpp
-raptoreum_cli_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES) $(EVENT_CFLAGS)
-raptoreum_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-raptoreum_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# mynt-cli binary #
+mynt_cli_SOURCES = mynt-cli.cpp
+mynt_cli_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES) $(EVENT_CFLAGS)
+mynt_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+mynt_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-raptoreum_cli_SOURCES += raptoreum-cli-res.rc
+mynt_cli_SOURCES += mynt-cli-res.rc
 endif
 
-raptoreum_cli_LDADD = \
-  $(LIBRAPTOREUM_CLI) \
+mynt_cli_LDADD = \
+  $(LIBMYNT_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBRAPTOREUM_UTIL) \
-  $(LIBRAPTOREUM_CRYPTO)
+  $(LIBMYNT_UTIL) \
+  $(LIBMYNT_CRYPTO)
 
-raptoreum_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+mynt_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# raptoreum-tx binary #
-raptoreum_tx_SOURCES = raptoreum-tx.cpp
-raptoreum_tx_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES)
-raptoreum_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-raptoreum_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# mynt-tx binary #
+mynt_tx_SOURCES = mynt-tx.cpp
+mynt_tx_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES)
+mynt_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+mynt_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-raptoreum_tx_SOURCES += raptoreum-tx-res.rc
+mynt_tx_SOURCES += mynt-tx-res.rc
 endif
 
-raptoreum_tx_LDADD = \
+mynt_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBRAPTOREUM_COMMON) \
-  $(LIBRAPTOREUM_UTIL) \
-  $(LIBRAPTOREUM_CONSENSUS) \
-  $(LIBRAPTOREUM_CRYPTO) \
+  $(LIBMYNT_COMMON) \
+  $(LIBMYNT_UTIL) \
+  $(LIBMYNT_CONSENSUS) \
+  $(LIBMYNT_CRYPTO) \
   $(LIBSECP256K1)
 
-raptoreum_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+mynt_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
-# raptoreumconsensus library #
-if BUILD_RAPTOREUM_LIBS
-include_HEADERS = script/raptoreumconsensus.h
-libraptoreumconsensus_la_SOURCES = $(crypto_libraptoreum_crypto_a_SOURCES) $(libraptoreum_consensus_a_SOURCES)
+# myntconsensus library #
+if BUILD_MYNT_LIBS
+include_HEADERS = script/myntconsensus.h
+libmyntconsensus_la_SOURCES = $(crypto_libmynt_crypto_a_SOURCES) $(libmynt_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
-  libraptoreumconsensus_la_SOURCES += compat/glibc_compat.cpp
+  libmyntconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libraptoreumconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libraptoreumconsensus_la_LIBADD = $(LIBSECP256K1)
-libraptoreumconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_RAPTOREUM_INTERNAL
-libraptoreumconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libmyntconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+libmyntconsensus_la_LIBADD = $(LIBSECP256K1)
+libmyntconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_MYNT_INTERNAL
+libmyntconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #
@@ -537,12 +537,12 @@ CLEANFILES += obj/build.h
 EXTRA_DIST = $(CTAES_DIST)
 
 
-config/raptoreum-config.h: config/stamp-h1
+config/mynt-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/raptoreum-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/mynt-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/raptoreum-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/raptoreum-config.h.in
+$(top_srcdir)/$(subdir)/config/mynt-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/mynt-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean

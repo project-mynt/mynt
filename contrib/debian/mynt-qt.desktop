@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Mynt Core
+Comment=Connect to the Mynt P2P Network
+Comment[de]=Verbinde mit dem Mynt peer-to-peer Netzwerk
+Comment[fr]=Mynt, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Mynt, eşten eşe kriptografik sanal para birimi
+Exec=mynt-qt %u
+Terminal=false
+Type=Application
+Icon=mynt128
+MimeType=x-scheme-handler/mynt;
+Categories=Office;Finance;

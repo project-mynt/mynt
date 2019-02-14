@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_POLICY_POLICY_H
-#define RAPTOREUM_POLICY_POLICY_H
+#ifndef MYNT_POLICY_POLICY_H
+#define MYNT_POLICY_POLICY_H
 
 #include "consensus/consensus.h"
 #include "feerate.h"
@@ -105,4 +105,4 @@ extern unsigned int nBytesPerSigOp;
 int64_t GetVirtualTransactionSize(int64_t nWeight, int64_t nSigOpCost);
 int64_t GetVirtualTransactionSize(const CTransaction& tx, int64_t nSigOpCost = 0);
 
-#endif // RAPTOREUM_POLICY_POLICY_H
+#endif // MYNT_POLICY_POLICY_H

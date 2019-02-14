@@ -1,99 +1,99 @@
 # Copyright (c) 2013-2016 The Bitcoin Core developers
-# Copyright (c) 2017 The Raptoreum Core developers
+# Copyright (c) 2017 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-bin_PROGRAMS += qt/raptoreum-qt
-EXTRA_LIBRARIES += qt/libraptoreumqt.a
+bin_PROGRAMS += qt/mynt-qt
+EXTRA_LIBRARIES += qt/libmyntqt.a
 
-# raptoreum qt core #
+# mynt qt core #
 QT_TS = \
-  qt/locale/raptoreum_af.ts \
-  qt/locale/raptoreum_af_ZA.ts \
-  qt/locale/raptoreum_ar.ts \
-  qt/locale/raptoreum_be_BY.ts \
-  qt/locale/raptoreum_bg_BG.ts \
-  qt/locale/raptoreum_bg.ts \
-  qt/locale/raptoreum_ca_ES.ts \
-  qt/locale/raptoreum_ca.ts \
-  qt/locale/raptoreum_ca@valencia.ts \
-  qt/locale/raptoreum_cs.ts \
-  qt/locale/raptoreum_cy.ts \
-  qt/locale/raptoreum_da.ts \
-  qt/locale/raptoreum_de.ts \
-  qt/locale/raptoreum_el_GR.ts \
-  qt/locale/raptoreum_el.ts \
-  qt/locale/raptoreum_en_GB.ts \
-  qt/locale/raptoreum_en.ts \
-  qt/locale/raptoreum_eo.ts \
-  qt/locale/raptoreum_es_AR.ts \
-  qt/locale/raptoreum_es_CL.ts \
-  qt/locale/raptoreum_es_CO.ts \
-  qt/locale/raptoreum_es_DO.ts \
-  qt/locale/raptoreum_es_ES.ts \
-  qt/locale/raptoreum_es_MX.ts \
-  qt/locale/raptoreum_es.ts \
-  qt/locale/raptoreum_es_UY.ts \
-  qt/locale/raptoreum_es_VE.ts \
-  qt/locale/raptoreum_et_EE.ts \
-  qt/locale/raptoreum_et.ts \
-  qt/locale/raptoreum_eu_ES.ts \
-  qt/locale/raptoreum_fa_IR.ts \
-  qt/locale/raptoreum_fa.ts \
-  qt/locale/raptoreum_fi.ts \
-  qt/locale/raptoreum_fr_CA.ts \
-  qt/locale/raptoreum_fr_FR.ts \
-  qt/locale/raptoreum_fr.ts \
-  qt/locale/raptoreum_gl.ts \
-  qt/locale/raptoreum_he.ts \
-  qt/locale/raptoreum_hi_IN.ts \
-  qt/locale/raptoreum_hr.ts \
-  qt/locale/raptoreum_hu.ts \
-  qt/locale/raptoreum_id_ID.ts \
-  qt/locale/raptoreum_it_IT.ts \
-  qt/locale/raptoreum_it.ts \
-  qt/locale/raptoreum_ja.ts \
-  qt/locale/raptoreum_ka.ts \
-  qt/locale/raptoreum_kk_KZ.ts \
-  qt/locale/raptoreum_ko_KR.ts \
-  qt/locale/raptoreum_ku_IQ.ts \
-  qt/locale/raptoreum_ky.ts \
-  qt/locale/raptoreum_la.ts \
-  qt/locale/raptoreum_lt.ts \
-  qt/locale/raptoreum_lv_LV.ts \
-  qt/locale/raptoreum_mk_MK.ts \
-  qt/locale/raptoreum_mn.ts \
-  qt/locale/raptoreum_ms_MY.ts \
-  qt/locale/raptoreum_nb.ts \
-  qt/locale/raptoreum_ne.ts \
-  qt/locale/raptoreum_nl.ts \
-  qt/locale/raptoreum_pam.ts \
-  qt/locale/raptoreum_pl.ts \
-  qt/locale/raptoreum_pt_BR.ts \
-  qt/locale/raptoreum_pt_PT.ts \
-  qt/locale/raptoreum_ro_RO.ts \
-  qt/locale/raptoreum_ro.ts \
-  qt/locale/raptoreum_ru_RU.ts \
-  qt/locale/raptoreum_ru.ts \
-  qt/locale/raptoreum_sk.ts \
-  qt/locale/raptoreum_sl_SI.ts \
-  qt/locale/raptoreum_sq.ts \
-  qt/locale/raptoreum_sr@latin.ts \
-  qt/locale/raptoreum_sr.ts \
-  qt/locale/raptoreum_sv.ts \
-  qt/locale/raptoreum_ta.ts \
-  qt/locale/raptoreum_th_TH.ts \
-  qt/locale/raptoreum_tr_TR.ts \
-  qt/locale/raptoreum_tr.ts \
-  qt/locale/raptoreum_uk.ts \
-  qt/locale/raptoreum_ur_PK.ts \
-  qt/locale/raptoreum_uz@Cyrl.ts \
-  qt/locale/raptoreum_vi.ts \
-  qt/locale/raptoreum_vi_VN.ts \
-  qt/locale/raptoreum_zh_CN.ts \
-  qt/locale/raptoreum_zh_HK.ts \
-  qt/locale/raptoreum_zh.ts \
-  qt/locale/raptoreum_zh_TW.ts
+  qt/locale/mynt_af.ts \
+  qt/locale/mynt_af_ZA.ts \
+  qt/locale/mynt_ar.ts \
+  qt/locale/mynt_be_BY.ts \
+  qt/locale/mynt_bg_BG.ts \
+  qt/locale/mynt_bg.ts \
+  qt/locale/mynt_ca_ES.ts \
+  qt/locale/mynt_ca.ts \
+  qt/locale/mynt_ca@valencia.ts \
+  qt/locale/mynt_cs.ts \
+  qt/locale/mynt_cy.ts \
+  qt/locale/mynt_da.ts \
+  qt/locale/mynt_de.ts \
+  qt/locale/mynt_el_GR.ts \
+  qt/locale/mynt_el.ts \
+  qt/locale/mynt_en_GB.ts \
+  qt/locale/mynt_en.ts \
+  qt/locale/mynt_eo.ts \
+  qt/locale/mynt_es_AR.ts \
+  qt/locale/mynt_es_CL.ts \
+  qt/locale/mynt_es_CO.ts \
+  qt/locale/mynt_es_DO.ts \
+  qt/locale/mynt_es_ES.ts \
+  qt/locale/mynt_es_MX.ts \
+  qt/locale/mynt_es.ts \
+  qt/locale/mynt_es_UY.ts \
+  qt/locale/mynt_es_VE.ts \
+  qt/locale/mynt_et_EE.ts \
+  qt/locale/mynt_et.ts \
+  qt/locale/mynt_eu_ES.ts \
+  qt/locale/mynt_fa_IR.ts \
+  qt/locale/mynt_fa.ts \
+  qt/locale/mynt_fi.ts \
+  qt/locale/mynt_fr_CA.ts \
+  qt/locale/mynt_fr_FR.ts \
+  qt/locale/mynt_fr.ts \
+  qt/locale/mynt_gl.ts \
+  qt/locale/mynt_he.ts \
+  qt/locale/mynt_hi_IN.ts \
+  qt/locale/mynt_hr.ts \
+  qt/locale/mynt_hu.ts \
+  qt/locale/mynt_id_ID.ts \
+  qt/locale/mynt_it_IT.ts \
+  qt/locale/mynt_it.ts \
+  qt/locale/mynt_ja.ts \
+  qt/locale/mynt_ka.ts \
+  qt/locale/mynt_kk_KZ.ts \
+  qt/locale/mynt_ko_KR.ts \
+  qt/locale/mynt_ku_IQ.ts \
+  qt/locale/mynt_ky.ts \
+  qt/locale/mynt_la.ts \
+  qt/locale/mynt_lt.ts \
+  qt/locale/mynt_lv_LV.ts \
+  qt/locale/mynt_mk_MK.ts \
+  qt/locale/mynt_mn.ts \
+  qt/locale/mynt_ms_MY.ts \
+  qt/locale/mynt_nb.ts \
+  qt/locale/mynt_ne.ts \
+  qt/locale/mynt_nl.ts \
+  qt/locale/mynt_pam.ts \
+  qt/locale/mynt_pl.ts \
+  qt/locale/mynt_pt_BR.ts \
+  qt/locale/mynt_pt_PT.ts \
+  qt/locale/mynt_ro_RO.ts \
+  qt/locale/mynt_ro.ts \
+  qt/locale/mynt_ru_RU.ts \
+  qt/locale/mynt_ru.ts \
+  qt/locale/mynt_sk.ts \
+  qt/locale/mynt_sl_SI.ts \
+  qt/locale/mynt_sq.ts \
+  qt/locale/mynt_sr@latin.ts \
+  qt/locale/mynt_sr.ts \
+  qt/locale/mynt_sv.ts \
+  qt/locale/mynt_ta.ts \
+  qt/locale/mynt_th_TH.ts \
+  qt/locale/mynt_tr_TR.ts \
+  qt/locale/mynt_tr.ts \
+  qt/locale/mynt_uk.ts \
+  qt/locale/mynt_ur_PK.ts \
+  qt/locale/mynt_uz@Cyrl.ts \
+  qt/locale/mynt_vi.ts \
+  qt/locale/mynt_vi_VN.ts \
+  qt/locale/mynt_zh_CN.ts \
+  qt/locale/mynt_zh_HK.ts \
+  qt/locale/mynt_zh.ts \
+  qt/locale/mynt_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -127,10 +127,10 @@ QT_MOC_CPP = \
   qt/moc_assetcontroltreewidget.cpp \
   qt/moc_assetfilterproxy.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_raptoreumaddressvalidator.cpp \
-  qt/moc_raptoreumamountfield.cpp \
-  qt/moc_raptoreumgui.cpp \
-  qt/moc_raptoreumunits.cpp \
+  qt/moc_myntaddressvalidator.cpp \
+  qt/moc_myntamountfield.cpp \
+  qt/moc_myntgui.cpp \
+  qt/moc_myntunits.cpp \
   qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
@@ -176,28 +176,28 @@ QT_MOC_CPP = \
   qt/moc_reissueassetdialog.cpp \
   qt/moc_sendassetsentry.cpp
 
-RAPTOREUM_MM = \
+MYNT_MM = \
   qt/macdockiconhandler.mm \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/raptoreum.moc \
-  qt/raptoreumamountfield.moc \
+  qt/mynt.moc \
+  qt/myntamountfield.moc \
   qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_raptoreum.cpp
-QT_QRC = qt/raptoreum.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_raptoreum_locale.cpp
-QT_QRC_LOCALE = qt/raptoreum_locale.qrc
+QT_QRC_CPP = qt/qrc_mynt.cpp
+QT_QRC = qt/mynt.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_mynt_locale.cpp
+QT_QRC_LOCALE = qt/mynt_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
 PROTOBUF_PROTO = qt/paymentrequest.proto
 
-RAPTOREUM_QT_H = \
+MYNT_QT_H = \
   qt/addressbookpage.h \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
@@ -208,10 +208,10 @@ RAPTOREUM_QT_H = \
   qt/assetsdialog.h \
   qt/createassetdialog.h \
   qt/bantablemodel.h \
-  qt/raptoreumaddressvalidator.h \
-  qt/raptoreumamountfield.h \
-  qt/raptoreumgui.h \
-  qt/raptoreumunits.h \
+  qt/myntaddressvalidator.h \
+  qt/myntamountfield.h \
+  qt/myntgui.h \
+  qt/myntunits.h \
   qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
@@ -275,10 +275,10 @@ RES_ICONS = \
   qt/res/icons/asset_manage_selected.png \
   qt/res/icons/asset_transfer.png \
   qt/res/icons/asset_transfer_selected.png \
-  qt/res/icons/raptoreumcointext.png \
-  qt/res/icons/raptoreum.ico \
-  qt/res/icons/raptoreum_testnet.ico \
-  qt/res/icons/raptoreum.png \
+  qt/res/icons/mynttext.png \
+  qt/res/icons/mynt.ico \
+  qt/res/icons/mynt_testnet.ico \
+  qt/res/icons/mynt.png \
   qt/res/icons/chevron.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
@@ -369,12 +369,12 @@ RES_ICONS = \
   qt/res/fonts/OpenSans-SemiBoldItalic.ttf
 
 
-RAPTOREUM_QT_BASE_CPP = \
+MYNT_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/raptoreumaddressvalidator.cpp \
-  qt/raptoreumamountfield.cpp \
-  qt/raptoreumgui.cpp \
-  qt/raptoreumunits.cpp \
+  qt/myntaddressvalidator.cpp \
+  qt/myntamountfield.cpp \
+  qt/myntgui.cpp \
+  qt/myntunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/darkstyle.cpp \
@@ -395,9 +395,9 @@ RAPTOREUM_QT_BASE_CPP = \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
-RAPTOREUM_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
+MYNT_QT_WINDOWS_CPP = qt/winshutdownmonitor.cpp
 
-RAPTOREUM_QT_WALLET_CPP = \
+MYNT_QT_WALLET_CPP = \
   qt/addressbookpage.cpp \
   qt/addresstablemodel.cpp \
   qt/askpassphrasedialog.cpp \
@@ -432,31 +432,31 @@ RAPTOREUM_QT_WALLET_CPP = \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp
 
-RAPTOREUM_QT_CPP = $(RAPTOREUM_QT_BASE_CPP)
+MYNT_QT_CPP = $(MYNT_QT_BASE_CPP)
 if TARGET_WINDOWS
-RAPTOREUM_QT_CPP += $(RAPTOREUM_QT_WINDOWS_CPP)
+MYNT_QT_CPP += $(MYNT_QT_WINDOWS_CPP)
 endif
 if ENABLE_WALLET
-RAPTOREUM_QT_CPP += $(RAPTOREUM_QT_WALLET_CPP)
+MYNT_QT_CPP += $(MYNT_QT_WALLET_CPP)
 endif
 
 RES_IMAGES = 
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
-RAPTOREUM_RC = qt/res/raptoreum-qt-res.rc
+MYNT_RC = qt/res/mynt-qt-res.rc
 
-RAPTOREUM_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
+MYNT_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
   -I$(builddir)/qt/forms -DQT_NO_KEYWORDS
 
-qt_libraptoreumqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES) $(RAPTOREUM_QT_INCLUDES) \
+qt_libmyntqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES) $(MYNT_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_libraptoreumqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_libmyntqt_a_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_libraptoreumqt_a_SOURCES = $(RAPTOREUM_QT_CPP) $(RAPTOREUM_QT_H) $(QT_FORMS_UI) \
+qt_libmyntqt_a_SOURCES = $(MYNT_QT_CPP) $(MYNT_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
 
-nodist_qt_libraptoreumqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
+nodist_qt_libmyntqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
   $(PROTOBUF_H) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
 
 # forms/foo.h -> forms/ui_foo.h
@@ -465,71 +465,71 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libraptoreumqt_a_OBJECTS) $(qt_raptoreum_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libmyntqt_a_OBJECTS) $(qt_mynt_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
 $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
-# raptoreum-qt binary #
-qt_raptoreum_qt_CPPFLAGS = $(AM_CPPFLAGS) $(RAPTOREUM_INCLUDES) $(RAPTOREUM_QT_INCLUDES) \
+# mynt-qt binary #
+qt_mynt_qt_CPPFLAGS = $(AM_CPPFLAGS) $(MYNT_INCLUDES) $(MYNT_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_raptoreum_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_mynt_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_raptoreum_qt_SOURCES = qt/raptoreum.cpp
+qt_mynt_qt_SOURCES = qt/mynt.cpp
 if TARGET_DARWIN
-  qt_raptoreum_qt_SOURCES += $(RAPTOREUM_MM)
+  qt_mynt_qt_SOURCES += $(MYNT_MM)
 endif
 if TARGET_WINDOWS
-  qt_raptoreum_qt_SOURCES += $(RAPTOREUM_RC)
+  qt_mynt_qt_SOURCES += $(MYNT_RC)
 endif
-qt_raptoreum_qt_LDADD = qt/libraptoreumqt.a $(LIBRAPTOREUM_SERVER)
+qt_mynt_qt_LDADD = qt/libmyntqt.a $(LIBMYNT_SERVER)
 if ENABLE_WALLET
-qt_raptoreum_qt_LDADD += $(LIBRAPTOREUM_WALLET)
+qt_mynt_qt_LDADD += $(LIBMYNT_WALLET)
 endif
 if ENABLE_ZMQ
-qt_raptoreum_qt_LDADD += $(LIBRAPTOREUM_ZMQ) $(ZMQ_LIBS)
+qt_mynt_qt_LDADD += $(LIBMYNT_ZMQ) $(ZMQ_LIBS)
 endif
-qt_raptoreum_qt_LDADD += $(LIBRAPTOREUM_CLI) $(LIBRAPTOREUM_COMMON) $(LIBRAPTOREUM_UTIL) $(LIBRAPTOREUM_CONSENSUS) $(LIBRAPTOREUM_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+qt_mynt_qt_LDADD += $(LIBMYNT_CLI) $(LIBMYNT_COMMON) $(LIBMYNT_UTIL) $(LIBMYNT_CONSENSUS) $(LIBMYNT_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-qt_raptoreum_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_raptoreum_qt_LIBTOOLFLAGS = --tag CXX
+qt_mynt_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_mynt_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/raptoreumstrings.cpp: $(libraptoreum_server_a_SOURCES) $(libraptoreum_wallet_a_SOURCES) $(libraptoreum_common_a_SOURCES) $(libraptoreum_zmq_a_SOURCES) $(libraptoreum_consensus_a_SOURCES) $(libraptoreum_util_a_SOURCES)
+$(srcdir)/qt/myntstrings.cpp: $(libmynt_server_a_SOURCES) $(libmynt_wallet_a_SOURCES) $(libmynt_common_a_SOURCES) $(libmynt_zmq_a_SOURCES) $(libmynt_consensus_a_SOURCES) $(libmynt_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
-translate: $(srcdir)/qt/raptoreumstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(RAPTOREUM_QT_BASE_CPP) qt/raptoreum.cpp $(RAPTOREUM_QT_WINDOWS_CPP) $(RAPTOREUM_QT_WALLET_CPP) $(RAPTOREUM_QT_H) $(RAPTOREUM_MM)
+translate: $(srcdir)/qt/myntstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(MYNT_QT_BASE_CPP) qt/mynt.cpp $(MYNT_QT_WINDOWS_CPP) $(MYNT_QT_WALLET_CPP) $(MYNT_QT_H) $(MYNT_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/raptoreum_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/mynt_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name raptoreum_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name mynt_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name raptoreum $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name mynt $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
-CLEAN_QT = $(nodist_qt_libraptoreumqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
+CLEAN_QT = $(nodist_qt_libmyntqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
 
 CLEANFILES += $(CLEAN_QT)
 
-raptoreum_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libraptoreumqt_a_OBJECTS) $(qt_raptoreum_qt_OBJECTS) qt/raptoreum-qt$(EXEEXT) $(LIBRAPTOREUMQT)
+mynt_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libmyntqt_a_OBJECTS) $(qt_mynt_qt_OBJECTS) qt/mynt-qt$(EXEEXT) $(LIBMYNTQT)
 
-raptoreum_qt : qt/raptoreum-qt$(EXEEXT)
+mynt_qt : qt/mynt-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Test running raptoreumd with the -rpcbind and -rpcallowip options."""
+"""Test running myntd with the -rpcbind and -rpcallowip options."""
 
 import socket
 import sys
 
-from test_framework.test_framework import RaptoreumTestFramework, SkipTest
+from test_framework.test_framework import MyntTestFramework, SkipTest
 from test_framework.util import *
 from test_framework.netutil import *
 
-class RPCBindTest(RaptoreumTestFramework):
+class RPCBindTest(MyntTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

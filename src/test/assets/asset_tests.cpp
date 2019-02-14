@@ -1,10 +1,10 @@
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <assets/assets.h>
 
-#include <test/test_raptoreum.h>
+#include <test/test_mynt.h>
 
 #include <boost/test/unit_test.hpp>
 #include "core_write.cpp"
@@ -53,20 +53,20 @@ BOOST_FIXTURE_TEST_SUITE(asset_tests, BasicTestingSetup)
         BOOST_CHECK(!IsAssetNameValid("A._BC", type));
         BOOST_CHECK(!IsAssetNameValid("AB_.C", type));
 
-        //- Versions of RAPTOREUMCOIN NOT allowed
-        BOOST_CHECK(!IsAssetNameValid("RTM", type));
-        BOOST_CHECK(!IsAssetNameValid("RAPTOREUM", type));
-        BOOST_CHECK(!IsAssetNameValid("RAPTOREUMCOIN", type));
+        //- Versions of MYNTCOIN NOT allowed
+        BOOST_CHECK(!IsAssetNameValid("MYNT", type));
+        BOOST_CHECK(!IsAssetNameValid("MYNT", type));
+        BOOST_CHECK(!IsAssetNameValid("MYNTCOIN", type));
 
-        //- Versions of RAPTOREUMCOIN ALLOWED
-        BOOST_CHECK(IsAssetNameValid("RAPTOREUM.COIN", type));
-        BOOST_CHECK(IsAssetNameValid("RAPTOREUM_COIN", type));
-        BOOST_CHECK(IsAssetNameValid("RTMSPYDER", type));
-        BOOST_CHECK(IsAssetNameValid("SPYDERRTM", type));
-        BOOST_CHECK(IsAssetNameValid("RAPTOREUMSPYDER", type));
-        BOOST_CHECK(IsAssetNameValid("SPYDERAPTOREUM", type));
-        BOOST_CHECK(IsAssetNameValid("BLACK_RAPTOREUMS", type));
-        BOOST_CHECK(IsAssetNameValid("SERTMOT", type));
+        //- Versions of MYNTCOIN ALLOWED
+        BOOST_CHECK(IsAssetNameValid("MYNT.COIN", type));
+        BOOST_CHECK(IsAssetNameValid("MYNT_COIN", type));
+        BOOST_CHECK(IsAssetNameValid("MYNTSPYDER", type));
+        BOOST_CHECK(IsAssetNameValid("SPYDERMYNT", type));
+        BOOST_CHECK(IsAssetNameValid("MYNTSPYDER", type));
+        BOOST_CHECK(IsAssetNameValid("SPYDEMYNT", type));
+        BOOST_CHECK(IsAssetNameValid("BLACK_MYNTS", type));
+        BOOST_CHECK(IsAssetNameValid("SEMYNTOT", type));
 
         // subs
         BOOST_CHECK(IsAssetNameValid("ABC/A", type));
@@ -183,7 +183,7 @@ BOOST_FIXTURE_TEST_SUITE(asset_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the asset scriptPubKey
-        CAssetTransfer asset("RAPTOREUM", 1000);
+        CAssetTransfer asset("MYNT", 1000);
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         asset.ConstructTransaction(scriptPubKey);
 
@@ -204,7 +204,7 @@ BOOST_FIXTURE_TEST_SUITE(asset_tests, BasicTestingSetup)
         SelectParams(CBaseChainParams::MAIN);
 
         // Create the asset scriptPubKey
-        CNewAsset asset("RAPTOREUM", 1000, 8, 1, 0, "");
+        CNewAsset asset("MYNT", 1000, 8, 1, 0, "");
         CScript scriptPubKey = GetScriptForDestination(DecodeDestination(Params().GlobalBurnAddress()));
         asset.ConstructTransaction(scriptPubKey);
 

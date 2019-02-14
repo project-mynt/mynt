@@ -1,10 +1,10 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_VERSION_H
-#define RAPTOREUM_VERSION_H
+#ifndef MYNT_VERSION_H
+#define MYNT_VERSION_H
 
 /**
  * network protocol versioning
@@ -46,4 +46,4 @@ static const int INVALID_CB_NO_BAN_VERSION = 70015;
 //! assetdata network request is allowed for this version
 static const int ASSETDATA_VERSION = 70017;
 
-#endif // RAPTOREUM_VERSION_H
+#endif // MYNT_VERSION_H
