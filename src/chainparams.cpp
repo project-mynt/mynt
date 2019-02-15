@@ -57,7 +57,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "Trump signals support for border security deal after meeting with Shelby";
+    const char* pszTimestamp = "Trump Declares National Emergency to Build Border Wall";
     const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -233,19 +233,19 @@ public:
         nDefaultPort = 6664;
         nPruneAfterHeight = 100000;
         
-        // printGenesisBlock(genesis, consensus, 1550024254,  0x1e00ffff, 4);
+        // printGenesisBlock(genesis, consensus, 1550250434,  0x1e00ffff, 4);
         
-        // hashGenesisBlock to 0x000000dbc34e44cec42cabfa407a804cccccae152f59daca97321e3f7f535457
-        // Genesis Nonce to 21674395
-        // Genesis Merkle bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0
-        
-        genesis = CreateGenesisBlock(1550024254, 21674395, 0x1e00ffff, 4, 250 * COIN);
+        // hashGenesisBlock to 0x000000dc77d1de7f68d5fa1d07a0d0599a617ff31f15a8548e3e17764c2f5082
+        // Genesis Nonce to 6586113
+        // Genesis Merkle 6fdd00b3ca830d2bb9e96389291c898ebebaa4d2f9f94001e158ce8aca61703e
+
+        genesis = CreateGenesisBlock(1550250434, 6586113, 0x1e00ffff, 4, 250 * COIN);
 
 
         consensus.hashGenesisBlock = genesis.GetHash();
         
-        assert(consensus.hashGenesisBlock == uint256S("0x000000dbc34e44cec42cabfa407a804cccccae152f59daca97321e3f7f535457"));
-        assert(genesis.hashMerkleRoot == uint256S("bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000dc77d1de7f68d5fa1d07a0d0599a617ff31f15a8548e3e17764c2f5082"));
+        assert(genesis.hashMerkleRoot == uint256S("6fdd00b3ca830d2bb9e96389291c898ebebaa4d2f9f94001e158ce8aca61703e"));
 
         vFixedSeeds.clear();
 		vSeeds.clear();
@@ -280,7 +280,7 @@ public:
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Mynt chain
             // Stats as of 000000000000a72545994ce72b25042ea63707fca169ca4deb7f9dab4f1b1798 window size 43200
-        	1550024254, // * UNIX timestamp of last known number of transactions
+        	1550250434, // * UNIX timestamp of last known number of transactions
             0,    // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.1         // * estimated number of transactions per second after that timestamp
@@ -339,8 +339,8 @@ public:
         vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
-        assetStartBlock = 50;
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 50, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
+        assetStartBlock = 0;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");
@@ -355,18 +355,18 @@ public:
         nDefaultPort = 6665;
         nPruneAfterHeight = 1000;
 
-        //printGenesisBlock(genesis, consensus, 1550024313, 0x1e00ffff, 2);
+        // printGenesisBlock(genesis, consensus, 1550250444, 0x1e00ffff, 2);
+        
+        // hashGenesisBlock to 0x00000037d7c29b86b29585df5a39d6da354fa0e21f6d4fe376b69b0a9273a0d0
+        // Genesis Nonce to 17753469
+        // Genesis Merkle 6fdd00b3ca830d2bb9e96389291c898ebebaa4d2f9f94001e158ce8aca61703e
 
-        // hashGenesisBlock to 0x000000c0a2b632a231799a55a46d0fd0a552fa5645ea55e7301c3f9757244f51
-        // Genesis Nonce to 2170662
-        // Genesis Merkle bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0
-
-        genesis = CreateGenesisBlock(1550024313, 2170662, 0x1e00ffff, 2, 250 * COIN);
+        genesis = CreateGenesisBlock(1550250444, 17753469, 0x1e00ffff, 2, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         //Test MerkleRoot and GenesisBlock
-        assert(consensus.hashGenesisBlock == uint256S("0x000000c0a2b632a231799a55a46d0fd0a552fa5645ea55e7301c3f9757244f51"));
-        assert(genesis.hashMerkleRoot == uint256S("bf33e0b3e033f6d95caeef1c03ddbc0dfbec0f4aa8335df1cf2b1f369a2324a0"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000037d7c29b86b29585df5a39d6da354fa0e21f6d4fe376b69b0a9273a0d0"));
+        assert(genesis.hashMerkleRoot == uint256S("6fdd00b3ca830d2bb9e96389291c898ebebaa4d2f9f94001e158ce8aca61703e"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -396,7 +396,7 @@ public:
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Mynt chain
             // Stats as of 00000023b66f46d74890287a7b1157dd780c7c5fdda2b561eb96684d2b39d62e window size 43200
-            1550024313, // * UNIX timestamp of last known number of transactions
+            1550250444, // * UNIX timestamp of last known number of transactions
             146666,     // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.02        // * estimated number of transactions per second after that timestamp
@@ -419,7 +419,7 @@ public:
         strGlobalBurnAddress = "m1BurnXXXXXXXXXXXXXXXXXXXXXXU1qejP";
 
         // DGW Activation
-        nDGWActivationBlock = 50;
+        nDGWActivationBlock = 0;
 
         nMaxReorganizationDepth = 60; // 60 at 1 minute block timespan is +/- 60 minutes.
         nMinReorganizationPeers = 4;
