@@ -2735,14 +2735,6 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         // Flush best chain related state. This can only be done if the blocks / block index write was also done.
         if (fDoFullFlush) {
 
-            /** MYNT START 
-
-            size_t assetsSize = 0;
-            if (AreAssetsDeployed()) {
-                if (passets)
-                    assetsSize = passets->GetCacheSize() * 2;
-            }
-             MYNT END */
 
             // Typical Coin structures on disk are around 48 bytes in size.
             // Pushing a new one to the database can cause it to be written
@@ -3040,7 +3032,6 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
         // All new data will be added to the cache, and will be flushed back into passets after a successful
         // Connect Block cycle
         CAssetsCache assetCache;
-        /** MYNT END */
 
         int64_t nTimeConnectStart = GetTimeMicros();
 
@@ -3696,7 +3687,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     // Check transactions
     CAmount blockReward = GetBlockSubsidy(nHeight, consensusParams);
-
     FounderPayment founderPayment = consensusParams.nFounderPayment;
     CAmount founderReward = founderPayment.getFounderPaymentAmount(nHeight, blockReward);
     int founderStartHeight = founderPayment.getStartBlock();

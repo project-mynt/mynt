@@ -531,7 +531,6 @@ bool LoadMempool();
 bool AreAssetsDeployed();
 
 bool IsDGWActive(unsigned int nBlockNumber);
-
 CAssetsCache* GetCurrentAssetCache();
 /** MYNT END */
 

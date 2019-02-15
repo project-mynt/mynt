@@ -1234,7 +1234,6 @@ void static ProcessAssetGetData(CNode* pfrom, const Consensus::Params& consensus
 
     pfrom->vRecvAssetGetData.erase(pfrom->vRecvAssetGetData.begin(), it);
 
-
 //    if (!vNotFound.empty()) {
 //        // Let the peer know that we didn't find what it asked for, so it doesn't
 //        // have to wait around forever. Currently only SPV clients actually care
