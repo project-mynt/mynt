@@ -1181,14 +1181,17 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     CAmount nSubsidy = 250 * COIN;
     int SwapCoins = 1;
     int SwapPrep = 2;
-    int PostSwap = 50;
-    int FirstHalving = 1647840;
-    int SecondHalving = 3750240;
-    int ThirdHalving = 5852640;
-    int FourthHalving = 7955040;
-    int FinalHalving = 10057440;
+    int PostSwap = 720;
+    int FirstHalving = 1634680;
+    int SecondHalving = 3737080;
+    int ThirdHalving = 5839480;
+    int FourthHalving = 7941880;
+    int FinalHalving = 10044280;
+    
+    // Swap height 468440
+    // Halvings 2102400
 
-    if (nHeight == SwapCoins) { nSubsidy = 114000000 * COIN; }
+    if (nHeight == SwapCoins) { nSubsidy = 117110000 * COIN; }
     if (nHeight >= SwapPrep && nHeight <= PostSwap) { nSubsidy = 0 * COIN; }
     if (nHeight >= PostSwap && nHeight <= FirstHalving) { nSubsidy = 250 * COIN; }
     if (nHeight >= FirstHalving && nHeight <= SecondHalving) { nSubsidy = 125 * COIN; }
@@ -1198,15 +1201,6 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     if (nHeight >= FinalHalving) { nSubsidy = 7.8125 * COIN; }
 
     return nSubsidy;    
-    // int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    // // Force block reward to zero when right shift is undefined.
-    // if (halvings >= 64)
-    //     return 0;
-
-    // CAmount nSubsidy = 5000 * COIN;
-    // // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
-    // nSubsidy >>= halvings;
-    // return nSubsidy;
 }
 
 bool IsInitialBlockDownload()

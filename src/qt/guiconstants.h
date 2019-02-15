@@ -36,58 +36,58 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 /* Transaction list -- TX status decoration - default color */
 #define COLOR_BLACK QColor(0, 0, 0)
 /* Widget Background color - default color */
-#define COLOR_WHITE QColor(255, 255, 255)
+#define COLOR_WHITE QColor("#efefef")
 
 #define COLOR_WALLETFRAME_SHADOW QColor(0,0,0,71)
 
 /* Color of labels */
-#define COLOR_LABELS QColor("#4960ad")
+#define COLOR_LABELS QColor("#9c3f9a")
 
 /** LIGHT MODE */
 /* Background color, very light gray */
 #define COLOR_BACKGROUND_LIGHT QColor("#fbfbfe")
 /* Mynt dark orange */
-#define COLOR_DARK_ORANGE QColor("#f05339")
+#define COLOR_DARK_ORANGE QColor("#6e2d6d")
 /* Mynt light orange */
-#define COLOR_LIGHT_ORANGE QColor("#f79433")
+#define COLOR_LIGHT_ORANGE QColor("#9c3f9a")
 /* Mynt dark blue */
-#define COLOR_DARK_BLUE QColor("#475eaa")
+#define COLOR_DARK_BLUE QColor("#222222")
 /* Mynt light blue */
-#define COLOR_LIGHT_BLUE QColor("#5874cf")
+#define COLOR_LIGHT_BLUE QColor("#333333")
 /* Mynt asset text */
 #define COLOR_ASSET_TEXT QColor(255, 255, 255)
 /* Mynt shadow color - light mode */
-#define COLOR_SHADOW_LIGHT QColor("#e1e6f3")
+#define COLOR_SHADOW_LIGHT QColor("#efefef")
 /* Toolbar not selected text color */
-#define COLOR_TOOLBAR_NOT_SELECTED_TEXT QColor("#a5b7f3")
+#define COLOR_TOOLBAR_NOT_SELECTED_TEXT QColor("#bcbcbc")
 /* Toolbar selected text color */
 #define COLOR_TOOLBAR_SELECTED_TEXT COLOR_WHITE
 
 /** DARK MODE */
 /* Widget background color, dark mode */
-#define COLOR_WIDGET_BACKGROUND_DARK QColor("#1c2535")
+#define COLOR_WIDGET_BACKGROUND_DARK QColor("#222222")
 /* Mynt shadow color - dark mode */
-#define COLOR_SHADOW_DARK QColor("#0c1b3d")
+#define COLOR_SHADOW_DARK QColor("0,0,0,0")
 /* Mynt Light blue - dark mode - dark mode */
-#define COLOR_LIGHT_BLUE_DARK QColor("#1e2636")
+#define COLOR_LIGHT_BLUE_DARK QColor("#222222")
 /* Mynt Dark blue - dark mode - dark mode */
-#define COLOR_DARK_BLUE_DARK QColor("#0b1018")
+#define COLOR_DARK_BLUE_DARK QColor("#222222")
 /* Pricing widget background color */
-#define COLOR_PRICING_WIDGET QColor("#161e2d")
+#define COLOR_PRICING_WIDGET QColor("#3b193a")
 /* Mynt dark mode administrator background color */
 #define COLOR_ADMIN_CARD_DARK COLOR_BLACK
 /* Mynt dark mode regular asset background color */
-#define COLOR_REGULAR_CARD_DARK_BLUE_DARK_MODE QColor("#06132a")
+#define COLOR_REGULAR_CARD_DARK_BLUE_DARK_MODE QColor("#3b193a")
 /* Mynt dark mode regular asset background color */
-#define COLOR_REGULAR_CARD_LIGHT_BLUE_DARK_MODE QColor("#0e1b3b")
+#define COLOR_REGULAR_CARD_LIGHT_BLUE_DARK_MODE QColor("#471e46")
 /* Toolbar not selected text color */
-#define COLOR_TOOLBAR_NOT_SELECTED_TEXT_DARK_MODE QColor("#6c80c5")
+#define COLOR_TOOLBAR_NOT_SELECTED_TEXT_DARK_MODE QColor("#bcbcbc")
 /* Toolbar selected text color */
-#define COLOR_TOOLBAR_SELECTED_TEXT_DARK_MODE QColor("#c5ccdf")
+#define COLOR_TOOLBAR_SELECTED_TEXT_DARK_MODE QColor("#ffffff")
 
 
 /* Mynt label color as a string */
-#define STRING_LABEL_COLOR "color: #4960ad"
+#define STRING_LABEL_COLOR "color: #9c3f9a"
 
 
 

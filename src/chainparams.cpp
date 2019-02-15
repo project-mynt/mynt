@@ -198,10 +198,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
-        vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
+        vector<FounderRewardStructure> rewardStructures = {  {10044280, 5}//, 5% founder/dev fee for blocks between startFounder block and 10057440
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 720, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
         assetStartBlock = 0;
 
 
@@ -288,19 +288,19 @@ public:
 
         /** MYNT Start **/
         // Burn Amounts
-        nIssueAssetBurnAmount = 500 * COIN;
-        nReissueAssetBurnAmount = 100 * COIN;
-        nIssueSubAssetBurnAmount = 100 * COIN;
-        nIssueUniqueAssetBurnAmount = 5 * COIN;
+        nIssueAssetBurnAmount = 20 * COIN;
+        nReissueAssetBurnAmount = 10 * COIN;
+        nIssueSubAssetBurnAmount = 10 * COIN;
+        nIssueUniqueAssetBurnAmount = 0.2 * COIN;
 
         // Burn Addresses
-        strIssueAssetBurnAddress = "MXissueAssetXXXXXXXXXXXXXXXXXhhZGt";
-        strReissueAssetBurnAddress = "MXReissueAssetXXXXXXXXXXXXXXVEFAWu";
-        strIssueSubAssetBurnAddress = "MXissueSubAssetXXXXXXXXXXXXXWcwhwL";
-        strIssueUniqueAssetBurnAddress = "MXissueUniqueAssetXXXXXXXXXXWEAe58";
+        strIssueAssetBurnAddress = "MGrantQrCkBKhpw2MSrnZLcVSwyHNsiTVL";
+        strReissueAssetBurnAddress = "MGRaNt2UshVnBXSrvkCSXXDDwNQtJMFxGk";
+        strIssueSubAssetBurnAddress = "MSubfcSEMyAqvfDdTaBgva1ULMpMe1HNhH";
+        strIssueUniqueAssetBurnAddress = "MUniQUejwa7c5xzVj6GK3cnKmg7Na1jHnw";
 
         //Global Burn Address
-        strGlobalBurnAddress = "MXBurnXXXXXXXXXXXXXXXXXXXXXXWUo9FV";
+        strGlobalBurnAddress = "MBurn7qc3S7dqpZV2utFrNfGWhi5UPTdyi";
 
         // DGW Activation
         nDGWActivationBlock = 0;
