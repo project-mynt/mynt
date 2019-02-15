@@ -541,13 +541,13 @@ void PrintExceptionContinue(const std::exception *pex, const char *pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Mynt
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Mynt
-    // Mac: ~/Library/Application Support/Mynt
-    // Unix: ~/.mynt
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Mynt-v2
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Mynt-v2
+    // Mac: ~/Library/Application Support/Mynt-v2
+    // Unix: ~/.mynt-v2
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Mynt";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Mynt-v2";
 #else
     fs::path pathRet;
     char *pszHome = getenv("HOME");
@@ -557,10 +557,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Mynt";
+    return pathRet / "Library/Application Support/Mynt-v2";
 #else
     // Unix
-    return pathRet / ".mynt";
+    return pathRet / ".mynt-v2";
 #endif
 #endif
 }
