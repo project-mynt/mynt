@@ -201,7 +201,7 @@ public:
         vector<FounderRewardStructure> rewardStructures = {  {10044280, 5}//, 5% founder/dev fee for blocks between startFounder block and 10057440
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 720, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 721, "MDevvoVXhXC5ruusV5dkDTcpjZUgyfh33F");
         assetStartBlock = 0;
 
 
@@ -339,7 +339,7 @@ public:
         vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 50, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 50, "MDevvoVXhXC5ruusV5dkDTcpjZUgyfh33F");
         assetStartBlock = 0;
 
         // The best chain should have at least this much work.
@@ -455,7 +455,7 @@ public:
         vector<FounderRewardStructure> rewardStructures = {  {10057440, 5}//, 5% founder/dev fee for blocks between startFounder block and 500k block
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MFgR3UCy3zVDzH1uSYQ7wRPnmoRJz9SQdh");
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 2, "MDevvoVXhXC5ruusV5dkDTcpjZUgyfh33F");
         assetStartBlock = 100;
 
 
