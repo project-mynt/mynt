@@ -201,7 +201,7 @@ public:
         vector<FounderRewardStructure> rewardStructures = {  {10044280, 5}//, 5% founder/dev fee for blocks between startFounder block and 10057440
                                                              // {1420000, 5} 5% founder/dev fee for blocks between startFounder block and 500k block
                                                                            };
-        consensus.nFounderPayment = FounderPayment(rewardStructures, 720, "MDevvoVXhXC5ruusV5dkDTcpjZUgyfh33F");
+        consensus.nFounderPayment = FounderPayment(rewardStructures, 721, "MDevvoVXhXC5ruusV5dkDTcpjZUgyfh33F");
         assetStartBlock = 0;
 
 
