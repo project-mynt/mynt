@@ -10,7 +10,12 @@ from pprint import *
 from test_framework.test_framework import MyntTestFramework
 from test_framework.util import *
 from test_framework.mininode import *
+import math
 
+
+def truncate(number, digits = 8):
+    stepper = pow(10.0, digits)
+    return math.trunc(stepper * number) / stepper
 
 def get_tx_issue_hex(node, asset_name, asset_quantity, asset_units=0):
     to_address = node.getnewaddress()
@@ -19,7 +24,7 @@ def get_tx_issue_hex(node, asset_name, asset_quantity, asset_units=0):
     inputs = [{k: unspent[k] for k in ['txid', 'vout']}]
     outputs = {
         'n1issueAssetXXXXXXXXXXXXXXXXWdnemQ': 500,
-        change_address: float(unspent['amount']) - 500.0001,
+        change_address: truncate(float(unspent['amount']) - 500.0001),
         to_address: {
             'issue': {
                 'asset_name':       asset_name,
@@ -30,6 +35,7 @@ def get_tx_issue_hex(node, asset_name, asset_quantity, asset_units=0):
             }
         }
     }
+
     tx_issue = node.createrawtransaction(inputs, outputs)
     tx_issue_signed = node.signrawtransaction(tx_issue)
     tx_issue_hex = tx_issue_signed['hex']
@@ -74,7 +80,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         ]
         outputs = {
             'n1ReissueAssetXXXXXXXXXXXXXXWG9NLd': 100,
-            n0.getnewaddress(): float(unspent['amount']) - 100.0001,
+            n0.getnewaddress(): truncate(float(unspent['amount']) - 100.0001),
             to_address: {
                 'reissue': {
                     'asset_name':       asset_name,
@@ -279,7 +285,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         inputs = [{k: unspent[k] for k in ['txid', 'vout']}]
         outputs = {
             'n1issueAssetXXXXXXXXXXXXXXXXWdnemQ': 500,
-            change_address: float(unspent['amount']) - 500.0001,
+            change_address: truncate(float(unspent['amount']) - 500.0001),
             to_address: {
                 'issue': {
                     'asset_name':       'TEST_ASSET',
@@ -313,7 +319,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
 
         outputs = {
             'n1ReissueAssetXXXXXXXXXXXXXXWG9NLd': 100,
-            change_address: float(unspent['amount']) - 100.0001,
+            change_address: truncate(float(unspent['amount']) - 100.0001),
             to_address: {
                 'reissue': {
                     'asset_name':       'TEST_ASSET',
@@ -345,7 +351,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
             {k: unspent_asset[k] for k in ['txid', 'vout']},
         ]
         outputs = {
-            change_address: float(unspent['amount']) - 0.0001,
+            change_address: truncate(float(unspent['amount']) - 0.0001),
             remote_to_address: {
                 'transfer': {
                     'TEST_ASSET': 400
@@ -353,7 +359,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
             },
             to_address: {
                 'transfer': {
-                    'TEST_ASSET': float(unspent_asset['amount']) - 400
+                    'TEST_ASSET': truncate(float(unspent_asset['amount']) - 400, 0)
                 }
             }
         }
@@ -398,7 +404,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # try tampering with asset outs so ins and outs don't add up
         for n in (-20, -2, -1, 1, 2, 20):
             bad_outputs = {
-                change_address: float(unspent['amount']) - 0.0001,
+                change_address: truncate(float(unspent['amount']) - 0.0001),
                 remote_to_address: {
                     'transfer': {
                         'TEST_ASSET': 400
@@ -420,7 +426,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # try tampering with asset outs so they don't use proper units
         for n in (-0.1, -0.00000001, 0.1, 0.00000001):
             bad_outputs = {
-                change_address: float(unspent['amount']) - 0.0001,
+                change_address: truncate(float(unspent['amount']) - 0.0001),
                 remote_to_address: {
                     'transfer': {
                         'TEST_ASSET': (400 + n)
@@ -546,7 +552,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # try first with bad burn address
         outputs = {
             bad_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue_unique': {
                     'root_name':    root,
@@ -564,7 +570,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch to proper burn address
         outputs = {
             unique_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue_unique': {
                     'root_name':    root,
@@ -611,7 +617,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 5
         outputs = {
             'n1issueUniqueAssetXXXXXXXXXXS4695i': burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -674,7 +680,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         inputs = [{k: unspent[k] for k in ['txid', 'vout']}]
         outputs = {
             'n1issueAssetXXXXXXXXXXXXXXXXWdnemQ': 500,
-            change_address: float(unspent['amount']) - 500.0001,
+            change_address: truncate(float(unspent['amount']) - 500.0001),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -700,7 +706,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         ]
         outputs = {
             'n1ReissueAssetXXXXXXXXXXXXXXWG9NLd': 100,
-            change_address: float(unspent['amount']) - 100.0001,
+            change_address: truncate(float(unspent['amount']) - 100.0001),
             to_address: {
                 'reissue': {
                     'asset_name':       asset_name,
@@ -735,7 +741,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 499
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -757,7 +763,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 501
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -779,7 +785,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 500
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -800,7 +806,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch burn address to unique address
         outputs = {
             unique_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -821,7 +827,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch to valid burn address, and valid burn amount
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             to_address: {
                 'issue': {
                     'asset_name':       asset_name,
@@ -874,7 +880,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # try first with bad burn amount
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -901,7 +907,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 101
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -928,7 +934,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 100
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -954,7 +960,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch burn address to reissue address, should be invalid because it needs to be sub asset burn address
         outputs = {
             reissue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -980,7 +986,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch burn address to unique address, should be invalid because it needs to be sub asset burn address
         outputs = {
             unique_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -1006,7 +1012,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # switch to valid burn address, and valid burn amount
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -1054,7 +1060,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 500
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             multiple_to_address: {
                 'issue': {
                     'asset_name':       asset_name_multiple,
@@ -1076,6 +1082,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
                 }
             }
         }
+
         hex = n0.createrawtransaction(inputs, outputs)
         signed_hex = n0.signrawtransaction(hex)['hex']
         assert_raises_rpc_error(-26, "bad-txns-failed-issue-asset-formatting-check", \
@@ -1115,7 +1122,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         burn = 500
         outputs = {
             issue_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -1142,6 +1149,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
                 }
             }
         }
+
         hex = n0.createrawtransaction(inputs, outputs)
         signed_hex = n0.signrawtransaction(hex)['hex']
         assert_raises_rpc_error(-26, "bad-txns-failed-issue-asset-formatting-check", \
@@ -1153,7 +1161,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         second_owner_change_address = n0.getnewaddress()
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -1185,7 +1193,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # Try tampering with an issue sub asset transaction by not having any owner change
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             sub_multiple_to_address: {
                 'issue': {
                     'asset_name':       asset_name_multiple_sub,
@@ -1207,7 +1215,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         self.log.info("Testing issue sub asset and tampering with the owner change...")
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             sub_multiple_to_address: {
                 'issue': {
                     'asset_name':       asset_name_multiple_sub,
@@ -1228,7 +1236,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # Try tampering with an issue by changing the owner amount transferred to 2
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 2,
@@ -1254,7 +1262,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # Try tampering with an issue by changing the owner amount transferred to 0
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 0,
@@ -1277,7 +1285,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         # Create the valid sub asset and broadcast the transaction
         outputs = {
             sub_burn: burn,
-            change_address: float(unspent['amount']) - (burn + 0.0001),
+            change_address: truncate(float(unspent['amount']) - (burn + 0.0001)),
             owner_change_address: {
                 'transfer': {
                     owner: 1,
@@ -1361,7 +1369,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         ########################################
         # Create the valid transfer outputs
         outputs = {
-            change_address: float(unspent['amount']) - 0.00001,
+            change_address: truncate(float(unspent['amount']) - 0.00001),
             to_address: {
                 'transfer': {
                     root: 4,
@@ -1434,7 +1442,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
 
         # Create the valid transfer and broadcast the transaction
         outputs = {
-            change_address: float(unspent['amount']) - 0.00001,
+            change_address: truncate(float(unspent['amount']) - 0.00001),
             to_address: {
                 'transfer': {
                     root: 10,
@@ -1532,11 +1540,11 @@ class RawAssetTransactionsTest(MyntTestFramework):
                     anduin: amount
                 }
             },
-            change1: unspent_amount1 - price - fee,
+            change1: truncate(unspent_amount1 - price - fee),
             receive2: price,
             change2: {
                 'transfer': {
-                    anduin: unspent_asset_amount2 - amount
+                    anduin: truncate(unspent_asset_amount2 - amount, 0)
                 }
             },
         }
@@ -1550,7 +1558,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
 
         newbalance1 = float(n1.getwalletinfo()['balance'])
         newbalance2 = float(n2.getwalletinfo()['balance'])
-        assert_equal(balance1 - price - fee, newbalance1)
+        assert_equal(truncate(balance1 - price - fee), newbalance1)
         assert_equal(balance2 + price, newbalance2)
 
         assert_equal(amount, int(n1.listmyassets()[anduin]))
@@ -1584,7 +1592,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
                     jaina_owner: amount
                 }
             },
-            change2: unspent_amount2 - price - fee,
+            change2: truncate(unspent_amount2 - price - fee),
         }
 
         unsigned = n2.createrawtransaction(inputs, outputs)
@@ -1597,7 +1605,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         newbalance1 = float(n1.getwalletinfo()['balance'])
         newbalance2 = float(n2.getwalletinfo()['balance'])
         assert_equal(balance1 + price, newbalance1)
-        assert_equal(balance2 - price - fee, newbalance2)
+        assert_equal(truncate(balance2 - price - fee), newbalance2)
 
         assert_does_not_contain_key(jaina_owner, n1.listmyassets())
         assert_equal(amount, int(n2.listmyassets()[jaina_owner]))
@@ -1643,10 +1651,10 @@ class RawAssetTransactionsTest(MyntTestFramework):
                 }
             },
             # output map can't use change1 twice...
-            n1.getnewaddress(): unspent_amount1 - fee,
+            n1.getnewaddress(): truncate(unspent_amount1 - fee),
             change1: {
                 'transfer': {
-                    jaina: unspent_asset_amount1 - price
+                    jaina: truncate(unspent_asset_amount1 - price)
                 }
             },
             receive2: {
@@ -1656,7 +1664,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
             },
             change2: {
                 'transfer': {
-                    anduin: unspent_asset_amount2 - amount
+                    anduin: truncate(unspent_asset_amount2 - amount, 0)
                 }
             },
         }
@@ -1669,7 +1677,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         self.sync_all()
 
         newbalance1 = float(n1.getwalletinfo()['balance'])
-        assert_equal(balance1 - fee, newbalance1)
+        assert_equal(truncate(balance1 - fee), newbalance1)
 
         assert_does_not_contain_key(anduin_owner, n2.listmyassets())
         assert_equal(amount_owner, int(n1.listmyassets()[anduin_owner]))
