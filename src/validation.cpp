@@ -3097,7 +3097,7 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
         /** MYNT END */
     }
     int64_t nTime4 = GetTimeMicros(); nTimeFlush += nTime4 - nTime3;
-    LogPrint(BCLog::BENCH, "  - Flush RVN: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeAssetsFlush - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
+    LogPrint(BCLog::BENCH, "  - Flush MYNT: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeAssetsFlush - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
     LogPrint(BCLog::BENCH, "  - Flush Assets: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTimeAssetsFlush) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
     // Write the chain state to disk, if necessary.
     if (!FlushStateToDisk(chainparams, state, FLUSH_STATE_IF_NEEDED))
@@ -3708,10 +3708,11 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     int founderStartHeight = founderPayment.getStartBlock();
     bool founderTransaction = founderReward == 0;// if founder reward is 0 no need to check
     auto currentActiveAssetCache = GetCurrentAssetCache();    
-    for (const auto& tx : block.vtx)
-         if (!CheckTransaction(*tx, state, currentActiveAssetCache, true, false, fCheckAssetDuplicate, fForceDuplicateCheck))
+    for (const auto& tx : block.vtx) {
+         if (!CheckTransaction(*tx, state, currentActiveAssetCache, true, false, fCheckAssetDuplicate, fForceDuplicateCheck)) {
            return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s %s", tx->GetHash().ToString(), state.GetDebugMessage(), state.GetRejectReason()));
+         }
          if(nHeight > founderStartHeight) {
             if(!founderTransaction && founderPayment.IsBlockPayeeValid(*tx,nHeight,blockReward)) {
                 founderTransaction = true;

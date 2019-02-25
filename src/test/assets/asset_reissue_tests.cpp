@@ -29,7 +29,7 @@ BOOST_FIXTURE_TEST_SUITE(asset_reissue_tests, BasicTestingSetup)
 
         CNewAsset asset1("MYNTASSET", CAmount(100 * COIN), 8, 1, 0, "");
 
-        // Add an asset to a valid rvn address
+        // Add an asset to a valid mynt address
         uint256 hash = uint256();
         BOOST_CHECK_MESSAGE(cache.AddNewAsset(asset1, Params().GlobalBurnAddress(), 0, hash), "Failed to add new asset");
 
@@ -89,7 +89,7 @@ BOOST_FIXTURE_TEST_SUITE(asset_reissue_tests, BasicTestingSetup)
 
         CNewAsset asset1("MYNTASSET", CAmount(100 * COIN), 8, 1, 0, "");
 
-        // Add an asset to a valid rvn address
+        // Add an asset to a valid mynt address
         BOOST_CHECK_MESSAGE(cache.AddNewAsset(asset1, Params().GlobalBurnAddress(), 0, uint256()), "Failed to add new asset");
 
         // Create a reissuance of the asset that is valid
@@ -116,7 +116,7 @@ BOOST_FIXTURE_TEST_SUITE(asset_reissue_tests, BasicTestingSetup)
         // Create a new asset object with units of 0
         CNewAsset asset2("MYNTASSET2", CAmount(100 * COIN), 0, 1, 0, "");
 
-        // Add new asset to a valid rvn address
+        // Add new asset to a valid mynt address
         BOOST_CHECK_MESSAGE(cache.AddNewAsset(asset2, Params().GlobalBurnAddress(), 0, uint256()), "Failed to add new asset");
 
         // Create a reissuance of the asset that is valid unit go from 0 -> 1 and change the ipfs hash

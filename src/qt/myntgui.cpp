@@ -693,18 +693,18 @@ void MyntGUI::createToolBars()
         labelCurrentPrice->setStyleSheet(currentPriceStyleSheet.arg(COLOR_LABELS.name()));
         labelCurrentPrice->setFont(currentMarketFont);
 
-        QLabel* labelBtcRvn = new QLabel();
-        labelBtcRvn->setText("BTC / MYNT");
-        labelBtcRvn->setContentsMargins(15,0,0,0);
-        labelBtcRvn->setFixedHeight(75);
-        labelBtcRvn->setAlignment(Qt::AlignVCenter);
-        labelBtcRvn->setStyleSheet(STRING_LABEL_COLOR);
-        labelBtcRvn->setFont(currentMarketFont);
+        QLabel* labelBtcMynt = new QLabel();
+        labelBtcMynt->setText("BTC / MYNT");
+        labelBtcMynt->setContentsMargins(15,0,0,0);
+        labelBtcMynt->setFixedHeight(75);
+        labelBtcMynt->setAlignment(Qt::AlignVCenter);
+        labelBtcMynt->setStyleSheet(STRING_LABEL_COLOR);
+        labelBtcMynt->setFont(currentMarketFont);
 
         priceLayout->setGeometry(headerWidget->rect());
         priceLayout->addWidget(labelCurrentMarket, 0, Qt::AlignVCenter | Qt::AlignLeft);
         priceLayout->addWidget(labelCurrentPrice, 0,  Qt::AlignVCenter | Qt::AlignLeft);
-        priceLayout->addWidget(labelBtcRvn, 0 , Qt::AlignVCenter | Qt::AlignLeft);
+        priceLayout->addWidget(labelBtcMynt, 0 , Qt::AlignVCenter | Qt::AlignLeft);
         priceLayout->addStretch();
 
         // Create the layout for widget to the right of the tool bar

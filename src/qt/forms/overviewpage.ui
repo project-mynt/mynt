@@ -86,7 +86,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="QLabel" name="rvnBalancesLabel">
+               <widget class="QLabel" name="myntBalancesLabel">
                 <property name="font">
                  <font>
                   <weight>75</weight>

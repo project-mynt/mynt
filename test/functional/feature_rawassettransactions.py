@@ -1507,7 +1507,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
         balance2 = float(n2.getwalletinfo()['balance'])
 
         ########################################
-        # rvn for assets
+        # mynt for assets
 
         # n1 buys 400 ANDUIN from n2 for 4000 MYNT
         price = 4000
@@ -1558,7 +1558,7 @@ class RawAssetTransactionsTest(MyntTestFramework):
 
 
         ########################################
-        # rvn for owner
+        # mynt for owner
 
         # n2 buys JAINA! from n1 for 20000 MYNT
         price = 20000

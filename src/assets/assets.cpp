@@ -2112,7 +2112,7 @@ void UpdatePossibleAssets()
         for (auto item : currentActiveAssetCache->setPossiblyMineRemove) {
             // If the CTxOut is mine add it to the list of unspent outpoints
             if (vpwallets[0]->IsMine(item.txOut) == ISMINE_SPENDABLE) {
-                if (!currentActiveAssetCache->TrySpendCoin(item.out, item.txOut)) // Boolean true means only change the in memory data. We will want to save at the same time that RVN coin saves its cache
+                if (!currentActiveAssetCache->TrySpendCoin(item.out, item.txOut)) // Boolean true means only change the in memory data. We will want to save at the same time that MYNT coin saves its cache
                     error("%s: Failed to add an asset I own to my Unspent Asset Database. asset %s",
                           __func__, item.assetName);
             }
@@ -2121,7 +2121,7 @@ void UpdatePossibleAssets()
         for (auto item : currentActiveAssetCache->setPossiblyMineAdd) {
             // If the CTxOut is mine add it to the list of unspent outpoints
             if (vpwallets[0]->IsMine(item.txOut) == ISMINE_SPENDABLE) {
-                if (!currentActiveAssetCache->AddToMyUnspentOutPoints(item.assetName, item.out)) // Boolean true means only change the in memory data. We will want to save at the same time that RVN coin saves its cache
+                if (!currentActiveAssetCache->AddToMyUnspentOutPoints(item.assetName, item.out)) // Boolean true means only change the in memory data. We will want to save at the same time that MYNT coin saves its cache
                     error("%s: Failed to add an asset I own to my Unspent Asset Database. asset %s",
                                  __func__, item.assetName);
             }
