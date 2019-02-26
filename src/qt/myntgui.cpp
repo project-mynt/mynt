@@ -763,7 +763,7 @@ void MyntGUI::createToolBars()
                                     labelCurrentPrice->setStyleSheet(currentPriceStyleSheet.arg(COLOR_LABELS.name()));
                             }
                             labelCurrentPrice->setText(QString("%1").arg(QString().setNum(next, 'f', 8)));
-                            labelCurrentPrice->setToolTip(tr("Brought to you by binance.com"));
+                            labelCurrentPrice->setToolTip(tr(""));
                         }
                     }
                 }
@@ -1636,6 +1636,6 @@ void UnitDisplayStatusBarControl::onMenuSelection(QAction* action)
 
 void MyntGUI::getPriceInfo()
 {
-    request->setUrl(QUrl("https://api.binance.com/api/v1/ticker/price?symbol=MYNTBTC"));
+    request->setUrl(QUrl("https://swiftex.co/api/v2/trades?market=mynt-btc"));
     networkManager->get(*request);
 }

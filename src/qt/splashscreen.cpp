@@ -32,7 +32,9 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 {
     // set reference point, paddings
     int paddingRight            = 50;
+    int paddingRight2            = 0;
     int paddingTop              = 50;
+    int paddingTop2              = 25;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 40;
 
@@ -45,7 +47,18 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     // define text to place
     QString titleText       = tr(PACKAGE_NAME);
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2009, COPYRIGHT_YEAR)).c_str());
+    QString copyrightText  = QChar(0xA9)+QString("2018-2019 ").arg(COPYRIGHT_YEAR) + QString(tr("The Mynt Core Developers"));
+
+    const char *inspirationals[] = {
+        // "Mynty Fresh! -EthyMoney",
+        // "no u -dmz",
+        "http://getmynt.io",
+        // "http://chain.getmynt.io"
+
+    };
+
+    QString inspirationalText = QString(inspirationals[rand() % 4]);
+
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();
@@ -109,7 +122,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
         pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
     }
-
+   pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop2+titleCopyrightVSpace+86,inspirationalText);
     // draw additional text if special network
     if(!titleAddText.isEmpty()) {
         QFont boldFont = QFont(font, 10*fontFactor);
