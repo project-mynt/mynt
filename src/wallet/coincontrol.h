@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_WALLET_COINCONTROL_H
-#define RAPTOREUM_WALLET_COINCONTROL_H
+#ifndef MYNT_WALLET_COINCONTROL_H
+#define MYNT_WALLET_COINCONTROL_H
 
 #include "policy/feerate.h"
 #include "policy/fees.h"
@@ -33,10 +33,10 @@ public:
     //! Fee estimation mode to control arguments to estimateSmartFee
     FeeEstimateMode m_fee_mode;
 
-    /** RTM START */
+    /** MYNT START */
     //! Name of the asset that is selected, used when sending assets with coincontrol
     std::string strAssetSelected;
-    /** RTM END */
+    /** MYNT END */
 
     CCoinControl()
     {
@@ -125,4 +125,4 @@ private:
     std::set<COutPoint> setAssetsSelected;
 };
 
-#endif // RAPTOREUM_WALLET_COINCONTROL_H
+#endif // MYNT_WALLET_COINCONTROL_H

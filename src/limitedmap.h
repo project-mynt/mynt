@@ -1,10 +1,10 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_LIMITEDMAP_H
-#define RAPTOREUM_LIMITEDMAP_H
+#ifndef MYNT_LIMITEDMAP_H
+#define MYNT_LIMITEDMAP_H
 
 #include <assert.h>
 #include <map>
@@ -98,4 +98,4 @@ public:
     }
 };
 
-#endif // RAPTOREUM_LIMITEDMAP_H
+#endif // MYNT_LIMITEDMAP_H

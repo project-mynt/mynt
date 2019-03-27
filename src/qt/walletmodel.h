@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_WALLETMODEL_H
-#define RAPTOREUM_QT_WALLETMODEL_H
+#ifndef MYNT_QT_WALLETMODEL_H
+#define MYNT_QT_WALLETMODEL_H
 
 #include "paymentrequestplus.h"
 #include "walletmodeltransaction.h"
@@ -161,7 +161,7 @@ public:
     }
 };
 
-/** Interface to Raptoreum wallet from Qt view code. */
+/** Interface to Mynt wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT
@@ -265,10 +265,10 @@ public:
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool isSpent(const COutPoint& outpoint) const;
     void listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const;
-    /** RTM START */
+    /** MYNT START */
     // Map of asset name to map of address to CTxOut
     void listAssets(std::map<QString, std::map<QString, std::vector<COutput> > >& mapCoins) const;
-    /** RTM END */
+    /** MYNT END */
     bool isLockedCoin(uint256 hash, unsigned int n) const;
     void lockCoin(COutPoint& output);
     void unlockCoin(COutPoint& output);
@@ -364,4 +364,4 @@ public Q_SLOTS:
     void pollBalanceChanged();
 };
 
-#endif // RAPTOREUM_QT_WALLETMODEL_H
+#endif // MYNT_QT_WALLETMODEL_H

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.raptoreum;
+package org.mynt;
 
 public class NativeSecp256k1Util{
 

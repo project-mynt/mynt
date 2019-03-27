@@ -11,8 +11,8 @@
 ###############################################################################
 */
 
-#ifndef RAPTOREUMCOIN_DARKSTYLE_H
-#define RAPTOREUMCOIN_DARKSTYLE_H
+#ifndef MYNTCOIN_DARKSTYLE_H
+#define MYNTCOIN_DARKSTYLE_H
 
 #include <QApplication>
 #include <QProxyStyle>
@@ -37,4 +37,4 @@ private:
     QStyle *styleBase(QStyle *style = Q_NULLPTR) const;
 };
 
-#endif //RAPTOREUMCOIN_DARKSTYLE_H
+#endif //MYNTCOIN_DARKSTYLE_H

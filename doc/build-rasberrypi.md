@@ -1,6 +1,6 @@
 RASBERRY PI BUILD NOTES
 ====================
-Origin: traysi.org/raptoreum_rpi.php
+Origin: traysi.org/mynt_rpi.php
 
 # Install necessary packages:
 ```
@@ -33,11 +33,11 @@ make -j4 # If error, remove the -j4
 sudo make install
 ```
 
-# Build Raptoreumcoin
+# Build Mynt
 ```
 cd ~/build/
-git clone https://github.com/RaptoreumProject/Raptoreumcoin
-cd Raptoreumcoin/
+git clone https://github.com/project-mynt/Mynt
+cd Mynt/
 ./autogen.sh
 ./configure --disable-tests --with-gui=no CPPFLAGS="-I/usr/local/BerkeleyDB.4.8/include -O2" LDFLAGS="-L/usr/local/BerkeleyDB.4.8/lib"
 make

@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2015 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_ADDRESSTABLEMODEL_H
-#define RAPTOREUM_QT_ADDRESSTABLEMODEL_H
+#ifndef MYNT_QT_ADDRESSTABLEMODEL_H
+#define MYNT_QT_ADDRESSTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -27,7 +27,7 @@ public:
 
     enum ColumnIndex {
         Label = 0,   /**< User specified label */
-        Address = 1  /**< Raptoreum address */
+        Address = 1  /**< Mynt address */
     };
 
     enum RoleIndex {
@@ -93,4 +93,4 @@ public Q_SLOTS:
     friend class AddressTablePriv;
 };
 
-#endif // RAPTOREUM_QT_ADDRESSTABLEMODEL_H
+#endif // MYNT_QT_ADDRESSTABLEMODEL_H

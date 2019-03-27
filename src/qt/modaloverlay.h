@@ -1,10 +1,10 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_MODALOVERLAY_H
-#define RAPTOREUM_QT_MODALOVERLAY_H
+#ifndef MYNT_QT_MODALOVERLAY_H
+#define MYNT_QT_MODALOVERLAY_H
 
 #include <QDateTime>
 #include <QWidget>
@@ -48,4 +48,4 @@ private:
     bool userClosed;
 };
 
-#endif // RAPTOREUM_QT_MODALOVERLAY_H
+#endif // MYNT_QT_MODALOVERLAY_H

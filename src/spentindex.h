@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_SPENTINDEX_H
-#define RAPTOREUM_SPENTINDEX_H
+#ifndef MYNT_SPENTINDEX_H
+#define MYNT_SPENTINDEX_H
 
 #include "uint256.h"
 #include "amount.h"
@@ -95,4 +95,4 @@ struct CSpentIndexKeyCompare
     }
 };
 
-#endif // RAPTOREUM_SPENTINDEX_H
+#endif // MYNT_SPENTINDEX_H

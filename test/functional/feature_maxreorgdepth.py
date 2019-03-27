@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Max Reorg Test
 """
 import sys
 import time
-from test_framework.test_framework import RaptoreumTestFramework
+from test_framework.test_framework import MyntTestFramework
 from test_framework.util import *
 from test_framework.mininode import *
 
 
-class MaxReorgTest(RaptoreumTestFramework):
+class MaxReorgTest(MyntTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

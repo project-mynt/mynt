@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -57,7 +57,7 @@
 #include "assets/assetdb.h"
 
 #if defined(NDEBUG)
-# error "Raptoreum cannot be compiled without assertions."
+# error "Mynt cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -79,6 +79,7 @@ int nScriptCheckThreads = 0;
 std::atomic_bool fImporting(false);
 std::atomic_bool fReindex(false);
 bool fTxIndex = false;
+bool fAssetIndex = false;
 bool fAddressIndex = false;
 bool fTimestampIndex = false;
 bool fSpentIndex = false;
@@ -107,7 +108,7 @@ static void CheckBlockIndex(const Consensus::Params& consensusParams);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Raptoreum Signed Message:\n";
+const std::string strMessageMagic = "Mynt Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -198,6 +199,8 @@ CBlockTreeDB *pblocktree = nullptr;
 
 CAssetsDB *passetsdb = nullptr;
 CAssetsCache *passets = nullptr;
+
+CAssetsCache *tmpAssetCache = nullptr;
 CLRUCache<std::string, CDatabasedAssetData> *passetsCache = nullptr;
 
 enum FlushStateMode {
@@ -467,13 +470,13 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
     const CTransaction& tx = *ptx;
     const uint256 hash = tx.GetHash();
 
-    /** RTM START */
+    /** MYNT START */
     std::vector<std::pair<std::string, uint256>> vReissueAssets;
     AssertLockHeld(cs_main);
     if (pfMissingInputs)
         *pfMissingInputs = false;
-
-    if (!CheckTransaction(tx, state, passets, true, true))
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    if (!CheckTransaction(tx, state, currentActiveAssetCache, true, true))
         return false; // state filled in by CheckTransaction
 
     // Coinbase is only valid in a block, not as a loose transaction
@@ -600,7 +603,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
             return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
         }
 
-        /** RTM START */
+        /** MYNT START */
         if (!AreAssetsDeployed()) {
             for (auto out : tx.vout) {
                 if (out.scriptPubKey.IsAssetScript())
@@ -613,7 +616,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
                 return error("%s: Consensus::CheckTxAssets: %s, %s", __func__, tx.GetHash().ToString(),
                              FormatStateMessage(state));
         }
-        /** RTM END */
+        /** MYNT END */
 
         // Check for non-standard pay-to-script-hash in inputs
         if (fRequireStandard && !AreInputsStandard(tx, view))
@@ -881,7 +884,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         // Remove conflicting transactions from the mempool
         for (const CTxMemPool::txiter it : allConflicting)
         {
-            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s RTM additional fees, %d delta bytes\n",
+            LogPrint(BCLog::MEMPOOL, "replacing tx %s with %s for %s MYNT additional fees, %d delta bytes\n",
                     it->GetTx().GetHash().ToString(),
                     hash.ToString(),
                     FormatMoney(nModifiedFees - nConflictingFees),
@@ -1181,14 +1184,17 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     CAmount nSubsidy = 250 * COIN;
     int SwapCoins = 1;
     int SwapPrep = 2;
-    int PostSwap = 50;
-    int FirstHalving = 1647840;
-    int SecondHalving = 3750240;
-    int ThirdHalving = 5852640;
-    int FourthHalving = 7955040;
-    int FinalHalving = 10057440;
+    int PostSwap = 720;
+    int FirstHalving = 1634680;
+    int SecondHalving = 3737080;
+    int ThirdHalving = 5839480;
+    int FourthHalving = 7941880;
+    int FinalHalving = 10044280;
+    
+    // Swap height 468440
+    // Halvings 2102400
 
-    if (nHeight == SwapCoins) { nSubsidy = 114000000 * COIN; }
+    if (nHeight == SwapCoins) { nSubsidy = 117110000 * COIN; }
     if (nHeight >= SwapPrep && nHeight <= PostSwap) { nSubsidy = 0 * COIN; }
     if (nHeight >= PostSwap && nHeight <= FirstHalving) { nSubsidy = 250 * COIN; }
     if (nHeight >= FirstHalving && nHeight <= SecondHalving) { nSubsidy = 125 * COIN; }
@@ -1198,15 +1204,6 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     if (nHeight >= FinalHalving) { nSubsidy = 7.8125 * COIN; }
 
     return nSubsidy;    
-    // int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    // // Force block reward to zero when right shift is undefined.
-    // if (halvings >= 64)
-    //     return 0;
-
-    // CAmount nSubsidy = 5000 * COIN;
-    // // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
-    // nSubsidy >>= halvings;
-    // return nSubsidy;
 }
 
 bool IsInitialBlockDownload()
@@ -1244,6 +1241,44 @@ bool IsInitialBlockDownload()
     }
 //    LogPrintf("Leaving InitialBlockDownload (latching to false)\n");
     latchToFalse.store(true, std::memory_order_relaxed);
+    return false;
+}
+
+bool IsInitialSyncSpeedUp()
+{
+    // Once this function has returned false, it must remain false.
+    static std::atomic<bool> syncLatchToFalse{false};
+    // Optimization: pre-test latch before taking the lock.
+    if (syncLatchToFalse.load(std::memory_order_relaxed))
+        return false;
+
+    LOCK(cs_main);
+    if (syncLatchToFalse.load(std::memory_order_relaxed))
+        return false;
+    if (fImporting || fReindex)
+    {
+//        LogPrintf("IsInitialBlockDownload (importing or reindex)\n");
+        return true;
+    }
+    if (chainActive.Tip() == nullptr)
+    {
+//        LogPrintf("IsInitialBlockDownload (tip is null)");
+        return true;
+    }
+    if (chainActive.Tip()->nChainWork < nMinimumChainWork)
+    {
+//    		LogPrintf("IsInitialBlockDownload (min chain work)");
+//    		LogPrintf("Work found: %s", chainActive.Tip()->nChainWork.GetHex());
+//    		LogPrintf("Work needed: %s", nMinimumChainWork.GetHex());
+        return true;
+    }
+    if (chainActive.Tip()->GetBlockTime() < (GetTime() - (60 * 60 * 72))) // 3 Days
+    {
+//        LogPrintf("%s: (tip age): %d\n", __func__, nMaxTipAge);
+        return true;
+    }
+//    LogPrintf("Leaving InitialBlockDownload (latching to false)\n");
+    syncLatchToFalse.store(true, std::memory_order_relaxed);
     return false;
 }
 
@@ -1373,12 +1408,12 @@ void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo &txund
         txundo.vprevout.reserve(tx.vin.size());
         for (const CTxIn &txin : tx.vin) {
             txundo.vprevout.emplace_back();
-            bool is_spent = inputs.SpendCoin(txin.prevout, &txundo.vprevout.back(), assetCache); /** RTM START */ /* Pass assetCache into function */ /** RTM END */
+            bool is_spent = inputs.SpendCoin(txin.prevout, &txundo.vprevout.back(), assetCache); /** MYNT START */ /* Pass assetCache into function */ /** MYNT END */
             assert(is_spent);
         }
     }
     // add outputs
-    AddCoins(inputs, tx, nHeight, blockHash, false, assetCache, undoAssetData); /** RTM START */ /* Pass assetCache into function */ /** RTM END */
+    AddCoins(inputs, tx, nHeight, blockHash, false, assetCache, undoAssetData); /** MYNT START */ /* Pass assetCache into function */ /** MYNT END */
 }
 
 void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, int nHeight)
@@ -1605,7 +1640,7 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out, CAss
 {
     bool fClean = true;
 
-    /** RTM START */
+    /** MYNT START */
     // This is needed because undo, is going to be cleared and moved when AddCoin is called. We need this for undo assets
     Coin tempCoin;
     bool fIsAsset = false;
@@ -1613,7 +1648,7 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out, CAss
         fIsAsset = true;
         tempCoin = undo;
     }
-    /** RTM END */
+    /** MYNT END */
 
     if (view.HaveCoin(out)) fClean = false; // overwriting transaction output
 
@@ -1635,14 +1670,14 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out, CAss
     // it is an overwrite.
     view.AddCoin(out, std::move(undo), !fClean);
 
-    /** RTM START */
+    /** MYNT START */
     if (AreAssetsDeployed()) {
         if (assetCache && fIsAsset) {
             if (!assetCache->UndoAssetCoin(tempCoin, out))
                 fClean = false;
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     return fClean ? DISCONNECT_OK : DISCONNECT_UNCLEAN;
 }
@@ -1715,7 +1750,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
                     addressIndex.push_back(std::make_pair(CAddressIndexKey(1, hashBytes, pindex->nHeight, i, hash, k, false), out.nValue));
                     addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(1, hashBytes, hash, k), CAddressUnspentValue()));
                 } else {
-                    /** RTM START */
+                    /** MYNT START */
                     if (AreAssetsDeployed()) {
                         std::string assetName;
                         CAmount assetAmount;
@@ -1738,7 +1773,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
                             continue;
                         }
                     }
-                    /** RTM END */
+                    /** MYNT END */
                 }
             }
         }
@@ -1749,23 +1784,23 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
             if (!tx.vout[o].scriptPubKey.IsUnspendable()) {
                 COutPoint out(hash, o);
                 Coin coin;
-                bool is_spent = view.SpendCoin(out, &coin, &tempCache); /** RTM START */ /* Pass assetsCache into the SpendCoin function */ /** RTM END */
+                bool is_spent = view.SpendCoin(out, &coin, &tempCache); /** MYNT START */ /* Pass assetsCache into the SpendCoin function */ /** MYNT END */
                 if (!is_spent || tx.vout[o] != coin.out || pindex->nHeight != coin.nHeight || is_coinbase != coin.fCoinBase) {
                     fClean = false; // transaction output mismatch
                 }
 
-                /** RTM START */
+                /** MYNT START */
                 if (AreAssetsDeployed()) {
                     if (assetsCache) {
                         if (IsScriptTransferAsset(tx.vout[o].scriptPubKey))
                             vAssetTxIndex.emplace_back(o);
                     }
                 }
-                /** RTM START */
+                /** MYNT START */
             }
         }
 
-        /** RTM START */
+        /** MYNT START */
         if (AreAssetsDeployed()) {
             if (assetsCache) {
                 if (tx.IsNewAsset()) {
@@ -1855,7 +1890,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
                 }
             }
         }
-        /** RTM END */
+        /** MYNT END */
 
         // restore inputs
         if (i > 0) { // not coinbases
@@ -1867,7 +1902,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
             for (unsigned int j = tx.vin.size(); j-- > 0;) {
                 const COutPoint &out = tx.vin[j].prevout;
                 Coin &undo = txundo.vprevout[j];
-                int res = ApplyTxInUndo(std::move(undo), view, out, assetsCache); /** RTM START */ /* Pass assetsCache into ApplyTxInUndo function */ /** RTM END */
+                int res = ApplyTxInUndo(std::move(undo), view, out, assetsCache); /** MYNT START */ /* Pass assetsCache into ApplyTxInUndo function */ /** MYNT END */
                 if (res == DISCONNECT_FAILED) return DISCONNECT_FAILED;
                 fClean = fClean && res != DISCONNECT_UNCLEAN;
 
@@ -1904,7 +1939,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
                         addressIndex.push_back(std::make_pair(CAddressIndexKey(1, hashBytes, pindex->nHeight, i, hash, j, false), prevout.nValue));
                         addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(1, hashBytes, hash, j), CAddressUnspentValue()));
                     } else {
-                        /** RTM START */
+                        /** MYNT START */
                         if (AreAssetsDeployed()) {
                             std::string assetName;
                             CAmount assetAmount;
@@ -1928,7 +1963,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, const CBlockIndex* 
                                 continue;
                             }
                         }
-                        /** RTM END */
+                        /** MYNT END */
                     }
                 }
             }
@@ -1982,7 +2017,7 @@ static bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, 
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("raptoreum-scriptch");
+    RenameThread("mynt-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -2229,7 +2264,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                  REJECT_INVALID, "bad-txns-accumulated-fee-outofrange");
             }
 
-            /** RTM START */
+            /** MYNT START */
             if (!AreAssetsDeployed()) {
                 for (auto out : tx.vout)
                     if (out.scriptPubKey.IsAssetScript())
@@ -2243,7 +2278,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                  FormatStateMessage(state));
                 }
             }
-            /** RTM END */
+            /** MYNT END */
 
             // Check that transaction is BIP68 final
             // BIP68 lock checks (as opposed to nLockTime checks) must
@@ -2280,7 +2315,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                         hashBytes = Hash160(prevout.scriptPubKey.begin() + 1, prevout.scriptPubKey.end() - 1);
                         addressType = 1;
                     } else {
-                        /** RTM START */
+                        /** MYNT START */
                         if (AreAssetsDeployed()) {
                             hashBytes.SetNull();
                             addressType = 0;
@@ -2290,11 +2325,11 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                 isAsset = true;
                             }
                         }
-                        /** RTM END */
+                        /** MYNT END */
                     }
 
                     if (fAddressIndex && addressType > 0) {
-                        /** RTM START */
+                        /** MYNT START */
                         if (isAsset) {
 //                            std::cout << "ConnectBlock(): pushing assets onto addressIndex: " << "1" << ", " << hashBytes.GetHex() << ", " << assetName << ", " << pindex->nHeight
 //                                      << ", " << i << ", " << txhash.GetHex() << ", " << j << ", " << "true" << ", " << assetAmount * -1 << std::endl;
@@ -2304,7 +2339,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 
                             // remove address from unspent index
                             addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(addressType, hashBytes, assetName, input.prevout.hash, input.prevout.n), CAddressUnspentValue()));
-                        /** RTM END */
+                        /** MYNT END */
                         } else {
                             // record spending activity
                             addressIndex.push_back(std::make_pair(CAddressIndexKey(addressType, hashBytes, pindex->nHeight, i, txhash, j, true), prevout.nValue * -1));
@@ -2313,7 +2348,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                             addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(addressType, hashBytes, input.prevout.hash, input.prevout.n), CAddressUnspentValue()));
                         }
                     }
-                    /** RTM END */
+                    /** MYNT END */
 
                     if (fSpentIndex) {
                         // add the spent index to determine the txid and input that spent an output
@@ -2345,7 +2380,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
             control.Add(vChecks);
         }
 
-        /** RTM START */
+        /** MYNT START */
         if (assetsCache) {
             if (tx.IsNewAsset())
             {
@@ -2411,7 +2446,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                 }
             }
         }
-        /** RTM END */
+        /** MYNT END */
         if (fAddressIndex) {
             for (unsigned int k = 0; k < tx.vout.size(); k++) {
                 const CTxOut &out = tx.vout[k];
@@ -2443,7 +2478,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                                                                  CAddressUnspentValue(out.nValue, out.scriptPubKey,
                                                                                       pindex->nHeight)));
                 } else {
-                    /** RTM START */
+                    /** MYNT START */
                     if (AreAssetsDeployed()) {
                         std::string assetName;
                         CAmount assetAmount;
@@ -2467,7 +2502,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                     } else {
                         continue;
                     }
-                    /** RTM END */
+                    /** MYNT END */
                 }
             }
         }
@@ -2476,19 +2511,19 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if (i > 0) {
             blockundo.vtxundo.push_back(CTxUndo());
         }
-        /** RTM START */
+        /** MYNT START */
         // Create the basic empty string pair for the undoblock
         std::pair<std::string, CBlockAssetUndo> undoPair = std::make_pair("", CBlockAssetUndo());
         std::pair<std::string, CBlockAssetUndo>* undoAssetData = &undoPair;
-        /** RTM END */
+        /** MYNT END */
 
         UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight, block.GetHash(), assetsCache, undoAssetData);
 
-        /** RTM START */
+        /** MYNT START */
         if (!undoAssetData->first.empty()) {
             vUndoAssetData.emplace_back(*undoAssetData);
         }
-        /** RTM END */
+        /** MYNT END */
 
         vPos.push_back(std::make_pair(tx.GetHash(), pos));
         pos.nTxOffset += ::GetSerializeSize(tx, SER_DISK, CLIENT_VERSION);
@@ -2602,6 +2637,7 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
     bool fFlushForPrune = false;
     bool fDoFullFlush = false;
     int64_t nNow = 0;
+
     try {
     {
         LOCK(cs_LastBlockFile);
@@ -2631,19 +2667,41 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         if (nLastSetChain == 0) {
             nLastSetChain = nNow;
         }
+
+        // Get the size of the memory used by the asset cache.
+        int64_t assetDynamicSize = 0;
+        int64_t assetDirtyCacheSize = 0;
+        size_t assetMapAmountSize = 0;
+        if (AreAssetsDeployed()) {
+            auto currentActiveAssetCache = GetCurrentAssetCache();
+            if (currentActiveAssetCache) {
+                assetDynamicSize = currentActiveAssetCache->DynamicMemoryUsage();
+                assetDirtyCacheSize = currentActiveAssetCache->GetCacheSizeV2();
+                assetMapAmountSize = currentActiveAssetCache->mapAssetsAddressAmount.size();
+            }
+        }
+
+
         int64_t nMempoolSizeMax = gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000;
-        int64_t cacheSize = pcoinsTip->DynamicMemoryUsage();
+        int64_t cacheSize = pcoinsTip->DynamicMemoryUsage() + assetDynamicSize + assetDirtyCacheSize;
         int64_t nTotalSpace = nCoinCacheUsage + std::max<int64_t>(nMempoolSizeMax - nMempoolUsage, 0);
         // The cache is large and we're within 10% and 10 MiB of the limit, but we have time now (not in the middle of a block processing).
         bool fCacheLarge = mode == FLUSH_STATE_PERIODIC && cacheSize > std::max((9 * nTotalSpace) / 10, nTotalSpace - MAX_BLOCK_COINSDB_USAGE * 1024 * 1024);
         // The cache is over the limit, we have to write now.
-        bool fCacheCritical = mode == FLUSH_STATE_IF_NEEDED && cacheSize > nTotalSpace;
+        bool fCacheCritical = mode == FLUSH_STATE_IF_NEEDED && (cacheSize > nTotalSpace || assetMapAmountSize > 1000000);
         // It's been a while since we wrote the block index to disk. Do this frequently, so we don't need to redownload after a crash.
         bool fPeriodicWrite = mode == FLUSH_STATE_PERIODIC && nNow > nLastWrite + (int64_t)DATABASE_WRITE_INTERVAL * 1000000;
         // It's been very long since we flushed the cache. Do this infrequently, to optimize cache usage.
         bool fPeriodicFlush = mode == FLUSH_STATE_PERIODIC && nNow > nLastFlush + (int64_t)DATABASE_FLUSH_INTERVAL * 1000000;
+
         // Combine all conditions that result in a full cache flush.
         fDoFullFlush = (mode == FLUSH_STATE_ALWAYS) || fCacheLarge || fCacheCritical || fPeriodicFlush || fFlushForPrune;
+
+        if (!fDoFullFlush && IsInitialSyncSpeedUp() && nNow > nLastFlush + (int64_t) DATABASE_FLUSH_INTERVAL_SPEEDY * 1000000) {
+            LogPrintf("Flushing to database sooner for speedy sync\n");
+            fDoFullFlush = true;
+        }
+
         // Write blocks and block index to disk.
         if (fDoFullFlush || fPeriodicWrite) {
             // Depend on nMinDiskSpace to ensure we can write block index
@@ -2677,40 +2735,35 @@ bool static FlushStateToDisk(const CChainParams& chainparams, CValidationState &
         // Flush best chain related state. This can only be done if the blocks / block index write was also done.
         if (fDoFullFlush) {
 
-            /** RTM START */
-
-            size_t assetsSize = 0;
-            if (AreAssetsDeployed()) {
-                if (passets)
-                    assetsSize = passets->GetCacheSize() * 2;
-            }
-            /** RTM END */
 
             // Typical Coin structures on disk are around 48 bytes in size.
             // Pushing a new one to the database can cause it to be written
             // twice (once in the log, and once in the tables). This is already
             // an overestimation, as most will delete an existing entry or
             // overwrite one. Still, use a conservative safety factor of 2.
-            if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetsSize)) /** RTM START */ /** RTM END */
+            //if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetsSize)) /** MYNT START */ /** MYNT END */
+            if (!CheckDiskSpace((48 * 2 * 2 * pcoinsTip->GetCacheSize()) + assetDirtyCacheSize * 2)) /** MYNT START */ /** MYNT END */
                 return state.Error("out of disk space");
 
             // Flush the chainstate (which may refer to block index entries).
             if (!pcoinsTip->Flush())
                 return AbortNode(state, "Failed to write to coin database");
 
-            /** RTM START */
+            /** MYNT START */
             // Flush the assetstate
             if (AreAssetsDeployed()) {
                 // Flush the assetstate
-                if (passets) {
-                    if (!passets->Flush(false, true))
+                auto currentActiveAssetCache = GetCurrentAssetCache();
+                if (currentActiveAssetCache) {
+                    if (!currentActiveAssetCache->DumpCacheToDatabase())
                         return AbortNode(state, "Failed to write to asset database");
                 }
             }
+
             // Write the reissue mempool data to database
             if (passetsdb)
                 passetsdb->WriteReissuedMempoolState();
-            /** RTM END */
+            /** MYNT END */
 
             nLastFlush = nNow;
         }
@@ -2827,7 +2880,8 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     {
         CCoinsViewCache view(pcoinsTip);
 
-        CAssetsCache assetCache(*passets);
+        auto currentActiveAssetCache = GetCurrentAssetCache();
+        CAssetsCache assetCache;
 
         assert(view.GetBestBlock() == pindexDelete->GetBlockHash());
         if (DisconnectBlock(block, pindexDelete, view, &assetCache) != DISCONNECT_OK)
@@ -2835,7 +2889,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
         bool flushed = view.Flush();
         assert(flushed);
 
-        bool assetsFlushed = assetCache.Flush(true);
+        bool assetsFlushed = assetCache.Flush();
         assert(assetsFlushed);
     }
     LogPrint(BCLog::BENCH, "- Disconnect block: %.2fms\n", (GetTimeMicros() - nStart) * MILLI);
@@ -2867,6 +2921,8 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
 static int64_t nTimeReadFromDisk = 0;
 static int64_t nTimeConnectTotal = 0;
 static int64_t nTimeFlush = 0;
+static int64_t nTimeAssetFlush = 0;
+static int64_t nTimeAssetTasks = 0;
 static int64_t nTimeChainState = 0;
 static int64_t nTimePostConnect = 0;
 
@@ -2959,21 +3015,25 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros(); nTimeReadFromDisk += nTime2 - nTime1;
     int64_t nTime3;
+    int64_t nTime4;
+    int64_t nTimeAssetsFlush;
     LogPrint(BCLog::BENCH, "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * MILLI, nTimeReadFromDisk * MICRO);
 
-    /** RTM START */
+    /** MYNT START */
     // Initialize sets used from removing asset entries from the mempool
-    std::set<CAssetCacheNewAsset> prevNewAssets;
-    std::set<CAssetCacheNewAsset> afterNewAsset;
-    /** RTM END */
+
+    std::set<CAssetCacheNewAsset> setNewAssetsAddedInBlock;
+    /** MYNT END */
 
     {
         CCoinsViewCache view(pcoinsTip);
+        /** MYNT START */
+        // Create the empty asset cache, that will be sent into the connect block
+        // All new data will be added to the cache, and will be flushed back into passets after a successful
+        // Connect Block cycle
+        CAssetsCache assetCache;
 
-        /** RTM START */
-        CAssetsCache assetCache(*passets);
-        prevNewAssets = assetCache.setNewAssetsToAdd; // List of newly cached assets before block is connected
-        /** RTM END */
+        int64_t nTimeConnectStart = GetTimeMicros();
 
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams, &assetCache);
         GetMainSignals().BlockChecked(blockConnecting, state);
@@ -2982,15 +3042,21 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
                 InvalidBlockFound(pindexNew, state);
             return error("ConnectTip(): ConnectBlock %s failed", pindexNew->GetBlockHash().ToString());
         }
+        int64_t nTimeConnectDone = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Connect Block only time: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeConnectDone - nTimeConnectStart) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
 
-        /** RTM START */
-        // Get the newly created assets, from the connectblock assetCache
-        afterNewAsset = assetCache.setNewAssetsToAdd;
-        for (auto it : prevNewAssets) {
-            if (afterNewAsset.count(it))
-                afterNewAsset.erase(it);
+
+        int64_t nTimeAssetsStart = GetTimeMicros();
+        /** MYNT START */
+        // Get the newly created assets, from the connectblock assetCache so we can remove the correct assets from the mempool
+        setNewAssetsAddedInBlock = assetCache.setNewAssetsToAdd;
+        for (auto it : passets->setNewAssetsToAdd) {
+            if (setNewAssetsAddedInBlock.count(it))
+                setNewAssetsAddedInBlock.erase(it);
         }
 
+        // Remove all tx hashes, that were marked as reissued script from the mapReissuedTx.
+        // Without this check, you wouldn't be able to reissue for those assets again, as this maps block it
         for (auto tx : blockConnecting.vtx) {
             uint256 txHash = tx->GetHash();
             if (mapReissuedTx.count(txHash)) {
@@ -2998,27 +3064,33 @@ bool static ConnectTip(CValidationState& state, const CChainParams& chainparams,
                 mapReissuedTx.erase(txHash);
             }
         }
-        /** RTM END */
+        int64_t nTimeAssetsEnd = GetTimeMicros(); nTimeAssetTasks += nTimeAssetsEnd - nTimeAssetsStart;
+        LogPrint(BCLog::BENCH, "  - Compute Asset Tasks total: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeAssetsEnd - nTimeAssetsStart) * MILLI, nTimeAssetsEnd * MICRO, nTimeAssetsEnd * MILLI / nBlocksTotal);
+        /** MYNT END */
 
         nTime3 = GetTimeMicros(); nTimeConnectTotal += nTime3 - nTime2;
         LogPrint(BCLog::BENCH, "  - Connect total: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime3 - nTime2) * MILLI, nTimeConnectTotal * MICRO, nTimeConnectTotal * MILLI / nBlocksTotal);
         bool flushed = view.Flush();
         assert(flushed);
+        nTime4 = GetTimeMicros(); nTimeFlush += nTime4 - nTime3;
+        LogPrint(BCLog::BENCH, "  - Flush RVN: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
 
-        /** RTM START */
-        bool assetFlushed = assetCache.Flush(true);
+        /** MYNT START */
+        nTimeAssetsFlush = GetTimeMicros();
+        bool assetFlushed = assetCache.Flush();
         assert(assetFlushed);
-        /** RTM END */
+        int64_t nTimeAssetFlushFinished = GetTimeMicros(); nTimeAssetFlush += nTimeAssetFlushFinished - nTimeAssetsFlush;
+        LogPrint(BCLog::BENCH, "  - Flush Assets: %.2fms [%.2fs (%.2fms/blk)]\n", (nTimeAssetFlushFinished - nTimeAssetsFlush) * MILLI, nTimeAssetFlush * MICRO, nTimeAssetFlush * MILLI / nBlocksTotal);
+        /** MYNT END */
     }
-    int64_t nTime4 = GetTimeMicros(); nTimeFlush += nTime4 - nTime3;
-    LogPrint(BCLog::BENCH, "  - Flush: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime4 - nTime3) * MILLI, nTimeFlush * MICRO, nTimeFlush * MILLI / nBlocksTotal);
+
     // Write the chain state to disk, if necessary.
     if (!FlushStateToDisk(chainparams, state, FLUSH_STATE_IF_NEEDED))
         return false;
     int64_t nTime5 = GetTimeMicros(); nTimeChainState += nTime5 - nTime4;
     LogPrint(BCLog::BENCH, "  - Writing chainstate: %.2fms [%.2fs (%.2fms/blk)]\n", (nTime5 - nTime4) * MILLI, nTimeChainState * MICRO, nTimeChainState * MILLI / nBlocksTotal);
     // Remove conflicting transactions from the mempool.;
-    mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight, afterNewAsset);
+    mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight, setNewAssetsAddedInBlock);
     disconnectpool.removeForBlock(blockConnecting.vtx);
     // Update chainActive & related variables.
     UpdateTip(pindexNew, chainparams);
@@ -3615,23 +3687,23 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     // Check transactions
     CAmount blockReward = GetBlockSubsidy(nHeight, consensusParams);
-
     FounderPayment founderPayment = consensusParams.nFounderPayment;
     CAmount founderReward = founderPayment.getFounderPaymentAmount(nHeight, blockReward);
     int founderStartHeight = founderPayment.getStartBlock();
     bool founderTransaction = founderReward == 0;// if founder reward is 0 no need to check
-     for (const auto& tx : block.vtx) {
-         if (!CheckTransaction(*tx, state, passets, true)) {
-             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
+    auto currentActiveAssetCache = GetCurrentAssetCache();    
+    for (const auto& tx : block.vtx) {
+         if (!CheckTransaction(*tx, state, currentActiveAssetCache, true, false, fCheckAssetDuplicate, fForceDuplicateCheck)) {
+           return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s %s", tx->GetHash().ToString(), state.GetDebugMessage(), state.GetRejectReason()));
          }
          if(nHeight > founderStartHeight) {
             if(!founderTransaction && founderPayment.IsBlockPayeeValid(*tx,nHeight,blockReward)) {
                 founderTransaction = true;
             }
-        } else {
+         } else {
             founderTransaction = true;
-        }
+         }
      }
     if(!founderTransaction) {
        LogPrintf("CheckBlock() -- Founder payment of %s is not found\n", block.txoutFounder.ToString().c_str());
@@ -3993,10 +4065,10 @@ static bool AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CValidation
     }
 
     if (fNewBlock) *fNewBlock = true;
-
-    // Dont force the CheckBLock asset duplciates when checking from this state
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    // Dont force the CheckBlock asset duplciates when checking from this state
     if (!CheckBlock(block, state, chainparams.GetConsensus(), pindex->nHeight, true, true, true, false) ||
-        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, passets)) {
+        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev, currentActiveAssetCache)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -4076,9 +4148,9 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     indexDummy.pprev = pindexPrev;
     indexDummy.nHeight = pindexPrev->nHeight + 1;
 
-    /** RTM START */
-    CAssetsCache assetCache(*passets);
-    /** RTM END */
+    /** MYNT START */
+    CAssetsCache assetCache = *GetCurrentAssetCache();
+    /** MYNT END */
 
     // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, chainparams, pindexPrev, GetAdjustedTime()))
@@ -4087,7 +4159,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
     if (!ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindexPrev, &assetCache))
         return error("%s: Consensus::ContextualCheckBlock: %s", __func__, FormatStateMessage(state));
-    if (!ConnectBlock(block, state, &indexDummy, viewNew, chainparams, &assetCache, true)) /** RTM START */ /*Add asset to function */ /** RTM END*/
+    if (!ConnectBlock(block, state, &indexDummy, viewNew, chainparams, &assetCache, true)) /** MYNT START */ /*Add asset to function */ /** MYNT END*/
         return error("%s: Consensus::ConnectBlock: %s", __func__, FormatStateMessage(state));
     assert(state.IsValid());
 
@@ -4407,6 +4479,9 @@ bool static LoadBlockIndexDB(const CChainParams& chainparams)
     pblocktree->ReadFlag("txindex", fTxIndex);
     LogPrintf("%s: transaction index %s\n", __func__, fTxIndex ? "enabled" : "disabled");
 
+    pblocktree->ReadFlag("assetindex", fAssetIndex);
+    LogPrintf("%s: asset index %s\n", __func__, fAssetIndex ? "enabled" : "disabled");
+
     // Check whether we have an address index
     pblocktree->ReadFlag("addressindex", fAddressIndex);
     LogPrintf("%s: address index %s\n", __func__, fAddressIndex ? "enabled" : "disabled");
@@ -4478,7 +4553,8 @@ bool CVerifyDB::VerifyDB(const CChainParams& chainparams, CCoinsView *coinsview,
     CValidationState state;
     int reportDone = 0;
 
-    CAssetsCache assetCache(*passets);
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    CAssetsCache assetCache(*currentActiveAssetCache);
     LogPrintf("[0%%]...");
     for (CBlockIndex* pindex = chainActive.Tip(); pindex && pindex->pprev; pindex = pindex->pprev)
     {
@@ -4582,7 +4658,8 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
     LOCK(cs_main);
 
     CCoinsViewCache cache(view);
-    CAssetsCache assetsCache(*passets);
+    auto currentActiveAssetCache = GetCurrentAssetCache();
+    CAssetsCache assetsCache(*currentActiveAssetCache);
 
     std::vector<uint256> hashHeads = view->GetHeadBlocks();
     if (hashHeads.empty()) return true; // We're already in a consistent state.
@@ -4639,7 +4716,7 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
 
     cache.SetBestBlock(pindexNew->GetBlockHash());
     cache.Flush();
-    assetsCache.Flush(true);
+    assetsCache.Flush();
     uiInterface.ShowProgress("", 100, false);
     return true;
 }
@@ -4789,6 +4866,11 @@ bool LoadBlockIndex(const CChainParams& chainparams)
         fTxIndex = gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX);
         pblocktree->WriteFlag("txindex", fTxIndex);
         LogPrintf("%s: transaction index %s\n", __func__, fTxIndex ? "enabled" : "disabled");
+
+        // Use the provided setting for -assetindex in the new database
+        fAssetIndex = gArgs.GetBoolArg("-assetindex", DEFAULT_ASSETINDEX);
+        pblocktree->WriteFlag("assetindex", fAssetIndex);
+        LogPrintf("%s: asset index %s\n", __func__, fAssetIndex ? "enabled" : "disabled");
 
         // Use the provided setting for -addressindex in the new database
         fAddressIndex = gArgs.GetBoolArg("-addressindex", DEFAULT_ADDRESSINDEX);
@@ -5311,7 +5393,7 @@ double GuessVerificationProgress(const ChainTxData& data, CBlockIndex *pindex) {
     return pindex->nChainTx / fTxTotal;
 }
 
-/** RTM START */
+/** MYNT START */
 bool AreAssetsDeployed() {
 	return chainActive.Height() >= Params().getStartAssetBlock();
 }
@@ -5319,7 +5401,12 @@ bool AreAssetsDeployed() {
 bool IsDGWActive(unsigned int nBlockNumber) {
     return nBlockNumber >= Params().DGWActivationBlock();
 }
-/** RTM END */
+
+CAssetsCache* GetCurrentAssetCache()
+{
+    return passets;
+}
+/** MYNT END */
 
 class CMainCleanup
 {

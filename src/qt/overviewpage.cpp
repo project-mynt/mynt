@@ -1,12 +1,12 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "overviewpage.h"
 #include "ui_overviewpage.h"
 
-#include "raptoreumunits.h"
+#include "myntunits.h"
 #include "clientmodel.h"
 #include "guiconstants.h"
 #include "guiutil.h"
@@ -37,7 +37,7 @@ class TxViewDelegate : public QAbstractItemDelegate
     Q_OBJECT
 public:
     explicit TxViewDelegate(const PlatformStyle *_platformStyle, QObject *parent=nullptr):
-        QAbstractItemDelegate(parent), unit(RaptoreumUnits::RTM),
+        QAbstractItemDelegate(parent), unit(MyntUnits::MYNT),
         platformStyle(_platformStyle)
     {
 
@@ -140,7 +140,7 @@ class AssetViewDelegate : public QAbstractItemDelegate
 Q_OBJECT
 public:
     explicit AssetViewDelegate(const PlatformStyle *_platformStyle, QObject *parent=nullptr):
-            QAbstractItemDelegate(parent), unit(RaptoreumUnits::RTM),
+            QAbstractItemDelegate(parent), unit(MyntUnits::MYNT),
             platformStyle(_platformStyle)
     {
 
@@ -276,7 +276,7 @@ public:
 
 };
 #include "overviewpage.moc"
-#include "raptoreumgui.h"
+#include "myntgui.h"
 #include <QFontDatabase>
 
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
@@ -345,7 +345,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     /** Update the labels colors */
     ui->assetBalanceLabel->setStyleSheet(STRING_LABEL_COLOR);
-    ui->rvnBalancesLabel->setStyleSheet(STRING_LABEL_COLOR);
+    ui->myntBalancesLabel->setStyleSheet(STRING_LABEL_COLOR);
     ui->labelBalanceText->setStyleSheet(STRING_LABEL_COLOR);
     ui->labelPendingText->setStyleSheet(STRING_LABEL_COLOR);
     ui->labelImmatureText->setStyleSheet(STRING_LABEL_COLOR);
@@ -355,7 +355,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->recentTransactionsLabel->setStyleSheet(STRING_LABEL_COLOR);
 
     /** Update the labels font */
-    ui->rvnBalancesLabel->setFont(GUIUtil::getTopLabelFont());
+    ui->myntBalancesLabel->setFont(GUIUtil::getTopLabelFont());
     ui->assetBalanceLabel->setFont(GUIUtil::getTopLabelFont());
     ui->recentTransactionsLabel->setFont(GUIUtil::getTopLabelFont());
 
@@ -448,7 +448,8 @@ void OverviewPage::handleAssetClicked(const QModelIndex &index)
             issueUnique->setDisabled(false);
             reissue->setDisabled(true);
             CNewAsset asset;
-            if (passets && passets->GetAssetMetaDataIfExists(name.toStdString(), asset))
+            auto currentActiveAssetCache = GetCurrentAssetCache();
+            if (currentActiveAssetCache && currentActiveAssetCache->GetAssetMetaDataIfExists(name.toStdString(), asset))
                 if (asset.nReissuable)
                     reissue->setDisabled(false);
 
@@ -493,14 +494,14 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     currentWatchOnlyBalance = watchOnlyBalance;
     currentWatchUnconfBalance = watchUnconfBalance;
     currentWatchImmatureBalance = watchImmatureBalance;
-    ui->labelBalance->setText(RaptoreumUnits::formatWithUnit(unit, balance, false, RaptoreumUnits::separatorAlways));
-    ui->labelUnconfirmed->setText(RaptoreumUnits::formatWithUnit(unit, unconfirmedBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelImmature->setText(RaptoreumUnits::formatWithUnit(unit, immatureBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelTotal->setText(RaptoreumUnits::formatWithUnit(unit, balance + unconfirmedBalance + immatureBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelWatchAvailable->setText(RaptoreumUnits::formatWithUnit(unit, watchOnlyBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelWatchPending->setText(RaptoreumUnits::formatWithUnit(unit, watchUnconfBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelWatchImmature->setText(RaptoreumUnits::formatWithUnit(unit, watchImmatureBalance, false, RaptoreumUnits::separatorAlways));
-    ui->labelWatchTotal->setText(RaptoreumUnits::formatWithUnit(unit, watchOnlyBalance + watchUnconfBalance + watchImmatureBalance, false, RaptoreumUnits::separatorAlways));
+    ui->labelBalance->setText(MyntUnits::formatWithUnit(unit, balance, false, MyntUnits::separatorAlways));
+    ui->labelUnconfirmed->setText(MyntUnits::formatWithUnit(unit, unconfirmedBalance, false, MyntUnits::separatorAlways));
+    ui->labelImmature->setText(MyntUnits::formatWithUnit(unit, immatureBalance, false, MyntUnits::separatorAlways));
+    ui->labelTotal->setText(MyntUnits::formatWithUnit(unit, balance + unconfirmedBalance + immatureBalance, false, MyntUnits::separatorAlways));
+    ui->labelWatchAvailable->setText(MyntUnits::formatWithUnit(unit, watchOnlyBalance, false, MyntUnits::separatorAlways));
+    ui->labelWatchPending->setText(MyntUnits::formatWithUnit(unit, watchUnconfBalance, false, MyntUnits::separatorAlways));
+    ui->labelWatchImmature->setText(MyntUnits::formatWithUnit(unit, watchImmatureBalance, false, MyntUnits::separatorAlways));
+    ui->labelWatchTotal->setText(MyntUnits::formatWithUnit(unit, watchOnlyBalance + watchUnconfBalance + watchImmatureBalance, false, MyntUnits::separatorAlways));
 
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users
@@ -576,7 +577,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("RTM")
+    // update the display unit, to not use the default ("MYNT")
     updateDisplayUnit();
 }
 
@@ -625,7 +626,7 @@ void OverviewPage::showAssets()
         ui->assetBalanceLabel->hide();
         ui->labelAssetStatus->hide();
 
-        // This keeps the RTM balance grid from expanding and looking terrible when asset balance is hidden
+        // This keeps the MYNT balance grid from expanding and looking terrible when asset balance is hidden
         ui->assetVerticalSpaceWidget->show();
         ui->assetVerticalSpaceWidget2->show();
     }

@@ -1,5 +1,5 @@
-#ifndef RAPTOREUM_QT_TEST_WALLETTESTS_H
-#define RAPTOREUM_QT_TEST_WALLETTESTS_H
+#ifndef MYNT_QT_TEST_WALLETTESTS_H
+#define MYNT_QT_TEST_WALLETTESTS_H
 
 #include <QObject>
 #include <QTest>
@@ -12,4 +12,4 @@ private Q_SLOTS:
     void walletTests();
 };
 
-#endif // RAPTOREUM_QT_TEST_WALLETTESTS_H
+#endif // MYNT_QT_TEST_WALLETTESTS_H

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test spending coinbase transactions.
@@ -13,11 +13,11 @@ in the next block are accepted into the memory pool,
 but less mature coinbase spends are NOT.
 """
 
-from test_framework.test_framework import RaptoreumTestFramework
+from test_framework.test_framework import MyntTestFramework
 from test_framework.util import *
 
 # Create one-input, one-output, no-fee transaction:
-class MempoolSpendCoinbaseTest(RaptoreumTestFramework):
+class MempoolSpendCoinbaseTest(MyntTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [["-checkmempool"]]

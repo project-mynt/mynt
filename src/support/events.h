@@ -1,10 +1,10 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_SUPPORT_EVENTS_H
-#define RAPTOREUM_SUPPORT_EVENTS_H
+#ifndef MYNT_SUPPORT_EVENTS_H
+#define MYNT_SUPPORT_EVENTS_H
 
 #include <ios>
 #include <memory>
@@ -54,4 +54,4 @@ inline raii_evhttp_connection obtain_evhttp_connection_base(struct event_base* b
     return result;
 }
 
-#endif // RAPTOREUM_SUPPORT_EVENTS_H
+#endif // MYNT_SUPPORT_EVENTS_H

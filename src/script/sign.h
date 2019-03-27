@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_SCRIPT_SIGN_H
-#define RAPTOREUM_SCRIPT_SIGN_H
+#ifndef MYNT_SCRIPT_SIGN_H
+#define MYNT_SCRIPT_SIGN_H
 
 #include "script/interpreter.h"
 
@@ -82,4 +82,4 @@ SignatureData CombineSignatures(const CScript& scriptPubKey, const BaseSignature
 SignatureData DataFromTransaction(const CMutableTransaction& tx, unsigned int nIn);
 void UpdateTransaction(CMutableTransaction& tx, unsigned int nIn, const SignatureData& data);
 
-#endif // RAPTOREUM_SCRIPT_SIGN_H
+#endif // MYNT_SCRIPT_SIGN_H

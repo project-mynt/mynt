@@ -6,13 +6,13 @@ import subprocess
 import json
 
 
-#Set this to your raptoreum-cli program
-cli = "raptoreum-cli"
+#Set this to your mynt-cli program
+cli = "mynt-cli"
 
 mode = "-testnet"
 mode = ""
 rpc_port = 18766
-#Set this information in your raptoreum.conf file (in datadir, not testnet3)
+#Set this information in your mynt.conf file (in datadir, not testnet3)
 rpc_user = 'rpcuser'
 rpc_pass = 'rpcpass555'
 
@@ -107,8 +107,8 @@ for i in range(23500,blockheight):
         for vout in tx_detail.get('vout'):
             #print("vout: " + str(vout.get('value')))
             #print(vout.get('scriptPubKey').get('asm'))
-            if (vout.get('scriptPubKey').get('asm')[86:98] == "OP_RTM_ASSET"):
-                #print("Found OP_RTM_ASSET")
+            if (vout.get('scriptPubKey').get('asm')[86:98] == "OP_MYNT_ASSET"):
+                #print("Found OP_MYNT_ASSET")
                 #print(vout.get('scriptPubKey').get('hex'))
                 asset_script = decode_script(vout.get('scriptPubKey').get('hex'))
                 asset_handler(asset_script)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 The Pigeon Core developers
+ * Copyright (c) 2018 The Mynt Core developers
  * Distributed under the MIT software license, see the accompanying
  * file COPYING or http://www.opensource.org/licenses/mit-license.php.
  * 
@@ -17,25 +17,26 @@
 #include "base58.h"
 
 CAmount FounderPayment::getFounderPaymentAmount(int blockHeight, CAmount blockReward) {
-	 if (blockHeight <= rewardStructure.blockHeight){
+	 if (blockHeight <= startBlock){
 		 return 0;
 	 }
-
-	 return blockReward * rewardStructure.rewardPercentage / 100;
+	 for(int i = 0; i < rewardStructures.size(); i++) {
+		 FounderRewardStructure rewardStructure = rewardStructures[i];
+		 if(blockHeight <= rewardStructure.blockHeight) {
+			 return blockReward * rewardStructure.rewardPercentage / 100;
+		 }
+	 }
+	 return 0;
 }
 
 void FounderPayment::FillFounderPayment(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutFounderRet) {
     // make sure it's not filled yet
 	txoutFounderRet = CTxOut();
-	CAmount founderPayment = getFounderPaymentAmount(nBlockHeight, blockReward);
-	if(founderPayment == 0) {
-		return; // don't fill block with founder for 0 founder reward
-	}
     CScript payee;
     // fill payee with the founder address
     payee = GetScriptForDestination(DecodeDestination(founderAddress));
     // GET FOUNDER PAYMENT VARIABLES SETUP
-
+    CAmount founderPayment = getFounderPaymentAmount(nBlockHeight, blockReward);
     // split reward between miner ...
     txNew.vout[0].nValue -= founderPayment;
     txoutFounderRet = CTxOut(founderPayment, payee);
@@ -48,9 +49,6 @@ bool FounderPayment::IsBlockPayeeValid(const CTransaction& txNew, const int heig
 	// fill payee with the founder address
 	payee = GetScriptForDestination(DecodeDestination(founderAddress));
 	const CAmount founderReward = getFounderPaymentAmount(height, blockReward);
-	if(founderReward == 0) {
-		return true; // transaction is valid without founder transaction if founder reward is 0
-	}
 	BOOST_FOREACH(const CTxOut& out, txNew.vout) {
 		if(out.scriptPubKey == payee && out.nValue >= founderReward) {
 			return true;

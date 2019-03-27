@@ -1,11 +1,11 @@
 Benchmarking
 ============
 
-Raptoreum Core has an internal benchmarking framework, with benchmarks
+Mynt Core has an internal benchmarking framework, with benchmarks
 for cryptographic algorithms such as SHA1, SHA256, SHA512 and RIPEMD160. As well as the rolling bloom filter.
 
-After compiling raptoreum-core, the benchmarks can be run with:
-`src/bench/bench_raptoreum`
+After compiling mynt-core, the benchmarks can be run with:
+`src/bench/bench_mynt`
 
 The output will look similar to:
 ```

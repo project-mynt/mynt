@@ -1,13 +1,13 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_PAYMENTSERVER_H
-#define RAPTOREUM_QT_PAYMENTSERVER_H
+#ifndef MYNT_QT_PAYMENTSERVER_H
+#define MYNT_QT_PAYMENTSERVER_H
 
 // This class handles payment requests from clicking on
-// raptoreum: URIs
+// mynt: URIs
 //
 // This is somewhat tricky, because we have to deal with
 // the situation where the user clicks on a link during
@@ -146,4 +146,4 @@ private:
     OptionsModel *optionsModel;
 };
 
-#endif // RAPTOREUM_QT_PAYMENTSERVER_H
+#endif // MYNT_QT_PAYMENTSERVER_H

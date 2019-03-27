@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2017 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -185,14 +185,14 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
         if (!MoneyRange(nValueOut))
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-txouttotal-toolarge");
 
-        /** RTM START */
+        /** MYNT START */
         bool isAsset = false;
         int nType;
         bool fIsOwner;
         if (txout.scriptPubKey.IsAssetScript(nType, fIsOwner))
             isAsset = true;
 
-        // Make sure that all asset tx have a nValue of zero RTM
+        // Make sure that all asset tx have a nValue of zero MYNT
         if (isAsset && txout.nValue != 0)
             return state.DoS(100, false, REJECT_INVALID, "bad-txns-asset-tx-amount-isn't-zero");
 
@@ -231,7 +231,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
             }
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     if (fCheckDuplicateInputs) {
         std::set<COutPoint> vInOutPoints;
@@ -254,7 +254,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
                 return state.DoS(10, false, REJECT_INVALID, "bad-txns-prevout-null");
     }
 
-    /** RTM START */
+    /** MYNT START */
     if (AreAssetsDeployed()) {
         if (assetCache) {
             if (tx.IsNewAsset()) {
@@ -287,8 +287,9 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
                 if (!ReissueAssetFromTransaction(tx, reissue, strAddress))
                     return state.DoS(100, false, REJECT_INVALID, "bad-txns-reissue-asset");
 
-                if (!reissue.IsValid(strError, *assetCache))
+                if (!reissue.IsValid(strError, *assetCache, false)) {
                     return state.DoS(100, false, REJECT_INVALID, "bad-txns-reissue-" + strError);
+                }
 
             } else if (tx.IsNewUniqueAsset()) {
 
@@ -313,7 +314,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
                 }
             } else {
                 // Fail if transaction contains any non-transfer asset scripts and hasn't conformed to one of the
-                // above transaction types.  Also fail if it contains OP_RTM_ASSET opcode but wasn't a valid script.
+                // above transaction types.  Also fail if it contains OP_MYNT_ASSET opcode but wasn't a valid script.
                 for (auto out : tx.vout) {
                     int nType;
                     bool _isOwner;
@@ -322,7 +323,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
                             return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-asset-transaction");
                         }
                     } else {
-                        if (out.scriptPubKey.Find(OP_RTM_ASSET) > 0) {
+                        if (out.scriptPubKey.Find(OP_MYNT_ASSET) > 0) {
                             return state.DoS(100, false, REJECT_INVALID, "bad-txns-bad-asset-script");
                         }
                     }
@@ -330,7 +331,7 @@ bool CheckTransaction(const CTransaction& tx, CValidationState &state, CAssetsCa
             }
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     return true;
 }
@@ -427,6 +428,7 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
             else
                 totalOutputs.insert(make_pair(transfer.strName, transfer.nAmount));
 
+            auto currentActiveAssetCache = GetCurrentAssetCache();
             if (!fRunningUnitTests) {
                 if (IsAssetNameAnOwner(transfer.strName)) {
                     if (transfer.nAmount != OWNER_ASSET_AMOUNT)
@@ -434,7 +436,7 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
                 } else {
                     // For all other types of assets, make sure they are sending the right type of units
                     CNewAsset asset;
-                    if (!passets->GetAssetMetaDataIfExists(transfer.strName, asset))
+                    if (!currentActiveAssetCache->GetAssetMetaDataIfExists(transfer.strName, asset))
                         return state.DoS(100, false, REJECT_INVALID, "bad-txns-transfer-asset-not-exist");
 
                     if (asset.strName != transfer.strName)
@@ -451,8 +453,9 @@ bool Consensus::CheckTxAssets(const CTransaction& tx, CValidationState& state, c
                 return state.DoS(100, false, REJECT_INVALID, "bad-tx-asset-reissue-bad-deserialize");
 
             if (!fRunningUnitTests) {
+                auto currentActiveAssetCache = GetCurrentAssetCache();
                 std::string strError;
-                if (!reissue.IsValid(strError, *passets)) {
+                if (!reissue.IsValid(strError, *currentActiveAssetCache)) {
                     return state.DoS(100, false, REJECT_INVALID,
                                      "bad-txns" + strError);
                 }

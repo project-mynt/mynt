@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_RECENTREQUESTSTABLEMODEL_H
-#define RAPTOREUM_QT_RECENTREQUESTSTABLEMODEL_H
+#ifndef MYNT_QT_RECENTREQUESTSTABLEMODEL_H
+#define MYNT_QT_RECENTREQUESTSTABLEMODEL_H
 
 #include "walletmodel.h"
 
@@ -53,7 +53,7 @@ private:
     Qt::SortOrder order;
 };
 
-/** Model for list of recently generated payment requests / raptoreum: URIs.
+/** Model for list of recently generated payment requests / mynt: URIs.
  * Part of wallet model.
  */
 class RecentRequestsTableModel: public QAbstractTableModel
@@ -105,4 +105,4 @@ private:
     QString getAmountTitle();
 };
 
-#endif // RAPTOREUM_QT_RECENTREQUESTSTABLEMODEL_H
+#endif // MYNT_QT_RECENTREQUESTSTABLEMODEL_H

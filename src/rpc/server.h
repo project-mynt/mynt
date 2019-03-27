@@ -1,11 +1,11 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_RPCSERVER_H
-#define RAPTOREUM_RPCSERVER_H
+#ifndef MYNT_RPCSERVER_H
+#define MYNT_RPCSERVER_H
 
 #include "amount.h"
 #include "rpc/protocol.h"
@@ -138,7 +138,7 @@ public:
 };
 
 /**
- * Raptoreum RPC command dispatcher.
+ * Mynt RPC command dispatcher.
  */
 class CRPCTable
 {
@@ -197,4 +197,4 @@ std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 // Retrieves any serialization flags requested in command line argument
 int RPCSerializationFlags();
 
-#endif // RAPTOREUM_RPCSERVER_H
+#endif // MYNT_RPCSERVER_H

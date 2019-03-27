@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_NETMESSAGEMAKER_H
-#define RAPTOREUM_NETMESSAGEMAKER_H
+#ifndef MYNT_NETMESSAGEMAKER_H
+#define MYNT_NETMESSAGEMAKER_H
 
 #include "net.h"
 #include "serialize.h"
@@ -34,4 +34,4 @@ private:
     const int nVersion;
 };
 
-#endif // RAPTOREUM_NETMESSAGEMAKER_H
+#endif // MYNT_NETMESSAGEMAKER_H

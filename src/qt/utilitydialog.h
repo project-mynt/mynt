@@ -1,15 +1,15 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_UTILITYDIALOG_H
-#define RAPTOREUM_QT_UTILITYDIALOG_H
+#ifndef MYNT_QT_UTILITYDIALOG_H
+#define MYNT_QT_UTILITYDIALOG_H
 
 #include <QDialog>
 #include <QObject>
 
-class RaptoreumGUI;
+class MyntGUI;
 
 namespace Ui {
     class HelpMessageDialog;
@@ -43,10 +43,10 @@ class ShutdownWindow : public QWidget
 
 public:
     explicit ShutdownWindow(QWidget *parent=0, Qt::WindowFlags f=0);
-    static QWidget *showShutdownWindow(RaptoreumGUI *window);
+    static QWidget *showShutdownWindow(MyntGUI *window);
 
 protected:
     void closeEvent(QCloseEvent *event);
 };
 
-#endif // RAPTOREUM_QT_UTILITYDIALOG_H
+#endif // MYNT_QT_UTILITYDIALOG_H

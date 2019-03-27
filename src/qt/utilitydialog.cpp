@@ -1,17 +1,17 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "utilitydialog.h"
 
 #include "ui_helpmessagedialog.h"
 
-#include "raptoreumgui.h"
+#include "myntgui.h"
 #include "clientmodel.h"
 #include "guiconstants.h"
 #include "intro.h"
@@ -71,14 +71,14 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, bool about) :
     } else {
         setWindowTitle(tr("Command-line options"));
         QString header = tr("Usage:") + "\n" +
-            "  raptoreum-qt [" + tr("command-line options") + "]                     " + "\n";
+            "  mynt-qt [" + tr("command-line options") + "]                     " + "\n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();
         cursor.insertText(header);
         cursor.insertBlock();
 
-        std::string strUsage = HelpMessage(HMM_RAPTOREUM_QT);
+        std::string strUsage = HelpMessage(HMM_MYNT_QT);
         const bool showDebug = gArgs.GetBoolArg("-help-debug", false);
         strUsage += HelpMessageGroup(tr("UI Options:").toStdString());
         if (showDebug) {
@@ -91,7 +91,7 @@ HelpMessageDialog::HelpMessageDialog(QWidget *parent, bool about) :
         strUsage += HelpMessageOpt("-splash", strprintf(tr("Show splash screen on startup (default: %u)").toStdString(), DEFAULT_SPLASHSCREEN));
         strUsage += HelpMessageOpt("-resetguisettings", tr("Reset all settings changed in the GUI").toStdString());
         if (showDebug) {
-            strUsage += HelpMessageOpt("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", RaptoreumGUI::DEFAULT_UIPLATFORM));
+            strUsage += HelpMessageOpt("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", MyntGUI::DEFAULT_UIPLATFORM));
         }
         QString coreOptions = QString::fromStdString(strUsage);
         text = version + "\n" + header + "\n" + coreOptions;
@@ -172,7 +172,7 @@ ShutdownWindow::ShutdownWindow(QWidget *parent, Qt::WindowFlags f):
     setLayout(layout);
 }
 
-QWidget *ShutdownWindow::showShutdownWindow(RaptoreumGUI *window)
+QWidget *ShutdownWindow::showShutdownWindow(MyntGUI *window)
 {
     if (!window)
         return nullptr;

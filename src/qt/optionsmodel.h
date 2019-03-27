@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_OPTIONSMODEL_H
-#define RAPTOREUM_QT_OPTIONSMODEL_H
+#ifndef MYNT_QT_OPTIONSMODEL_H
+#define MYNT_QT_OPTIONSMODEL_H
 
 #include "amount.h"
 
@@ -14,7 +14,7 @@ QT_BEGIN_NAMESPACE
 class QNetworkProxy;
 QT_END_NAMESPACE
 
-/** Interface from Qt to configuration data structure for Raptoreum client.
+/** Interface from Qt to configuration data structure for Mynt client.
    To Qt, the options are presented as a list with the different options
    laid out vertically.
    This can be changed to a tree once the settings become sufficiently
@@ -39,7 +39,7 @@ public:
         ProxyUseTor,            // bool
         ProxyIPTor,             // QString
         ProxyPortTor,           // int
-        DisplayUnit,            // RaptoreumUnits::Unit
+        DisplayUnit,            // MyntUnits::Unit
         ThirdPartyTxUrls,       // QString
         Language,               // QString
         CoinControlFeatures,    // bool
@@ -86,10 +86,10 @@ private:
     int nDisplayUnit;
     QString strThirdPartyTxUrls;
     bool fCoinControlFeatures;
-    /** RTM START*/
+    /** MYNT START*/
     bool fCustomFeeFeatures;
     bool fDarkModeEnabled;
-    /** RTM END*/
+    /** MYNT END*/
     /* settings that were overridden by command-line */
     QString strOverriddenByCommandLine;
 
@@ -105,4 +105,4 @@ Q_SIGNALS:
     void hideTrayIconChanged(bool);
 };
 
-#endif // RAPTOREUM_QT_OPTIONSMODEL_H
+#endif // MYNT_QT_OPTIONSMODEL_H

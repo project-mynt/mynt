@@ -1,10 +1,10 @@
 // Copyright (c) 2014-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_CRYPTO_SHA1_H
-#define RAPTOREUM_CRYPTO_SHA1_H
+#ifndef MYNT_CRYPTO_SHA1_H
+#define MYNT_CRYPTO_SHA1_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -26,4 +26,4 @@ public:
     CSHA1& Reset();
 };
 
-#endif // RAPTOREUM_CRYPTO_SHA1_H
+#endif // MYNT_CRYPTO_SHA1_H

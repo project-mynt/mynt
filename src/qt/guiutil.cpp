@@ -1,12 +1,12 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "guiutil.h"
 
-#include "raptoreumaddressvalidator.h"
-#include "raptoreumunits.h"
+#include "myntaddressvalidator.h"
+#include "myntunits.h"
 #include "qvalidatedlineedit.h"
 #include "walletmodel.h"
 
@@ -203,11 +203,11 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 #if QT_VERSION >= 0x040700
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a Raptoreum address (e.g. %1)").arg(
+    widget->setPlaceholderText(QObject::tr("Enter a Mynt address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
 #endif
-    widget->setValidator(new RaptoreumAddressEntryValidator(parent));
-    widget->setCheckValidator(new RaptoreumAddressCheckValidator(parent));
+    widget->setValidator(new MyntAddressEntryValidator(parent));
+    widget->setCheckValidator(new MyntAddressCheckValidator(parent));
 }
 
 void setupAmountWidget(QLineEdit *widget, QWidget *parent)
@@ -219,10 +219,10 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
     widget->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
-bool parseRaptoreumURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parseMyntURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    // return if URI is not valid or is no raptoreum: URI
-    if(!uri.isValid() || uri.scheme() != QString("raptoreum"))
+    // return if URI is not valid or is no mynt: URI
+    if(!uri.isValid() || uri.scheme() != QString("mynt"))
         return false;
 
     SendCoinsRecipient rv;
@@ -262,7 +262,7 @@ bool parseRaptoreumURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!RaptoreumUnits::parse(RaptoreumUnits::RTM, i->second, &rv.amount))
+                if(!MyntUnits::parse(MyntUnits::MYNT, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -280,28 +280,28 @@ bool parseRaptoreumURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parseRaptoreumURI(QString uri, SendCoinsRecipient *out)
+bool parseMyntURI(QString uri, SendCoinsRecipient *out)
 {
-    // Convert raptoreum:// to raptoreum:
+    // Convert mynt:// to mynt:
     //
-    //    Cannot handle this later, because raptoreum:// will cause Qt to see the part after // as host,
+    //    Cannot handle this later, because mynt:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("raptoreum://", Qt::CaseInsensitive))
+    if(uri.startsWith("mynt://", Qt::CaseInsensitive))
     {
-        uri.replace(0, 10, "raptoreum:");
+        uri.replace(0, 10, "mynt:");
     }
     QUrl uriInstance(uri);
-    return parseRaptoreumURI(uriInstance, out);
+    return parseMyntURI(uriInstance, out);
 }
 
-QString formatRaptoreumURI(const SendCoinsRecipient &info)
+QString formatMyntURI(const SendCoinsRecipient &info)
 {
-    QString ret = QString("raptoreum:%1").arg(info.address);
+    QString ret = QString("mynt:%1").arg(info.address);
     int paramCount = 0;
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(RaptoreumUnits::format(RaptoreumUnits::RTM, info.amount, false, RaptoreumUnits::separatorNever));
+        ret += QString("?amount=%1").arg(MyntUnits::format(MyntUnits::MYNT, info.amount, false, MyntUnits::separatorNever));
         paramCount++;
     }
 
@@ -491,9 +491,9 @@ void openDebugLogfile()
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathDebug)));
 }
 
-bool openRaptoreumConf()
+bool openMyntConf()
 {
-    boost::filesystem::path pathConfig = GetConfigFile(RAPTOREUM_CONF_FILENAME);
+    boost::filesystem::path pathConfig = GetConfigFile(MYNT_CONF_FILENAME);
 
     /* Create the file */
     boost::filesystem::ofstream configFile(pathConfig, std::ios_base::app);
@@ -503,7 +503,7 @@ bool openRaptoreumConf()
     
     configFile.close();
     
-    /* Open raptoreum.conf with the associated application */
+    /* Open mynt.conf with the associated application */
     return QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
 }
 
@@ -692,15 +692,15 @@ fs::path static StartupShortcutPath()
 {
     std::string chain = ChainNameFromCommandLine();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Raptoreum.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Mynt.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Raptoreum (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Raptoreum (%s).lnk", chain);
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Mynt (testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Mynt (%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for Raptoreum*.lnk
+    // check for Mynt*.lnk
     return fs::exists(StartupShortcutPath());
 }
 
@@ -790,8 +790,8 @@ fs::path static GetAutostartFilePath()
 {
     std::string chain = ChainNameFromCommandLine();
     if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "raptoreum.desktop";
-    return GetAutostartDir() / strprintf("raptoreum-%s.lnk", chain);
+        return GetAutostartDir() / "mynt.desktop";
+    return GetAutostartDir() / strprintf("mynt-%s.lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
@@ -831,13 +831,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         if (!optionFile.good())
             return false;
         std::string chain = ChainNameFromCommandLine();
-        // Write a raptoreum.desktop file to the autostart directory:
+        // Write a mynt.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=Raptoreum\n";
+            optionFile << "Name=Mynt\n";
         else
-            optionFile << strprintf("Name=Raptoreum (%s)\n", chain);
+            optionFile << strprintf("Name=Mynt (%s)\n", chain);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -863,7 +863,7 @@ LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef
         return nullptr;
     }
     
-    // loop through the list of startup items and try to find the raptoreum app
+    // loop through the list of startup items and try to find the mynt app
     for(int i = 0; i < CFArrayGetCount(listSnapshot); i++) {
         LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(listSnapshot, i);
         UInt32 resolutionFlags = kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes;
@@ -897,38 +897,38 @@ LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef
 
 bool GetStartOnSystemStartup()
 {
-    CFURLRef raptoreumAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    if (raptoreumAppUrl == nullptr) {
+    CFURLRef myntAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    if (myntAppUrl == nullptr) {
         return false;
     }
     
     LSSharedFileListRef loginItems = LSSharedFileListCreate(nullptr, kLSSharedFileListSessionLoginItems, nullptr);
-    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, raptoreumAppUrl);
+    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, myntAppUrl);
 
-    CFRelease(raptoreumAppUrl);
+    CFRelease(myntAppUrl);
     return !!foundItem; // return boolified object
 }
 
 bool SetStartOnSystemStartup(bool fAutoStart)
 {
-    CFURLRef raptoreumAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    if (raptoreumAppUrl == nullptr) {
+    CFURLRef myntAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    if (myntAppUrl == nullptr) {
         return false;
     }
     
     LSSharedFileListRef loginItems = LSSharedFileListCreate(nullptr, kLSSharedFileListSessionLoginItems, nullptr);
-    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, raptoreumAppUrl);
+    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, myntAppUrl);
 
     if(fAutoStart && !foundItem) {
-        // add raptoreum app to startup item list
-        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, nullptr, nullptr, raptoreumAppUrl, nullptr, nullptr);
+        // add mynt app to startup item list
+        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, nullptr, nullptr, myntAppUrl, nullptr, nullptr);
     }
     else if(!fAutoStart && foundItem) {
         // remove item
         LSSharedFileListItemRemove(loginItems, foundItem);
     }
     
-    CFRelease(raptoreumAppUrl);
+    CFRelease(myntAppUrl);
     return true;
 }
 #pragma GCC diagnostic pop

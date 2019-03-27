@@ -1,15 +1,15 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_WALLETFRAME_H
-#define RAPTOREUM_QT_WALLETFRAME_H
+#ifndef MYNT_QT_WALLETFRAME_H
+#define MYNT_QT_WALLETFRAME_H
 
 #include <QFrame>
 #include <QMap>
 
-class RaptoreumGUI;
+class MyntGUI;
 class ClientModel;
 class PlatformStyle;
 class SendCoinsRecipient;
@@ -22,9 +22,9 @@ QT_END_NAMESPACE
 
 /**
  * A container for embedding all wallet-related
- * controls into RaptoreumGUI. The purpose of this class is to allow future
+ * controls into MyntGUI. The purpose of this class is to allow future
  * refinements of the wallet controls with minimal need for further
- * modifications to RaptoreumGUI, thus greatly simplifying merges while
+ * modifications to MyntGUI, thus greatly simplifying merges while
  * reducing the risk of breaking top-level stuff.
  */
 class WalletFrame : public QFrame
@@ -32,7 +32,7 @@ class WalletFrame : public QFrame
     Q_OBJECT
 
 public:
-    explicit WalletFrame(const PlatformStyle *platformStyle, RaptoreumGUI *_gui = 0);
+    explicit WalletFrame(const PlatformStyle *platformStyle, MyntGUI *_gui = 0);
     ~WalletFrame();
 
     void setClientModel(ClientModel *clientModel);
@@ -52,7 +52,7 @@ Q_SIGNALS:
 
 private:
     QStackedWidget *walletStack;
-    RaptoreumGUI *gui;
+    MyntGUI *gui;
     ClientModel *clientModel;
     QMap<QString, WalletView*> mapWalletViews;
 
@@ -93,13 +93,13 @@ public Q_SLOTS:
     /** Pass on signal over requested out-of-sync-warning information */
     void outOfSyncWarningClicked();
 
-    /** RTM START */
+    /** MYNT START */
 
     /** Switch to assets page */
     void gotoAssetsPage();
     void gotoCreateAssetsPage();
     void gotoManageAssetsPage();
-    /** RTM END */
+    /** MYNT END */
 };
 
-#endif // RAPTOREUM_QT_WALLETFRAME_H
+#endif // MYNT_QT_WALLETFRAME_H
