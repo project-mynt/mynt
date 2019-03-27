@@ -7,7 +7,7 @@
 Adam Davies<br>
 <br>
 http://www.getmynt.io<br>
-12th Feb 2019
+3rd April 2018
 </p>
 <p align="center"><i>
 In the fictional world of Westeros, Mynt are used as messengers who carry statements of truth. Mynt is a use-case focused blockchain designed to carry statements of truth about who owns what assets.
@@ -110,7 +110,7 @@ Deep into that darkness peering, long I stood there wondering, fearing, Doubting
 </i></p>
 Token names are guaranteed unique. The first to issue a token with a given name is the owner of that token project.
 
-The issuer of a token burns 20 MYNT and must provide a unique token name. The issuer determines the quantity issued, the number of decimal places, and whether they will be allowed to issue more of the same token in the future.
+The issuer of a token burns 500 MYNT and must provide a unique token name. The issuer determines the quantity issued, the number of decimal places, and whether they will be allowed to issue more of the same token in the future.
 
 Allow the issuance of other tokens using similar method as Mastercoin, Counterparty, or CoinSpark[14].
 

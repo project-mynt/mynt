@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_PUBKEY_H
-#define RAPTOREUM_PUBKEY_H
+#ifndef MYNT_PUBKEY_H
+#define MYNT_PUBKEY_H
 
 #include "hash.h"
 #include "serialize.h"
@@ -248,4 +248,4 @@ public:
     ~ECCVerifyHandle();
 };
 
-#endif // RAPTOREUM_PUBKEY_H
+#endif // MYNT_PUBKEY_H

@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
 # Copyright (c) 2017 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Testing asset use cases
 
 """
-from test_framework.test_framework import RaptoreumTestFramework
+from test_framework.test_framework import MyntTestFramework
 from test_framework.util import *
 
 
 import string
 
-class AssetTest(RaptoreumTestFramework):
+class AssetTest(MyntTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
+        self.extra_args = [['-assetindex'], ['-assetindex'], ['-assetindex']]
 
     def activate_assets(self):
-        self.log.info("Generating RTM for node[0] and activating assets...")
+        self.log.info("Generating MYNT for node[0] and activating assets...")
         n0, n1, n2 = self.nodes[0], self.nodes[1], self.nodes[2]
 
         n0.generate(1)
@@ -110,7 +111,7 @@ class AssetTest(RaptoreumTestFramework):
         self.log.info("Burning all units to test reissue on zero units...")
         n0.transfer(asset_name="MY_ASSET", qty=800, to_address="n1BurnXXXXXXXXXXXXXXXXXXXXXXU1qejP")
         n0.generate(1)
-        assert_equal(0, n0.listmyassets(asset="MY_ASSET", verbose=True)["MY_ASSET"]["balance"])
+        assert_does_not_contain_key("MY_ASSET", n0.listmyassets(asset="MY_ASSET", verbose=True))
 
         self.log.info("Calling reissue()...")
         address1 = n0.getnewaddress()
@@ -136,13 +137,13 @@ class AssetTest(RaptoreumTestFramework):
         assert_equal(n0.listassetbalancesbyaddress(address0)["MY_ASSET"], 2000)
 
         self.log.info("Checking listassets()...")
-        n0.issue("RAPTOREUM1", 1000)
-        n0.issue("RAPTOREUM2", 1000)
-        n0.issue("RAPTOREUM3", 1000)
+        n0.issue("MYNT1", 1000)
+        n0.issue("MYNT2", 1000)
+        n0.issue("MYNT3", 1000)
         n0.generate(1)
         self.sync_all()
 
-        n0.listassets(asset="RAPTOREUM*", verbose=False, count=2, start=-2)
+        n0.listassets(asset="MYNT*", verbose=False, count=2, start=-2)
 
         self.log.info("Creating some sub-assets...")
         n0.issue(asset_name="MY_ASSET/SUB1", qty=1000, to_address=address0, change_address=address0,\
@@ -162,10 +163,10 @@ class AssetTest(RaptoreumTestFramework):
         assert_equal(assetdata["has_ipfs"], 1)
         assert_equal(assetdata["ipfs_hash"], ipfs_hash)
 
-        raptoreum_assets = n0.listassets(asset="RAPTOREUM*", verbose=False, count=2, start=-2)
-        assert_equal(len(raptoreum_assets), 2)
-        assert_equal(raptoreum_assets[0], "RAPTOREUM2")
-        assert_equal(raptoreum_assets[1], "RAPTOREUM3")
+        mynt_assets = n0.listassets(asset="MYNT*", verbose=False, count=2, start=-2)
+        assert_equal(len(mynt_assets), 2)
+        assert_equal(mynt_assets[0], "MYNT2")
+        assert_equal(mynt_assets[1], "MYNT3")
         self.sync_all()
 
     def issue_param_checks(self):

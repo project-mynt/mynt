@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,11 +8,11 @@
  * Server/client environment: argument handling, config file parsing,
  * logging, thread wrappers, startup time
  */
-#ifndef RAPTOREUM_UTIL_H
-#define RAPTOREUM_UTIL_H
+#ifndef MYNT_UTIL_H
+#define MYNT_UTIL_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "compat.h"
@@ -54,8 +54,8 @@ extern bool fLogIPs;
 extern std::atomic<bool> fReopenDebugLog;
 extern CTranslationInterface translationInterface;
 
-extern const char *const RAPTOREUM_CONF_FILENAME;
-extern const char *const RAPTOREUM_PID_FILENAME;
+extern const char *const MYNT_CONF_FILENAME;
+extern const char *const MYNT_PID_FILENAME;
 
 extern std::atomic<uint32_t> logCategories;
 
@@ -330,7 +330,7 @@ void RenameThread(const char *name);
 template<typename Callable>
 void TraceThread(const char *name, Callable func)
 {
-    std::string s = strprintf("raptoreum-%s", name);
+    std::string s = strprintf("mynt-%s", name);
     RenameThread(s.c_str());
     try
     {
@@ -359,4 +359,4 @@ std::string CopyrightHolders(const std::string &strPrefix);
 
 void SetThreadPriority(int nPriority);
 
-#endif // RAPTOREUM_UTIL_H
+#endif // MYNT_UTIL_H

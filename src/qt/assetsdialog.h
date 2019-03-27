@@ -1,10 +1,10 @@
 ﻿// Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_ASSETSDIALOG_H
-#define RAPTOREUM_QT_ASSETSDIALOG_H
+#ifndef MYNT_QT_ASSETSDIALOG_H
+#define MYNT_QT_ASSETSDIALOG_H
 
 #include "walletmodel.h"
 
@@ -26,7 +26,7 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
-/** Dialog for sending raptoreums */
+/** Dialog for sending mynts */
 class AssetsDialog : public QDialog
 {
     Q_OBJECT
@@ -49,6 +49,10 @@ public:
     void pasteEntry(const SendAssetsRecipient &rv);
     bool handlePaymentRequest(const SendAssetsRecipient &recipient);
     void processNewTransaction();
+
+    // The first time the transfer asset screen is loaded, the wallet isn't doing loading so the asset list is empty.
+    // The first time the screen is navigated to, refresh the asset list
+    void handleFirstSelection();
 
 public Q_SLOTS:
     void clear();
@@ -77,6 +81,8 @@ private:
     // Update the passed in CCoinControl with state from the GUI
     void updateAssetControlState(CCoinControl& ctrl);
 
+
+
 private Q_SLOTS:
     void on_sendButton_clicked();
     void on_buttonChooseFee_clicked();
@@ -102,14 +108,14 @@ private Q_SLOTS:
 
     void customFeeFeatureChanged(bool);
 
-    /** RTM START */
+    /** MYNT START */
     void assetControlUpdateSendCoinsDialog();
     void focusAsset(const QModelIndex& index);
-    /** RTM END */
+    /** MYNT END */
 
     Q_SIGNALS:
             // Fired when a message should be reported to the user
             void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // RAPTOREUM_QT_ASSETSSDIALOG_H
+#endif // MYNT_QT_ASSETSSDIALOG_H

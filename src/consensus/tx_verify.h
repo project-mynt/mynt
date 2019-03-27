@@ -1,10 +1,10 @@
 // Copyright (c) 2017-2017 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_CONSENSUS_TX_VERIFY_H
-#define RAPTOREUM_CONSENSUS_TX_VERIFY_H
+#ifndef MYNT_CONSENSUS_TX_VERIFY_H
+#define MYNT_CONSENSUS_TX_VERIFY_H
 
 #include "amount.h"
 
@@ -34,9 +34,9 @@ namespace Consensus {
  */
 bool CheckTxInputs(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, int nSpendHeight, CAmount& txfee);
 
-/** RTM START */
+/** MYNT START */
 bool CheckTxAssets(const CTransaction& tx, CValidationState& state, const CCoinsViewCache& inputs, std::vector<std::pair<std::string, uint256> >& vPairReissueAssets, const bool fRunningUnitTests = false);
-/** RTM END */
+/** MYNT END */
 } // namespace Consensus
 
 /** Auxiliary functions for transaction validation (ideally should not be exposed) */
@@ -87,4 +87,4 @@ bool EvaluateSequenceLocks(const CBlockIndex& block, std::pair<int, int64_t> loc
  */
 bool SequenceLocks(const CTransaction &tx, int flags, std::vector<int>* prevHeights, const CBlockIndex& block);
 
-#endif // RAPTOREUM_CONSENSUS_TX_VERIFY_H
+#endif // MYNT_CONSENSUS_TX_VERIFY_H

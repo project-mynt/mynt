@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -214,13 +214,13 @@ int CBase58Data::CompareTo(const CBase58Data& b58) const
 namespace
 {
 
-class CRaptoreumAddressVisitor : public boost::static_visitor<bool>
+class CMyntAddressVisitor : public boost::static_visitor<bool>
 {
 private:
-    CRaptoreumAddress* addr;
+    CMyntAddress* addr;
 
 public:
-    explicit CRaptoreumAddressVisitor(CRaptoreumAddress* addrIn) : addr(addrIn) {}
+    explicit CMyntAddressVisitor(CMyntAddress* addrIn) : addr(addrIn) {}
 
     bool operator()(const CKeyID& id) const { return addr->Set(id); }
     bool operator()(const CScriptID& id) const { return addr->Set(id); }
@@ -229,29 +229,29 @@ public:
 
 } // namespace
 
-bool CRaptoreumAddress::Set(const CKeyID& id)
+bool CMyntAddress::Set(const CKeyID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS), &id, 20);
     return true;
 }
 
-bool CRaptoreumAddress::Set(const CScriptID& id)
+bool CMyntAddress::Set(const CScriptID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS), &id, 20);
     return true;
 }
 
-bool CRaptoreumAddress::Set(const CTxDestination& dest)
+bool CMyntAddress::Set(const CTxDestination& dest)
 {
-    return boost::apply_visitor(CRaptoreumAddressVisitor(this), dest);
+    return boost::apply_visitor(CMyntAddressVisitor(this), dest);
 }
 
-bool CRaptoreumAddress::IsValid() const
+bool CMyntAddress::IsValid() const
 {
     return IsValid(Params());
 }
 
-bool CRaptoreumAddress::IsValid(const CChainParams& params) const
+bool CMyntAddress::IsValid(const CChainParams& params) const
 {
     bool fCorrectSize = vchData.size() == 20;
     bool fKnownVersion = vchVersion == params.Base58Prefix(CChainParams::PUBKEY_ADDRESS) ||
@@ -259,7 +259,7 @@ bool CRaptoreumAddress::IsValid(const CChainParams& params) const
     return fCorrectSize && fKnownVersion;
 }
 
-CTxDestination CRaptoreumAddress::Get() const
+CTxDestination CMyntAddress::Get() const
 {
     if (!IsValid())
         return CNoDestination();
@@ -273,7 +273,7 @@ CTxDestination CRaptoreumAddress::Get() const
         return CNoDestination();
 }
 
-bool CRaptoreumAddress::GetIndexKey(uint160& hashBytes, int& type) const
+bool CMyntAddress::GetIndexKey(uint160& hashBytes, int& type) const
 {
     if (!IsValid()) {
         return false;
@@ -290,7 +290,7 @@ bool CRaptoreumAddress::GetIndexKey(uint160& hashBytes, int& type) const
     return false;
 }
 
-void CRaptoreumSecret::SetKey(const CKey& vchSecret)
+void CMyntSecret::SetKey(const CKey& vchSecret)
 {
     assert(vchSecret.IsValid());
     SetData(Params().Base58Prefix(CChainParams::SECRET_KEY), vchSecret.begin(), vchSecret.size());
@@ -298,7 +298,7 @@ void CRaptoreumSecret::SetKey(const CKey& vchSecret)
         vchData.push_back(1);
 }
 
-CKey CRaptoreumSecret::GetKey()
+CKey CMyntSecret::GetKey()
 {
     CKey ret;
     assert(vchData.size() >= 32);
@@ -306,41 +306,41 @@ CKey CRaptoreumSecret::GetKey()
     return ret;
 }
 
-bool CRaptoreumSecret::IsValid() const
+bool CMyntSecret::IsValid() const
 {
     bool fExpectedFormat = vchData.size() == 32 || (vchData.size() == 33 && vchData[32] == 1);
     bool fCorrectVersion = vchVersion == Params().Base58Prefix(CChainParams::SECRET_KEY);
     return fExpectedFormat && fCorrectVersion;
 }
 
-bool CRaptoreumSecret::SetString(const char* pszSecret)
+bool CMyntSecret::SetString(const char* pszSecret)
 {
     return CBase58Data::SetString(pszSecret) && IsValid();
 }
 
-bool CRaptoreumSecret::SetString(const std::string& strSecret)
+bool CMyntSecret::SetString(const std::string& strSecret)
 {
     return SetString(strSecret.c_str());
 }
 
 std::string EncodeDestination(const CTxDestination& dest)
 {
-    CRaptoreumAddress addr(dest);
+    CMyntAddress addr(dest);
     if (!addr.IsValid()) return "";
     return addr.ToString();
 }
 
 CTxDestination DecodeDestination(const std::string& str)
 {
-    return CRaptoreumAddress(str).Get();
+    return CMyntAddress(str).Get();
 }
 
 bool IsValidDestinationString(const std::string& str, const CChainParams& params)
 {
-    return CRaptoreumAddress(str).IsValid(params);
+    return CMyntAddress(str).IsValid(params);
 }
 
 bool IsValidDestinationString(const std::string& str)
 {
-    return CRaptoreumAddress(str).IsValid();
+    return CMyntAddress(str).IsValid();
 }

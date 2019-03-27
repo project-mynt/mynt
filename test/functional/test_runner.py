@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2014-2016 The Bitcoin Core developers
-# Copyright (c) 2017-2018 The Raptoreum Core developers
+# Copyright (c) 2017-2018 The Mynt Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Run regression test suite.
@@ -11,7 +11,7 @@ forward all unrecognized arguments onto the individual test scripts.
 Functional tests are disabled on Windows by default. Use --force to run them anyway.
 
 For a description of arguments recognized by test scripts, see
-`test/functional/test_framework/test_framework.py:RaptoreumTestFramework.main`.
+`test/functional/test_framework/test_framework.py:MyntTestFramework.main`.
 
 """
 from collections import deque
@@ -138,7 +138,7 @@ BASE_SCRIPTS= [
     'rpc_preciousblock.py',
     'feature_notifications.py',
     'rpc_net.py',
-    'interface_raptoreum_cli.py',
+    'interface_mynt_cli.py',
     'mempool_resurrect.py',
     'rpc_signrawtransaction.py',
     'wallet_resendtransactions.py',
@@ -220,23 +220,23 @@ def main():
     logging.basicConfig(format='%(message)s', level=logging_level)
 
     # Create base test directory
-    tmpdir = "%s/raptoreum_test_runner_%s" % (args.tmpdirprefix, datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
+    tmpdir = "%s/mynt_test_runner_%s" % (args.tmpdirprefix, datetime.datetime.now().strftime("%Y%m%d_%H%M%S"))
     os.makedirs(tmpdir)
 
     logging.debug("Temporary test directory at %s" % tmpdir)
 
     enable_wallet = config["components"].getboolean("ENABLE_WALLET")
     enable_cli = config["components"].getboolean("ENABLE_UTILS")
-    enable_raptoreumd = config["components"].getboolean("ENABLE_RAPTOREUMD")
+    enable_myntd = config["components"].getboolean("ENABLE_MYNTD")
 
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
-        # https://github.com/RaptoreumProject/Raptoreumcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
-        # https://github.com/RaptoreumProject/Raptoreumcoin/pull/5677#issuecomment-136646964
+        # https://github.com/project-mynt/Mynt/commit/d52802551752140cf41f0d9a225a43e84404d3e9
+        # https://github.com/project-mynt/Mynt/pull/5677#issuecomment-136646964
         print("Tests currently disabled on Windows by default. Use --force option to enable")
         sys.exit(0)
 
-    if not (enable_wallet and enable_cli and enable_raptoreumd):
-        print("No functional tests to run. Wallet, utils, and raptoreumd must all be enabled")
+    if not (enable_wallet and enable_cli and enable_myntd):
+        print("No functional tests to run. Wallet, utils, and myntd must all be enabled")
         print("Rerun `configure` with --enable-wallet, --with-cli and --with-daemon and rerun make")
         sys.exit(0)
 
@@ -292,10 +292,10 @@ def main():
 
 
 def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_coverage=False, args=[], combined_logs_len=0):
-    # Warn if raptoreumd is already running (unix only)
+    # Warn if myntd is already running (unix only)
     try:
-        if subprocess.check_output(["pidof", "raptoreumd"]) is not None:
-            print("%sWARNING!%s There is already a raptoreumd process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
+        if subprocess.check_output(["pidof", "myntd"]) is not None:
+            print("%sWARNING!%s There is already a myntd process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
     except (OSError, subprocess.SubprocessError):
         pass
 
@@ -305,9 +305,9 @@ def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_cove
         print("%sWARNING!%s There is a cache directory here: %s. If tests fail unexpectedly, try deleting the cache directory." % (BOLD[1], BOLD[0], cache_dir))
 
     #Set env vars
-    if "RAPTOREUMD" not in os.environ:
-        os.environ["RAPTOREUMD"] = build_dir + '/src/raptoreumd' + exeext
-        os.environ["RAPTOREUMCLI"] = build_dir + '/src/raptoreum-cli' + exeext
+    if "MYNTD" not in os.environ:
+        os.environ["MYNTD"] = build_dir + '/src/myntd' + exeext
+        os.environ["MYNTCLI"] = build_dir + '/src/mynt-cli' + exeext
 
     tests_dir = src_dir + '/test/functional/'
 
@@ -534,7 +534,7 @@ class RPCCoverage():
     Coverage calculation works by having each test script subprocess write
     coverage files into a particular directory. These files contain the RPC
     commands invoked during testing, as well as a complete listing of RPC
-    commands per `raptoreum-cli help` (`rpc_interface.txt`).
+    commands per `mynt-cli help` (`rpc_interface.txt`).
 
     After all tests complete, the commands run are combined and diff'd against
     the complete list to calculate uncovered RPC commands.

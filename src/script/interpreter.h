@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_SCRIPT_INTERPRETER_H
-#define RAPTOREUM_SCRIPT_INTERPRETER_H
+#ifndef MYNT_SCRIPT_INTERPRETER_H
+#define MYNT_SCRIPT_INTERPRETER_H
 
 #include "script_error.h"
 #include "primitives/transaction.h"
@@ -189,4 +189,4 @@ bool VerifyScript(const CScript &scriptSig, const CScript &scriptPubKey, const C
 
 size_t CountWitnessSigOps(const CScript &scriptSig, const CScript &scriptPubKey, const CScriptWitness *witness, unsigned int flags);
 
-#endif // RAPTOREUM_SCRIPT_INTERPRETER_H
+#endif // MYNT_SCRIPT_INTERPRETER_H

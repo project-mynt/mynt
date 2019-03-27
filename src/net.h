@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_NET_H
-#define RAPTOREUM_NET_H
+#ifndef MYNT_NET_H
+#define MYNT_NET_H
 
 #include "addrdb.h"
 #include "addrman.h"
@@ -844,4 +844,4 @@ public:
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
 int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
 
-#endif // RAPTOREUM_NET_H
+#endif // MYNT_NET_H

@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "sendassetsentry.h"
@@ -49,9 +49,9 @@ SendAssetsEntry::SendAssetsEntry(const PlatformStyle *_platformStyle, const QStr
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
 #endif
 
-    // normal raptoreum address field
+    // normal mynt address field
     GUIUtil::setupAddressWidget(ui->payTo, this);
-    // just a label for displaying raptoreum address(es)
+    // just a label for displaying mynt address(es)
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
     // Connect signals
@@ -326,10 +326,11 @@ void SendAssetsEntry::onAssetSelected(int index)
     }
 
     LOCK(cs_main);
+    auto currentActiveAssetCache = GetCurrentAssetCache();
     CNewAsset asset;
 
     // Get the asset metadata if it exists. This isn't called on the administrator token because that doesn't have metadata
-    if (!passets->GetAssetMetaDataIfExists(name.toStdString(), asset)) {
+    if (!currentActiveAssetCache->GetAssetMetaDataIfExists(name.toStdString(), asset)) {
         // This should only happen if the user, selected an asset that was issued from assetcontrol and tries to transfer it before it is mined.
         clear();
         ui->messageLabel->show();

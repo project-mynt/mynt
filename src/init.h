@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_INIT_H
-#define RAPTOREUM_INIT_H
+#ifndef MYNT_INIT_H
+#define MYNT_INIT_H
 
 #include <string>
 
@@ -33,7 +33,7 @@ void InitLogging();
 //!Parameter interaction: change current parameters depending on various rules
 void InitParameterInteraction();
 
-/** Initialize raptoreum core: Basic context setup.
+/** Initialize mynt core: Basic context setup.
  *  @note This can be done before daemonization. Do not call Shutdown() if this function fails.
  *  @pre Parameters should be parsed and config file should be read.
  */
@@ -54,14 +54,14 @@ bool AppInitParameterInteraction();
 bool AppInitSanityChecks();
 
 /**
- * Lock raptoreum core data directory.
+ * Lock mynt core data directory.
  * @note This should only be done after daemonization. Do not call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitSanityChecks should have been called.
  */
 bool AppInitLockDataDirectory();
 
 /**
- * Raptoreum core main initialization.
+ * Mynt core main initialization.
  * @note This should only be done after daemonization. Call Shutdown() if this function fails.
  * @pre Parameters should be parsed and config file should be read, AppInitLockDataDirectory should have been called.
  */
@@ -70,8 +70,8 @@ bool AppInitMain(boost::thread_group &threadGroup, CScheduler &scheduler);
 /** The help message mode determines what help message to show */
 enum HelpMessageMode
 {
-    HMM_RAPTOREUMD,
-    HMM_RAPTOREUM_QT
+    HMM_MYNTD,
+    HMM_MYNT_QT
 };
 
 /** Help for options shared between UI and daemon (for -help) */
@@ -80,4 +80,4 @@ std::string HelpMessage(HelpMessageMode mode);
 /** Returns licensing information (for -version) */
 std::string LicenseInfo();
 
-#endif // RAPTOREUM_INIT_H
+#endif // MYNT_INIT_H

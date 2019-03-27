@@ -1,0 +1,8 @@
+/usr/bin/mynt-cli		--	gen_context(system_u:object_r:mynt_exec_t,s0)
+/usr/sbin/myntd		--	gen_context(system_u:object_r:mynt_exec_t,s0)
+/usr/lib(64)?/mynt/myntd		--	gen_context(system_u:object_r:mynt_exec_t,s0)
+
+/etc/mynt(/.*)?		gen_context(system_u:object_r:mynt_conf_t,s0)
+/var/lib/mynt(/.*)?		gen_context(system_u:object_r:mynt_var_lib_t,s0)
+
+(/var)?/run/myntd(/.*)?   gen_context(system_u:object_r:mynt_var_run_t,s0)

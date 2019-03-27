@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "init.h"
@@ -135,7 +135,7 @@ bool ShutdownRequested()
 /**
  * This is a minimally invasive approach to shutdown on LevelDB read errors from the
  * chainstate, while keeping user interface out of the common library, which is shared
- * between raptoreumd, and raptoreum-qt and non-server tools.
+ * between myntd, and mynt-qt and non-server tools.
 */
 class CCoinsViewErrorCatcher final : public CCoinsViewBacked
 {
@@ -184,7 +184,7 @@ void Shutdown()
     /// for example if the data directory was found to be locked.
     /// Be sure that anything that writes files or flushes caches only does this if the respective
     /// module was initialized.
-    RenameThread("raptoreum-shutoff");
+    RenameThread("mynt-shutoff");
     mempool.AddTransactionsUpdated(1);
 
     StopHTTPRPC();
@@ -194,7 +194,7 @@ void Shutdown()
 #ifdef ENABLE_WALLET
     FlushWallets();
 #endif
-    GenerateRaptoreums(false, 0, Params());
+    GenerateMynts(false, 0, Params());
 
     MapPort(false);
 
@@ -343,8 +343,8 @@ std::string HelpMessage(HelpMessageMode mode)
     if (showDebug)
         strUsage += HelpMessageOpt("-blocksonly", strprintf(_("Whether to operate in a blocks only mode (default: %u)"), DEFAULT_BLOCKSONLY));
     strUsage +=HelpMessageOpt("-assumevalid=<hex>", strprintf(_("If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)"), defaultChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnetChainParams->GetConsensus().defaultAssumeValid.GetHex()));
-    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), RAPTOREUM_CONF_FILENAME));
-    if (mode == HMM_RAPTOREUMD)
+    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), MYNT_CONF_FILENAME));
+    if (mode == HMM_MYNTD)
     {
 #if HAVE_DECL_DAEMON
         strUsage += HelpMessageOpt("-daemon", _("Run in the background as a daemon and accept commands"));
@@ -372,7 +372,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-par=<n>", strprintf(_("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)"),
         -GetNumCores(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS));
 #ifndef WIN32
-    strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), RAPTOREUM_PID_FILENAME));
+    strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), MYNT_PID_FILENAME));
 #endif
     strUsage += HelpMessageOpt("-prune=<n>", strprintf(_("Reduce storage requirements by enabling pruning (deleting) of old blocks. This allows the pruneblockchain RPC to be called to delete specific blocks, and enables automatic pruning of old blocks if a target size in MiB is provided. This mode is incompatible with -txindex and -rescan. "
             "Warning: Reverting this setting requires re-downloading the entire blockchain. "
@@ -531,8 +531,8 @@ std::string HelpMessage(HelpMessageMode mode)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/RaptoreumProject/Raptoreumcoin>";
-    const std::string URL_WEBSITE = "<https://raptoreumcoin.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/project-mynt/Mynt>";
+    const std::string URL_WEBSITE = "<https://getmynt.io>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
@@ -636,7 +636,7 @@ void CleanupBlockRevFiles()
 void ThreadImport(std::vector<fs::path> vImportFiles)
 {
     const CChainParams& chainparams = Params();
-    RenameThread("raptoreum-loadblk");
+    RenameThread("mynt-loadblk");
 
     {
     CImportingNow imp;
@@ -706,7 +706,7 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that Raptoreum is running in a usable environment with all
+ *  Ensure that Mynt is running in a usable environment with all
  *  necessary library support.
  */
 bool InitSanityCheck(void)
@@ -830,7 +830,7 @@ void InitLogging()
     fLogIPs = gArgs.GetBoolArg("-logips", DEFAULT_LOGIPS);
 
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Raptoreum version %s\n", FormatFullVersion());
+    LogPrintf("Mynt version %s\n", FormatFullVersion());
 }
 
 namespace { // Variables internal to initialization process only
@@ -1171,7 +1171,7 @@ static bool LockDataDirectory(bool probeOnly)
 {
     std::string strDataDir = GetDataDir().string();
 
-    // Make sure only a single Raptoreum process is using the data directory.
+    // Make sure only a single Mynt process is using the data directory.
     fs::path pathLockFile = GetDataDir() / ".lock";
     FILE* file = fsbridge::fopen(pathLockFile, "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
@@ -1243,7 +1243,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
         LogPrintf("Startup time: %s\n", DateTimeStrFormat("%Y-%m-%d %H:%M:%S", GetTime()));
     LogPrintf("Default data directory %s\n", GetDefaultDataDir().string());
     LogPrintf("Using data directory %s\n", GetDataDir().string());
-    LogPrintf("Using config file %s\n", GetConfigFile(gArgs.GetArg("-conf", RAPTOREUM_CONF_FILENAME)).string());
+    LogPrintf("Using config file %s\n", GetConfigFile(gArgs.GetArg("-conf", MYNT_CONF_FILENAME)).string());
     LogPrintf("Using at most %i automatic connections (%i file descriptors available)\n", nMaxConnections, nFD);
 
     InitSignatureCache();
@@ -1283,7 +1283,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     bool fGenerate = gArgs.GetBoolArg("-regtest", false) ? false : DEFAULT_GENERATE;
     // Generate coins in the background
-    GenerateRaptoreums(fGenerate, gArgs.GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
+    GenerateMynts(fGenerate, gArgs.GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
 
     // ********************************************************* Step 6: network initialization
     // Note that we absolutely cannot open any actual connections
@@ -1452,7 +1452,8 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 passets = new CAssetsCache();
                 passetsCache = new CLRUCache<std::string, CDatabasedAssetData>(MAX_CACHE_ASSETS_SIZE);
 
-
+                // Read for fAssetIndex to make sure that we only load asset address balances if it if true
+                pblocktree->ReadFlag("assetindex", fAssetIndex);
                 // Need to load assets before we verify the database
                 if (!passetsdb->LoadAssets()) {
                     strLoadError = _("Failed to load Assets Database");
@@ -1462,7 +1463,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 if (!passetsdb->ReadReissuedMempoolState())
                     LogPrintf("Database failed to load last Reissued Mempool State. Will have to start from empty state");
 
-                LogPrintf("Loaded Assets from database without error\nCache of assets size: %d\nNumber of assets I have: %d\n", passetsCache->Size(), passets->mapMyUnspentAssets.size());
+                LogPrintf("Loaded Assets from database without error\nCache of assets size: %d\n", passetsCache->Size());
 
                 if (fReset) {
                     pblocktree->WriteReindexing(true);
@@ -1491,6 +1492,12 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
                 // Check for changed -txindex state
                 if (fTxIndex != gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
                     strLoadError = _("You need to rebuild the database using -reindex to change -txindex");
+                    break;
+                }
+
+                // Check for changed -assetindex state
+                if (fAssetIndex != gArgs.GetBoolArg("-assetindex", DEFAULT_ASSETINDEX)) {
+                    strLoadError = _("You need to rebuild the database using -reindex to change -assetIndex");
                     break;
                 }
 
@@ -1785,7 +1792,5 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     StartWallets(scheduler);
 #endif
 
-
-    UpdatePossibleAssets();
     return !fRequestShutdown;
 }

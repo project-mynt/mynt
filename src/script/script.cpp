@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include "streams.h"
@@ -143,9 +143,9 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP9                   : return "OP_NOP9";
     case OP_NOP10                  : return "OP_NOP10";
 
-    /** RTM START */
-    case OP_RTM_ASSET              : return "OP_RTM_ASSET";
-    /** RTM END */
+    /** MYNT START */
+    case OP_MYNT_ASSET              : return "OP_MYNT_ASSET";
+    /** MYNT END */
 
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 
@@ -227,7 +227,7 @@ bool CScript::IsPayToScriptHash() const
             (*this)[22] == OP_EQUAL);
 }
 
-/** RTM START */
+/** MYNT START */
 bool CScript::IsAssetScript() const
 {
     int nType = 0;
@@ -245,33 +245,33 @@ bool CScript::IsAssetScript(int& nType, bool& isOwner) const
 bool CScript::IsAssetScript(int& nType, bool& fIsOwner, int& nStartingIndex) const
 {
     if (this->size() > 30) {
-        if ((*this)[25] == OP_RTM_ASSET) { // OP_RTM_ASSET is always in the 25 index of the script if it exists
+        if ((*this)[25] == OP_MYNT_ASSET) { // OP_MYNT_ASSET is always in the 25 index of the script if it exists
             int index = -1;
-            if ((*this)[27] == RTM_R) { // Check to see if RTM starts at 27 ( this->size() < 105)
-                if ((*this)[28] == RTM_V)
-                    if ((*this)[29] == RTM_N)
+            if ((*this)[27] == MYNT_R) { // Check to see if MYNT starts at 27 ( this->size() < 105)
+                if ((*this)[28] == MYNT_V)
+                    if ((*this)[29] == MYNT_N)
                         index = 30;
             } else {
-                if ((*this)[28] == RTM_R) // Check to see if RTM starts at 28 ( this->size() >= 105)
-                    if ((*this)[29] == RTM_V)
-                        if ((*this)[30] == RTM_N)
+                if ((*this)[28] == MYNT_R) // Check to see if MYNT starts at 28 ( this->size() >= 105)
+                    if ((*this)[29] == MYNT_V)
+                        if ((*this)[30] == MYNT_N)
                             index = 31;
             }
 
             if (index > 0) {
                 nStartingIndex = index + 1; // Set the index where the asset data begins. Use to serialize the asset data into asset objects
-                if ((*this)[index] == RTM_T) { // Transfer first anticipating more transfers than other assets operations
+                if ((*this)[index] == MYNT_T) { // Transfer first anticipating more transfers than other assets operations
                     nType = TX_TRANSFER_ASSET;
                     return true;
-                } else if ((*this)[index] == RTM_Q && this->size() > 39) {
+                } else if ((*this)[index] == MYNT_Q && this->size() > 39) {
                     nType = TX_NEW_ASSET;
                     fIsOwner = false;
                     return true;
-                } else if ((*this)[index] == RTM_O) {
+                } else if ((*this)[index] == MYNT_O) {
                     nType = TX_NEW_ASSET;
                     fIsOwner = true;
                     return true;
-                } else if ((*this)[index] == RTM_R) {
+                } else if ((*this)[index] == MYNT_R) {
                     nType = TX_REISSUE_ASSET;
                     return true;
                 }
@@ -322,7 +322,7 @@ bool CScript::IsTransferAsset() const
 
     return false;
 }
-/** RTM END */
+/** MYNT END */
 
 bool CScript::IsPayToWitnessScriptHash() const
 {

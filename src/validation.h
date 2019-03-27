@@ -1,14 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_VALIDATION_H
-#define RAPTOREUM_VALIDATION_H
+#ifndef MYNT_VALIDATION_H
+#define MYNT_VALIDATION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "amount.h"
@@ -111,6 +111,8 @@ static const unsigned int BLOCK_DOWNLOAD_WINDOW = 1024;
 static const unsigned int DATABASE_WRITE_INTERVAL = 60 * 60;
 /** Time to wait (in seconds) between flushing chainstate to disk. */
 static const unsigned int DATABASE_FLUSH_INTERVAL = 24 * 60 * 60;
+/** Time to wait (in seconds) between flushing to database if in speedy sync interval */
+static const unsigned int DATABASE_FLUSH_INTERVAL_SPEEDY = 60 * 10;
 /** Maximum length of reject messages. */
 static const unsigned int MAX_REJECT_MESSAGE_LENGTH = 111;
 /** Average delay between local address broadcasts in seconds. */
@@ -127,7 +129,7 @@ static const unsigned int INVENTORY_BROADCAST_MAX = 7 * INVENTORY_BROADCAST_INTE
 static const unsigned int AVG_FEEFILTER_BROADCAST_INTERVAL = 10 * 60;
 /** Maximum feefilter broadcast delay after significant change. */
 static const unsigned int MAX_FEEFILTER_CHANGE_DELAY = 5 * 60;
-/** Block download timeout base, expressed in millionths of the block interval (i.e. 10 min) */
+/** Block download timeout base, expressed in millionths of the block interval (i.e. 10 min) */ // TODO Should we change this for mynt, with 1 minutes block intervals?
 static const int64_t BLOCK_DOWNLOAD_TIMEOUT_BASE = 1000000;
 /** Additional block download timeout per parallel downloading peer (i.e. 5 min) */
 static const int64_t BLOCK_DOWNLOAD_TIMEOUT_PER_PEER = 500000;
@@ -140,6 +142,7 @@ static const int64_t MAX_FEE_ESTIMATION_TIP_AGE = 3 * 60 * 60;
 static const bool DEFAULT_PERMIT_BAREMULTISIG = true;
 static const bool DEFAULT_CHECKPOINTS_ENABLED = true;
 static const bool DEFAULT_TXINDEX = false;
+static const bool DEFAULT_ASSETINDEX = false;
 static const bool DEFAULT_ADDRESSINDEX = false;
 static const bool DEFAULT_TIMESTAMPINDEX = false;
 static const bool DEFAULT_SPENTINDEX = false;
@@ -185,6 +188,7 @@ extern std::atomic_bool fImporting;
 extern std::atomic_bool fReindex;
 extern int nScriptCheckThreads;
 extern bool fTxIndex;
+extern bool fAssetIndex;
 extern bool fAddressIndex;
 extern bool fSpentIndex;
 extern bool fTimestampIndex;
@@ -290,6 +294,7 @@ void UnloadBlockIndex();
 void ThreadScriptCheck();
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
 bool IsInitialBlockDownload();
+bool IsInitialSyncSpeedUp();
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransactionRef &tx, const Consensus::Params& params, uint256 &hashBlock, bool fAllowSlow = false);
 /** Find the best known block, and make it the tip of the block chain */
@@ -482,14 +487,14 @@ extern CCoinsViewCache *pcoinsTip;
 /** Global variable that points to the active block tree (protected by cs_main) */
 extern CBlockTreeDB *pblocktree;
 
-/** RTM START */
+/** MYNT START */
 /** Global variable that point to the active assets database (protexted by cs_main) */
 extern CAssetsDB *passetsdb;
 /** Global variable that point to the active assets (protexted by cs_main) */
 extern CAssetsCache *passets;
 /** Global variable that point to the assets LRU Cache (protexted by cs_main) */
 extern CLRUCache<std::string, CDatabasedAssetData> *passetsCache;
-/** RTM END */
+/** MYNT END */
 
 /**
  * Return the spend height, which is one more than the inputs.GetBestBlock().
@@ -522,10 +527,11 @@ bool DumpMempool();
 /** Load the mempool from disk. */
 bool LoadMempool();
 
-/** RTM START */
+/** MYNT START */
 bool AreAssetsDeployed();
 
 bool IsDGWActive(unsigned int nBlockNumber);
-/** RTM END */
+CAssetsCache* GetCurrentAssetCache();
+/** MYNT END */
 
-#endif // RAPTOREUM_VALIDATION_H
+#endif // MYNT_VALIDATION_H

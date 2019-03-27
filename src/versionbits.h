@@ -1,10 +1,10 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_CONSENSUS_VERSIONBITS
-#define RAPTOREUM_CONSENSUS_VERSIONBITS
+#ifndef MYNT_CONSENSUS_VERSIONBITS
+#define MYNT_CONSENSUS_VERSIONBITS
 
 #include "chain.h"
 #include <map>

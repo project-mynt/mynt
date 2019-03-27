@@ -1,5 +1,5 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -198,8 +198,8 @@ ReadStatus PartiallyDownloadedBlock::FillBlock(CBlock& block, const std::vector<
         return READ_STATUS_INVALID;
 
     CValidationState state;
-    int nHeight = chainActive.Height() + 1;
-    if (!CheckBlock(block, state, Params().GetConsensus(), nHeight)) {
+    int height = chainActive.Height(); //current height or previous height? error of it is prevHeight
+    if (!CheckBlock(block, state, Params().GetConsensus(), height)) {
         // TODO: We really want to just check merkle tree manually here,
         // but that is expensive, and CheckBlock caches a block's
         // "checked-status" (in the CBlock?). CBlock should be able to

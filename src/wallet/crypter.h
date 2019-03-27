@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_WALLET_CRYPTER_H
-#define RAPTOREUM_WALLET_CRYPTER_H
+#ifndef MYNT_WALLET_CRYPTER_H
+#define MYNT_WALLET_CRYPTER_H
 
 #include "keystore.h"
 #include "serialize.h"
@@ -194,4 +194,4 @@ public:
     boost::signals2::signal<void (CCryptoKeyStore* wallet)> NotifyStatusChanged;
 };
 
-#endif // RAPTOREUM_WALLET_CRYPTER_H
+#endif // MYNT_WALLET_CRYPTER_H

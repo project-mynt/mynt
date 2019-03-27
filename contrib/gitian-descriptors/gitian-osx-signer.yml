@@ -1,5 +1,5 @@
 ---
-name: "raptoreum-dmg-signer"
+name: "mynt-dmg-signer"
 suites:
 - "trusty"
 architectures:
@@ -7,10 +7,10 @@ architectures:
 packages:
 - "faketime"
 remotes:
-- "url": "https://github.com/raptoreum-core/raptoreum-detached-sigs.git"
+- "url": "https://github.com/mynt-core/mynt-detached-sigs.git"
   "dir": "signature"
 files:
-- "raptoreum-osx-unsigned.tar.gz"
+- "mynt-osx-unsigned.tar.gz"
 script: |
   WRAP_DIR=$HOME/wrapped
   mkdir -p ${WRAP_DIR}
@@ -27,8 +27,8 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=raptoreum-osx-unsigned.tar.gz
-  SIGNED=raptoreum-osx-signed.dmg
+  UNSIGNED=mynt-osx-unsigned.tar.gz
+  SIGNED=mynt-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   OSX_VOLNAME="$(cat osx_volname)"

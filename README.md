@@ -28,11 +28,11 @@ regularly to indicate new official, stable release versions of Mynt Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/raptoreum-dev)
+The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/mynt-dev)
 should be used to discuss complicated or controversial changes before working
 on a patch set.
 
-Developer IRC can be found on Freenode at #raptoreum-core-dev.
+Developer IRC can be found on Freenode at #mynt-core-dev.
 
 Testing
 -------
@@ -44,7 +44,7 @@ lots of money.
 
 Testnet is now up and running and available to use during development. There is an issue when connecting to the testnet that requires the use of the -maxtipage parameter in order to connect to the test network initially. After the initial launch the -maxtipage parameter is not required.
 
-Use this command to initially start raptoreumd on the testnet. <code>./raptoreumd -testnet -maxtipage=259200</code>
+Use this command to initially start myntd on the testnet. <code>./myntd -testnet -maxtipage=259200</code>
 
 ### Automated Testing
 
@@ -72,7 +72,7 @@ A digital peer to peer network for the facilitation of asset transfer.
 
 
 
-In the fictional world of Westeros, raptoreums are used as messengers who carry statements of truth. Mynt is a use case specific blockchain designed to carry statements of truth about who owns what assets. 
+In the fictional world of Westeros, mynts are used as messengers who carry statements of truth. Mynt is a use case specific blockchain designed to carry statements of truth about who owns what assets. 
 
 
 

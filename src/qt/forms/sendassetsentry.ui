@@ -161,7 +161,7 @@
       <item>
        <widget class="QValidatedLineEdit" name="payTo">
         <property name="toolTip">
-         <string>The Raptoreum address to send the payment to</string>
+         <string>The Mynt address to send the payment to</string>
         </property>
        </widget>
       </item>
@@ -174,7 +174,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../raptoreum.qrc">
+         <iconset resource="../mynt.qrc">
           <normaloff>:/icons/address-book</normaloff>:/icons/address-book</iconset>
         </property>
         <property name="iconSize">
@@ -197,7 +197,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../raptoreum.qrc">
+         <iconset resource="../mynt.qrc">
           <normaloff>:/icons/editpaste</normaloff>:/icons/editpaste</iconset>
         </property>
         <property name="iconSize">
@@ -220,7 +220,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../raptoreum.qrc">
+         <iconset resource="../mynt.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
         <property name="iconSize">
@@ -243,7 +243,7 @@
     <item row="8" column="1">
      <widget class="QLabel" name="messageTextLabel">
       <property name="toolTip">
-       <string>A message that was attached to the raptoreum: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Raptoreum network.</string>
+       <string>A message that was attached to the mynt: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Mynt network.</string>
       </property>
       <property name="textFormat">
        <enum>Qt::PlainText</enum>
@@ -708,7 +708,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../raptoreum.qrc">
+         <iconset resource="../mynt.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1241,7 +1241,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../raptoreum.qrc">
+         <iconset resource="../mynt.qrc">
           <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
         </property>
        </widget>
@@ -1279,7 +1279,7 @@
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="RaptoreumAmountField" name="payAmount_s">
+     <widget class="MyntAmountField" name="payAmount_s">
       <property name="acceptDrops">
        <bool>false</bool>
       </property>
@@ -1295,15 +1295,15 @@
    <header>qvalidatedlineedit.h</header>
   </customwidget>
   <customwidget>
-   <class>RaptoreumAmountField</class>
+   <class>MyntAmountField</class>
    <extends>QLineEdit</extends>
-   <header>raptoreumamountfield.h</header>
+   <header>myntamountfield.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>AssetAmountField</class>
    <extends>QLineEdit</extends>
-   <header location="global">raptoreumamountfield.h</header>
+   <header location="global">myntamountfield.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -1318,7 +1318,7 @@
   <tabstop>deleteButton_s</tabstop>
  </tabstops>
  <resources>
-  <include location="../raptoreum.qrc"/>
+  <include location="../mynt.qrc"/>
  </resources>
  <connections/>
 </ui>

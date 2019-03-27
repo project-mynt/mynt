@@ -1,12 +1,12 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bench.h"
 #include "key.h"
 #if defined(HAVE_CONSENSUS_LIB)
-#include "script/raptoreumconsensus.h"
+#include "script/myntconsensus.h"
 #endif
 #include "script/script.h"
 #include "script/sign.h"
@@ -96,7 +96,7 @@ static void VerifyScriptBench(benchmark::State& state)
 #if defined(HAVE_CONSENSUS_LIB)
         CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
         stream << txSpend;
-        int csuccess = raptoreumconsensus_verify_script_with_amount(
+        int csuccess = myntconsensus_verify_script_with_amount(
             txCredit.vout[0].scriptPubKey.data(),
             txCredit.vout[0].scriptPubKey.size(),
             txCredit.vout[0].nValue,

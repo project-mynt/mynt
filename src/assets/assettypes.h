@@ -1,10 +1,10 @@
-// Copyright (c) 2018 The Raptoreum Core developers
+// Copyright (c) 2018 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 // Created by Jeremy Anderson on 5/15/18.
 
-#ifndef RAPTOREUMCOIN_NEWASSET_H
-#define RAPTOREUMCOIN_NEWASSET_H
+#ifndef MYNTCOIN_NEWASSET_H
+#define MYNTCOIN_NEWASSET_H
 
 #include <string>
 #include <sstream>
@@ -224,7 +224,7 @@ public:
     }
 
     CReissueAsset(const std::string& strAssetName, const CAmount& nAmount, const int& nUnits, const int& nReissuable, const std::string& strIPFSHash);
-    bool IsValid(std::string& strError, CAssetsCache& assetCache) const;
+    bool IsValid(std::string& strError, CAssetsCache& assetCache, bool fForceCheckPrimaryAssetExists = true) const;
     void ConstructTransaction(CScript& script) const;
     bool IsNull() const;
 };
@@ -342,25 +342,6 @@ struct CAssetCacheSpendAsset
     }
 };
 
-struct CAssetCachePossibleMine
-{
-    std::string assetName;
-    COutPoint out;
-    CTxOut txOut;
-
-    CAssetCachePossibleMine(const std::string& assetName, const COutPoint& out, const CTxOut txOut)
-    {
-        this->assetName = assetName;
-        this->out = out;
-        this->txOut = txOut;
-    }
-
-    bool operator<(const CAssetCachePossibleMine &other) const
-    {
-        return out < other.out;
-    }
-};
-
 // Least Recently Used Cache
 template<typename cache_key_t, typename cache_value_t>
 class CLRUCache
@@ -444,6 +425,11 @@ public:
         Clear();
     }
 
+    size_t MaxSize() const
+    {
+        return maxSize;
+    }
+
 
     void SetSize(const size_t size)
     {
@@ -474,4 +460,4 @@ private:
     size_t maxSize;
 };
 
-#endif //RAPTOREUMCOIN_NEWASSET_H
+#endif //MYNTCOIN_NEWASSET_H

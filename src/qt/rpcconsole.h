@@ -1,10 +1,10 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_QT_RPCCONSOLE_H
-#define RAPTOREUM_QT_RPCCONSOLE_H
+#ifndef MYNT_QT_RPCCONSOLE_H
+#define MYNT_QT_RPCCONSOLE_H
 
 #include "guiutil.h"
 #include "peertablemodel.h"
@@ -28,7 +28,7 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local Raptoreum RPC console. */
+/** Local Mynt RPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT
@@ -157,4 +157,4 @@ private:
     void updateNetworkState();
 };
 
-#endif // RAPTOREUM_QT_RPCCONSOLE_H
+#endif // MYNT_QT_RPCCONSOLE_H

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.raptoreum;
+package org.mynt;
 
 /**
  * This class holds the context reference used in native methods 

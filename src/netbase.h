@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_NETBASE_H
-#define RAPTOREUM_NETBASE_H
+#ifndef MYNT_NETBASE_H
+#define MYNT_NETBASE_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "compat.h"
@@ -68,4 +68,4 @@ bool SetSocketNoDelay(const SOCKET& hSocket);
 struct timeval MillisToTimeval(int64_t nTimeout);
 void InterruptSocks5(bool interrupt);
 
-#endif // RAPTOREUM_NETBASE_H
+#endif // MYNT_NETBASE_H

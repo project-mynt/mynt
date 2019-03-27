@@ -1,0 +1,22 @@
+[Unit]
+Description=Mynt's distributed currency daemon
+After=network.target
+
+[Service]
+User=mynt
+Group=mynt
+
+Type=forking
+PIDFile=/var/lib/myntd/myntd.pid
+ExecStart=/usr/bin/myntd -daemon -pid=/var/lib/myntd/myntd.pid \
+-conf=/etc/mynt/mynt.conf -datadir=/var/lib/myntd -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

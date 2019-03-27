@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +8,7 @@
 #include "uint256.h"
 #include "undo.h"
 #include "utilstrencodings.h"
-#include "test/test_raptoreum.h"
+#include "test/test_mynt.h"
 #include "validation.h"
 #include "consensus/validation.h"
 

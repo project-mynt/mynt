@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,10 +48,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             const CTxOut& txout = wtx.tx->vout[i];
             isminetype mine = wallet->IsMine(txout);
 
-            /** RTM START */
+            /** MYNT START */
             if (txout.scriptPubKey.IsAssetScript())
                 continue;
-            /** RTM START */
+            /** MYNT START */
 
             if(mine)
             {
@@ -62,7 +62,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address))
                 {
-                    // Received by Raptoreum Address
+                    // Received by Mynt Address
                     sub.type = TransactionRecord::RecvWithAddress;
                     sub.address = EncodeDestination(address);
                 }
@@ -96,10 +96,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
         isminetype fAllToMe = ISMINE_SPENDABLE;
         for (const CTxOut& txout : wtx.tx->vout)
         {
-            /** RTM START */
+            /** MYNT START */
             if (txout.scriptPubKey.IsAssetScript())
                 continue;
-            /** RTM START */
+            /** MYNT START */
 
             isminetype mine = wallet->IsMine(txout);
             if(mine & ISMINE_WATCH_ONLY) involvesWatchAddress = true;
@@ -126,10 +126,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             {
                 const CTxOut& txout = wtx.tx->vout[nOut];
 
-                /** RTM START */
+                /** MYNT START */
                 if (txout.scriptPubKey.IsAssetScript())
                     continue;
-                /** RTM START */
+                /** MYNT START */
 
                 TransactionRecord sub(hash, nTime);
                 sub.idx = nOut;
@@ -145,7 +145,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CTxDestination address;
                 if (ExtractDestination(txout.scriptPubKey, address))
                 {
-                    // Sent to Raptoreum Address
+                    // Sent to Mynt Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.address = EncodeDestination(address);
                 }
@@ -175,7 +175,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             //
 
 
-            /** RTM START */
+            /** MYNT START */
             // We will only show mixed debit transactions that are nNet < 0 or if they are nNet == 0 and
             // they do not contain assets. This is so the list of transaction doesn't add 0 amount transactions to the
             // list.
@@ -195,12 +195,12 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 parts.append(TransactionRecord(hash, nTime, TransactionRecord::Other, "", nNet, 0));
                 parts.last().involvesWatchAddress = involvesWatchAddress;
             }
-            /** RTM START */
+            /** MYNT START */
         }
     }
 
 
-    /** RTM START */
+    /** MYNT START */
     if (AreAssetsDeployed()) {
         CAmount nFee;
         std::string strSentAccount;
@@ -295,7 +295,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             }
         }
     }
-    /** RTM END */
+    /** MYNT END */
 
     return parts;
 }

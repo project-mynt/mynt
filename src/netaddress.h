@@ -1,13 +1,13 @@
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_NETADDRESS_H
-#define RAPTOREUM_NETADDRESS_H
+#ifndef MYNT_NETADDRESS_H
+#define MYNT_NETADDRESS_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/raptoreum-config.h"
+#include "config/mynt-config.h"
 #endif
 
 #include "compat.h"
@@ -175,4 +175,4 @@ class CService : public CNetAddr
         }
 };
 
-#endif // RAPTOREUM_NETADDRESS_H
+#endif // MYNT_NETADDRESS_H

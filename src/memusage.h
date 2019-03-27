@@ -1,10 +1,10 @@
 // Copyright (c) 2015-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_MEMUSAGE_H
-#define RAPTOREUM_MEMUSAGE_H
+#ifndef MYNT_MEMUSAGE_H
+#define MYNT_MEMUSAGE_H
 
 #include "indirectmap.h"
 
@@ -167,4 +167,4 @@ static inline size_t DynamicUsage(const std::unordered_map<X, Y, Z>& m)
 
 }
 
-#endif // RAPTOREUM_MEMUSAGE_H
+#endif // MYNT_MEMUSAGE_H

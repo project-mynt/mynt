@@ -1,11 +1,11 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_RPCCLIENT_H
-#define RAPTOREUM_RPCCLIENT_H
+#ifndef MYNT_RPCCLIENT_H
+#define MYNT_RPCCLIENT_H
 
 #include <univalue.h>
 
@@ -20,4 +20,4 @@ UniValue RPCConvertNamedValues(const std::string& strMethod, const std::vector<s
  */
 UniValue ParseNonRFCJSONValue(const std::string& strVal);
 
-#endif // RAPTOREUM_RPCCLIENT_H
+#endif // MYNT_RPCCLIENT_H

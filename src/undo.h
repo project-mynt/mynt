@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_UNDO_H
-#define RAPTOREUM_UNDO_H
+#ifndef MYNT_UNDO_H
+#define MYNT_UNDO_H
 
 #include "compressor.h" 
 #include "consensus/consensus.h"
@@ -62,11 +62,11 @@ public:
 };
 
 static const size_t MIN_TRANSACTION_INPUT_WEIGHT = WITNESS_SCALE_FACTOR * ::GetSerializeSize(CTxIn(), SER_NETWORK, PROTOCOL_VERSION);
-/** RTM START */
+/** MYNT START */
 // Deprecated for RIP2 implementation
 //static const size_t MAX_INPUTS_PER_BLOCK = /*fAssetsIsActive ? MAX_BLOCK_WEIGHT_RIP2 / MIN_TRANSACTION_INPUT_WEIGHT :*/ MAX_BLOCK_WEIGHT / MIN_TRANSACTION_INPUT_WEIGHT;
 
-/** RTM END */
+/** MYNT END */
 
 /** Undo information for a CTransaction */
 class CTxUndo
@@ -114,4 +114,4 @@ public:
     }
 };
 
-#endif // RAPTOREUM_UNDO_H
+#endif // MYNT_UNDO_H

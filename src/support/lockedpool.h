@@ -1,10 +1,10 @@
 // Copyright (c) 2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_SUPPORT_LOCKEDPOOL_H
-#define RAPTOREUM_SUPPORT_LOCKEDPOOL_H
+#ifndef MYNT_SUPPORT_LOCKEDPOOL_H
+#define MYNT_SUPPORT_LOCKEDPOOL_H
 
 #include <stdint.h>
 #include <list>
@@ -229,4 +229,4 @@ private:
     static std::once_flag init_flag;
 };
 
-#endif // RAPTOREUM_SUPPORT_LOCKEDPOOL_H
+#endif // MYNT_SUPPORT_LOCKEDPOOL_H

@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin Core developers
-// Copyright (c) 2017 The Raptoreum Core developers
+// Copyright (c) 2017 The Mynt Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef RAPTOREUM_WALLET_FEES_H
-#define RAPTOREUM_WALLET_FEES_H
+#ifndef MYNT_WALLET_FEES_H
+#define MYNT_WALLET_FEES_H
 
 #include "amount.h"
 
@@ -32,4 +32,4 @@ CAmount GetMinimumFee(unsigned int nTxBytes, const CCoinControl& coin_control, c
  */
 CFeeRate GetDiscardRate(const CBlockPolicyEstimator& estimator);
 
-#endif // RAPTOREUM_WALLET_FEES_H
+#endif // MYNT_WALLET_FEES_H

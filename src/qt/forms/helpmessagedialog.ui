@@ -52,7 +52,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="../raptoreum.qrc">:/icons/raptoreum</pixmap>
+        <pixmap resource="../mynt.qrc">:/icons/mynt</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -150,7 +150,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../raptoreum.qrc"/>
+  <include location="../mynt.qrc"/>
  </resources>
  <connections>
   <connection>
