@@ -8,10 +8,7 @@ Adam Davies<br>
 <br>
 http://www.getmynt.io<br>
 3rd April 2018
-</p>
-<p align="center"><i>
-In the fictional world of Westeros, Mynt are used as messengers who carry statements of truth. Mynt is a use-case focused blockchain designed to carry statements of truth about who owns what assets.
-</i></p> 
+
 
 Thank you to the Bitcoin founder and developers. The Mynt project was launched based on the hard work and continuous effort of over 430 Bitcoin developers who made over 14,000 commits by the date of the Mynt code fork. We are eternally grateful to you for your diligence in making a secure network and for your support of free and open source software development. The Mynt project is built on the foundation you built.
 
@@ -45,10 +42,7 @@ names is the contract hash.
 
 ## 3. Full Asset Aware Protocol Level System
 
-<p align="center"><i>
-Who will not change a Mynt for a dove? The will of man is by his reason swayed.  
-– William Shakespeare
-</i></p>
+
 The solution is to create a bitcoin-like system that is fully asset aware. A system being asset aware provides two major advantages. First, it allows the client and RPC commands to protect the asset from being destroyed accidentally. Second, it allows a single native client to issue, track, and transfer the assets.
 Lastly, to provide security for the underlying assets, the bitcoin-like system functions only with a market value, a strong mining community, and wide distribution.  
   
@@ -76,7 +70,7 @@ many free market countries)
 *  A token which represents a crowd-funded item with the ability to transfer or resell the item
 
 **Representing virtual goods**
-*  Tickets to an event such as a Baltimore Mynt game with the ability to resell
+*  Tickets to an event such as a football game with the ability to resell
 *  A license to allow an activity
 *  An access token to use a service
 *  In-game currency and items, transferable outside of the game platform
@@ -104,10 +98,7 @@ Utilize proof of work mining, not because it burns a scarce resource of electric
 
 ## 5. Asset Issuance & Transfer
 
-<p align="center"><i>
-Deep into that darkness peering, long I stood there wondering, fearing, Doubting, dreaming dreams no mortal ever dared to dream before; But the silence was unbroken, and the stillness gave no token.  
-\- Edgar Allan Poe, The Mynt
-</i></p>
+
 Token names are guaranteed unique. The first to issue a token with a given name is the owner of that token project.
 
 The issuer of a token burns 500 MYNT and must provide a unique token name. The issuer determines the quantity issued, the number of decimal places, and whether they will be allowed to issue more of the same token in the future.
@@ -173,10 +164,7 @@ Some use cases for unique assets include:
 
 ## 8. Messaging Stakeholders
 
-<p align="center"><i>
-"If the Tower of London Mynt are lost or fly away, the Crown will fall and Britain with it." -
-Unknown
-</i></p>
+
 A common problem with tokens/assets is that the token issuer cannot communicate with the token holders. This must be handled very carefully because the token holders do not always wish to be identified. The communication should allow the token holder to opt-out at any time. The message system should only allow select parties to use the message channel so that it is not a spam conduit.
 
 
@@ -196,9 +184,7 @@ Tokens are created to represent votes. Mynt will create an exact number of VOTE 
 
 ## 10. Privacy
 
-<p align="center"><i>
-It's a community where the threat of violence is impotent because violence is impossible, and violence is impossible because its participants cannot be linked to their true names or physical locations. (Wei Dai)
-</i></p>  
+
 Privacy is key in investments and tokens because financial systems function better when assets are fungible and can trade in a frictionless manner. The project should seek to strengthen privacy in any way possible as future technological improvements are made.
 
 As capabilities like messaging, assets, and rewards are added, privacy will be preserved in the same way that UTXO based cryptocurrencies separate identity from public addresses.
