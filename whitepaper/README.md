@@ -4,7 +4,6 @@
 
 
 <p align="center">
-Adam Davies<br>
 <br>
 http://www.getmynt.io<br>
 3rd April 2018
