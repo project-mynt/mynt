@@ -24,6 +24,16 @@ make
 make install # optional
 ```
 
+To Build (Without benchmarks & tests)
+---------------------
+
+```bash
+./autogen.sh
+./configure --disable-tests --disable-bench
+make
+make install # optional
+```
+
 This will build mynt-qt as well if the dependencies are met.
 
 On most Linux distros the "fPIC" flag needs to be set.  If this flag is not specified it is possible that the build will fail with an error similar to:
