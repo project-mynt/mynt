@@ -29,7 +29,7 @@ To Build (Without benchmarks & tests)
 
 ```bash
 ./autogen.sh
-./configure --disable-tests --disable-bench
+./configure --enable-cxx --disable-shared --without-gui --disable-tests --disable-bench --with-pic --prefix=$BDB_PREFIX CXXFLAGS="-fPIC" CPPFLAGS="-fPIC"
 make
 make install # optional
 ```
