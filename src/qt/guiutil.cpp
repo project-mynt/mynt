@@ -91,7 +91,7 @@ QFont getSubLabelFont()
 #endif
     labelSubFont.setWeight(QFont::Weight::ExtraLight);
     labelSubFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, -0.6);
-    labelSubFont.setPixelSize(14);
+    labelSubFont.setPixelSize(13);
     return labelSubFont;
 }
 
@@ -103,7 +103,7 @@ QFont getSubLabelFontBolded()
 #endif
     labelSubFont.setWeight(QFont::Weight::Bold);
     labelSubFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, -0.6);
-    labelSubFont.setPixelSize(14);
+    labelSubFont.setPixelSize(13);
     return labelSubFont;
 }
 

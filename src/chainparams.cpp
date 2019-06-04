@@ -249,14 +249,10 @@ public:
 
         vFixedSeeds.clear();
 		vSeeds.clear();
-        vSeeds.emplace_back("node1.getmynt.io", false);
-        vSeeds.emplace_back("node2.getmynt.io", false);
-        vSeeds.emplace_back("explorer.getmynt.io", false);
-        vSeeds.emplace_back("chain.getmynt.io", false);
-        vSeeds.emplace_back("66.70.155.45", false);
-        vSeeds.emplace_back("66.70.155.46", false);
-        vSeeds.emplace_back("66.70.155.47", false);
-
+        vSeeds.emplace_back("seed1.getmynt.io", false);
+        vSeeds.emplace_back("seed2.getmynt.io", false);
+        vSeeds.emplace_back("seed3.getmynt.io", false);
+        vSeeds.emplace_back("seed4.getmynt.io", false);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,50); // changed 55 to 50
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5); // changed 123 to 5
