@@ -111,7 +111,7 @@ static const int MAX_URI_LENGTH = 255;
 #define SPINNER_FRAMES 36
 
 #define QAPP_ORG_NAME "Mynt"
-#define QAPP_ORG_DOMAIN "mynt.org"
+#define QAPP_ORG_DOMAIN "getmynt.io"
 #define QAPP_APP_NAME_DEFAULT "Mynt-Qt"
 #define QAPP_APP_NAME_TESTNET "Mynt-Qt-testnet"
 

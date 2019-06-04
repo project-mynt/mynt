@@ -341,7 +341,7 @@ void MyntGUI::loadFonts()
 void MyntGUI::createActions()
 {
     QFont font = QFont();
-    font.setPixelSize(22);
+    font.setPixelSize(18);
     font.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, -0.43);
 #if !defined(Q_OS_MAC)
     font.setFamily("Open Sans");
@@ -663,24 +663,24 @@ void MyntGUI::createToolBars()
         QString widgetBackgroundSytleSheet = QString(".QWidget{background-color: %1}").arg(platformStyle->TopWidgetBackGroundColor().name());
 
         // Set the headers widget options
-        headerWidget->setContentsMargins(0,0,0,50);
+        headerWidget->setContentsMargins(0,0,0,0);
         headerWidget->setStyleSheet(widgetBackgroundSytleSheet);
         headerWidget->setGraphicsEffect(GUIUtil::getShadowEffect());
-        headerWidget->setFixedHeight(75);
+        headerWidget->setFixedHeight(50);
 
         QFont currentMarketFont;
         currentMarketFont.setFamily("Open Sans");
         currentMarketFont.setWeight(QFont::Weight::Normal);
         currentMarketFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, -0.6);
-        currentMarketFont.setPixelSize(18);
+        currentMarketFont.setPixelSize(14);
 
         // Set the pricing information
         QHBoxLayout* priceLayout = new QHBoxLayout(headerWidget);
         priceLayout->setContentsMargins(QMargins());
         priceLayout->setDirection(QBoxLayout::LeftToRight);
         priceLayout->setAlignment(Qt::AlignVCenter);
-        labelCurrentMarket->setContentsMargins(50,0,0,0);
-        labelCurrentMarket->setFixedHeight(75);
+        labelCurrentMarket->setContentsMargins(25,0,0,0);
+        labelCurrentMarket->setFixedHeight(50);
         labelCurrentMarket->setAlignment(Qt::AlignVCenter);
         labelCurrentMarket->setStyleSheet(STRING_LABEL_COLOR);
         labelCurrentMarket->setFont(currentMarketFont);
@@ -688,7 +688,7 @@ void MyntGUI::createToolBars()
 
         QString currentPriceStyleSheet = ".QLabel{color: %1;}";
         labelCurrentPrice->setContentsMargins(25,0,0,0);
-        labelCurrentPrice->setFixedHeight(75);
+        labelCurrentPrice->setFixedHeight(50);
         labelCurrentPrice->setAlignment(Qt::AlignVCenter);
         labelCurrentPrice->setStyleSheet(currentPriceStyleSheet.arg(COLOR_LABELS.name()));
         labelCurrentPrice->setFont(currentMarketFont);
@@ -696,7 +696,7 @@ void MyntGUI::createToolBars()
         QLabel* labelBtcMynt = new QLabel();
         labelBtcMynt->setText("BTC / MYNT");
         labelBtcMynt->setContentsMargins(15,0,0,0);
-        labelBtcMynt->setFixedHeight(75);
+        labelBtcMynt->setFixedHeight(50);
         labelBtcMynt->setAlignment(Qt::AlignVCenter);
         labelBtcMynt->setStyleSheet(STRING_LABEL_COLOR);
         labelBtcMynt->setFont(currentMarketFont);

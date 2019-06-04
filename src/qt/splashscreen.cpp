@@ -50,14 +50,16 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QString copyrightText  = QChar(0xA9)+QString("2018-2019 ").arg(COPYRIGHT_YEAR) + QString(tr("The Mynt Core Developers"));
 
     const char *inspirationals[] = {
-        // "Mynty Fresh! -EthyMoney",
-        // "no u -dmz",
-        "http://getmynt.io",
-        // "http://chain.getmynt.io"
-
+        "Mynty Fresh! -EthyMoney",
+        "no u -dmz",
+        "https://getmynt.io",
+        "https://insight.getmynt.io",
+        "https://paper.getmynt.io",
+        "https://assets.getmynt.io"
+        //"Insert new quotes here"
     };
-
-    QString inspirationalText = QString(inspirationals[rand() % 4]);
+    srand(time(NULL)+clock());
+    QString inspirationalText = QString(inspirationals[rand() % 6]);
 
     QString titleAddText    = networkStyle->getTitleAddText();
 
@@ -121,8 +123,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         const int y = paddingTop+titleCopyrightVSpace;
         QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
         pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
+        pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop2+titleCopyrightVSpace+86,inspirationalText);
     }
-   pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop2+titleCopyrightVSpace+86,inspirationalText);
     // draw additional text if special network
     if(!titleAddText.isEmpty()) {
         QFont boldFont = QFont(font, 10*fontFactor);
